@@ -1,0 +1,34 @@
+<!-- usuario.admin.plist.routed.component.html -->
+<div class="usuario-plist">
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Buscar usuarios"
+      [(ngModel)]="filter"
+      (input)="onFilterChange()"
+    />
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let usuario of usuarios">
+        <td>{{ usuario.id }}</td>
+        <td>{{ usuario.nombre }}</td>
+        <td>{{ usuario.correo }}</td>
+        <td>
+          <button (click)="editUsuario(usuario.id)">Editar</button>
+          <button (click)="deleteUsuario(usuario.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
