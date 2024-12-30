@@ -4,81 +4,77 @@ import { IPage } from '../../../model/model.interface';
 import { FormsModule } from '@angular/forms';
 import { BotoneraService } from '../../../service/botonera.service';
 import { debounceTime, Subject } from 'rxjs';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { TrimPipe } from '../../../pipe/trim.pipe';
-import { IUsuario } from '../../../model/usuario.interface';
-import { UsuarioService } from '../../../service/usuario.service';;
+import { IAlmacen } from '../../../model/almacen.interface';
+import { AlmacenService } from '../../../service/almacen.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-usuario.admin.plist.routed',
-  templateUrl: './usuario.admin.plist.routed.component.html',
-  styleUrls: ['./usuario.admin.plist.routed.component.css'],
+  selector: 'app-usuario.admin.coleccion.routed',
+  templateUrl: './usuario.admin.coleccion.routed.component.html',
+  styleUrls: ['./usuario.admin.coleccion.routed.component.css'],
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
 })
-export class UsuarioAdminPlistRoutedComponent implements OnInit {
-  oPage: IPage<IUsuario> | null = null;
-  //
+export class UsuarioAdminColeccionRoutedComponent implements OnInit {
+  oPage: IPage<IAlmacen> | null = null;
+  usuarioId!: number;
   nPage: number = 0;
   nRpp: number = 10;
-  //
   strField: string = '';
   strDir: string = 'desc';
-  //
   strFiltro: string = '';
-  //
   arrBotonera: string[] = [];
-  //
+  cartas: IAlmacen[] = [];
   private debounceSubject = new Subject<string>();
   readonly dialog = inject(MatDialog);
 
   constructor(
-    private oUsuarioService: UsuarioService,
+    private almacenService: AlmacenService,
     private oBotoneraService: BotoneraService,
     private oRouter: Router,
+    private route: ActivatedRoute
   ) {
     this.debounceSubject.pipe(debounceTime(10)).subscribe(() => {
       this.getPage();
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.usuarioId = +this.route.snapshot.paramMap.get('id')!;
     this.getPage();
   }
 
-  getPage() {
-    this.oUsuarioService
+  getPage(): void {
+    this.almacenService
       .getPage(this.nPage, this.nRpp, this.strField, this.strDir, this.strFiltro)
       .subscribe({
-        next: (oPageFromServer: IPage<IUsuario>) => {
-          console.log(oPageFromServer);
+        next: (oPageFromServer: IPage<IAlmacen>) => {
+          console.log('Cartas recibidas:', oPageFromServer);
           this.oPage = oPageFromServer;
-          this.arrBotonera = this.oBotoneraService.getBotonera(
-            this.nPage,
-            oPageFromServer.totalPages
-          );
+          this.arrBotonera = this.oBotoneraService.getBotonera(this.nPage, oPageFromServer.totalPages);
         },
-        error: (err) => {
-          console.log(err);
+        error: (err: HttpErrorResponse) => {
+          console.error('Error al obtener la colección:', err);
         },
       });
   }
 
-  edit(oUsuario: IUsuario) {
-    this.oRouter.navigate(['admin/usuario/edit', oUsuario.id]);
+  addCartasAleatorias(): void {
+    this.almacenService.addCartasAleatorias(this.usuarioId, 5).subscribe({
+      next: (response: string) => {
+        console.log(response);
+        this.getPage();
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error al añadir cartas:', err);
+      },
+    });
   }
 
-  view(oUsuario: IUsuario) {
-    this.oRouter.navigate(['admin/usuario/view', oUsuario.id]);
-  }
-
-  remove(oUsuario: IUsuario) {
-    this.oRouter.navigate(['admin/usuario/delete', oUsuario.id]);
-  }
-
-  goToPage(p: number) {
+  goToPage(p: number): boolean {
     if (p) {
       this.nPage = p - 1;
       this.getPage();
@@ -86,36 +82,32 @@ export class UsuarioAdminPlistRoutedComponent implements OnInit {
     return false;
   }
 
-  goToNext() {
+  goToNext(): boolean {
     this.nPage++;
     this.getPage();
     return false;
   }
 
-  goToPrev() {
+  goToPrev(): boolean {
     this.nPage--;
     this.getPage();
     return false;
   }
 
-  sort(field: string) {
+  sort(field: string): void {
     this.strField = field;
     this.strDir = this.strDir === 'asc' ? 'desc' : 'asc';
     this.getPage();
   }
 
-  goToRpp(nrpp: number) {
+  goToRpp(nrpp: number): boolean {
     this.nPage = 0;
     this.nRpp = nrpp;
     this.getPage();
     return false;
   }
 
-  filter(event: KeyboardEvent) {
+  filter(event: KeyboardEvent): void {
     this.debounceSubject.next(this.strFiltro);
   }
-
-  verColeccion(idUsuario: number) {
-     this.oRouter.navigate(['admin/usuario/coleccion', idUsuario]);
-}
 }

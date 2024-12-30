@@ -1,0 +1,71 @@
+
+<h2>Colección del Usuario {{ usuarioId }}</h2>
+
+<div >
+  <nav>
+    <ul>
+      <li class="page-item" [class.active]="nRpp === 10">
+        <a class="page-link" (click)="goToRpp(10)" href="#">10</a>
+      </li>
+      <li class="page-item" [class.active]="nRpp === 50">
+        <a class="page-link" (click)="goToRpp(50)" href="#">50</a>
+      </li>
+      <li class="page-item" [class.active]="nRpp === 100">
+        <a class="page-link" (click)="goToRpp(100)" href="#">100</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<div>
+  <button (click)="addCartasAleatorias()">Agregar Cartas</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Rareza</th>
+        <th>Cantidad</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of oPage?.content">
+        <td>{{ item.carta.nombre }}</td>
+        <td>{{ item.carta.tipo }}</td>
+        <td>{{ item.carta.rareza }}</td>
+        <td>{{ item.cantidad }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<nav class="my-2">
+  <ul class="pagination justify-content-center">
+    <!-- Botón Anterior -->
+    <li class="page-item" [class.disabled]="nPage === 0">
+      <a class="page-link" (click)="nPage > 0 && goToPrev()" href="#">
+        Anterior
+        <i class="bi bi-caret-left-square-fill"></i>
+      </a>
+    </li>
+
+    <li class="page-item" *ngFor="let pag of arrBotonera">
+      @if(pag==='...'){
+      <a class="page-link">{{ pag }}</a>
+      } @else {
+      <a class="page-link" href="#" (click)="goToPage(-(-pag))" [class.active]="nPage - -1 === -(-pag)">
+        {{ pag }}
+      </a>
+      }
+    </li>
+
+    <li class="page-item" [class.disabled]="!oPage || nPage + 1 === oPage.totalPages">
+      <a
+        class="page-link"
+        (click)="oPage && nPage + 1 < oPage.totalPages && goToNext()"
+        href="#"
+      >
+        Siguiente
+        <i class="bi bi-caret-right-square-fill"></i>
+      </a>
+    </li>

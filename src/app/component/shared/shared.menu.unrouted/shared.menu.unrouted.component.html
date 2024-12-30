@@ -1,0 +1,15 @@
+
+
+<ul>
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="
+        strRuta == '/home' || strRuta == '/' || strRuta == ''
+      " aria-current="page" href="/home">Inicio</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [class.active]="strRuta == '/admin/carta/plist'"
+      href="/admin/carta/plist">Cartas</a>
+  </li>
+  <li><a href="admin/usuario/plist">Iniciar Sesion</a></li>
+  <li><a href="admin/usuario/create">Registrarse</a></li>
+</ul>
