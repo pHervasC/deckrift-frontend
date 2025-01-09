@@ -10,6 +10,7 @@ import { IAlmacen } from '../../../model/almacen.interface';
 import { AlmacenService } from '../../../service/almacen.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
+import { CartaService } from '../../../service/carta.service';
 
 @Component({
   selector: 'app-usuario.admin.coleccion.routed',
@@ -27,6 +28,7 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
   strDir: string = 'desc';
   strFiltro: string = '';
   arrBotonera: string[] = [];
+  imagenActual: string | null = null;
   cartas: IAlmacen[] = [];
   private debounceSubject = new Subject<string>();
   readonly dialog = inject(MatDialog);
@@ -35,7 +37,8 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
     private almacenService: AlmacenService,
     private oBotoneraService: BotoneraService,
     private oRouter: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private oCartaService: CartaService
   ) {
     this.debounceSubject.pipe(debounceTime(10)).subscribe(() => {
       this.getPage();
@@ -49,15 +52,15 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
 
   getPage(): void {
     this.almacenService
-      .getPage(this.nPage, this.nRpp, this.strField, this.strDir, this.strFiltro)
+      .getCartasPorUsuario(this.usuarioId, this.nPage, this.nRpp)
       .subscribe({
         next: (oPageFromServer: IPage<IAlmacen>) => {
-          console.log('Cartas recibidas:', oPageFromServer);
-          this.oPage = oPageFromServer;
+          console.log('Cartas del usuario:', oPageFromServer);
+          this.cartas = oPageFromServer.content;
           this.arrBotonera = this.oBotoneraService.getBotonera(this.nPage, oPageFromServer.totalPages);
         },
         error: (err: HttpErrorResponse) => {
-          console.error('Error al obtener la colección:', err);
+          console.error('Error al obtener las cartas del usuario:', err);
         },
       });
   }
@@ -89,8 +92,10 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
   }
 
   goToPrev(): boolean {
-    this.nPage--;
-    this.getPage();
+    if (this.nPage > 0) {
+      this.nPage--;
+      this.getPage();
+    }
     return false;
   }
 
@@ -110,4 +115,26 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
   filter(event: KeyboardEvent): void {
     this.debounceSubject.next(this.strFiltro);
   }
+
+  verImagen(id: number): void {
+    this.oCartaService.getImage(id).subscribe({
+      next: (blob: Blob) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.imagenActual = reader.result as string; // Convertir el blob a data URL
+        };
+        reader.readAsDataURL(blob);
+      },
+      error: (err) => {
+        console.error('Error al cargar la imagen:', err);
+        this.imagenActual = null;
+      },
+    });
+  }
+
+  cerrarImagen(): void {
+    this.imagenActual = null; // Cierra el modal
+  }
+
+
 }

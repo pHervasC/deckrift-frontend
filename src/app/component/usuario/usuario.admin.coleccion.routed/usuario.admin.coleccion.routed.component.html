@@ -1,5 +1,9 @@
 
+<div>
 <h2>Colección del Usuario {{ usuarioId }}</h2>
+
+
+<button (click)="addCartasAleatorias()">Añadir Cartas</button>
 
 <div >
   <nav>
@@ -17,35 +21,39 @@
   </nav>
 </div>
 
-<div>
-  <button (click)="addCartasAleatorias()">Agregar Cartas</button>
-  <table>
+<div *ngIf="cartas.length > 0">
+  <table class="table">
     <thead>
       <tr>
+        <th>ID</th>
         <th>Nombre</th>
         <th>Tipo</th>
         <th>Rareza</th>
         <th>Cantidad</th>
+        <th>Imagen</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of oPage?.content">
-        <td>{{ item.carta.nombre }}</td>
-        <td>{{ item.carta.tipo }}</td>
-        <td>{{ item.carta.rareza }}</td>
-        <td>{{ item.cantidad }}</td>
+      <tr *ngFor="let carta of cartas">
+        <td>{{ carta.carta.id }}</td>
+        <td>{{ carta.carta.nombre }}</td>
+        <td>{{ carta.carta.tipo }}</td>
+        <td>{{ carta.carta.rareza }}</td>
+        <td>{{ carta.cantidad }}</td>
+        <td>
+          <button (click)="verImagen(carta.carta.id)">Ver</button>
+        </td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<nav class="my-2">
-  <ul class="pagination justify-content-center">
+<nav>
+  <ul>
     <!-- Botón Anterior -->
-    <li class="page-item" [class.disabled]="nPage === 0">
-      <a class="page-link" (click)="nPage > 0 && goToPrev()" href="#">
+    <li class="page-item">
+      <a class="page-link" [class.disabled]="nPage - -1 === 0" (click)="goToPrev()" href="#">
         Anterior
-        <i class="bi bi-caret-left-square-fill"></i>
       </a>
     </li>
 
@@ -59,13 +67,16 @@
       }
     </li>
 
-    <li class="page-item" [class.disabled]="!oPage || nPage + 1 === oPage.totalPages">
-      <a
-        class="page-link"
-        (click)="oPage && nPage + 1 < oPage.totalPages && goToNext()"
-        href="#"
-      >
-        Siguiente
-        <i class="bi bi-caret-right-square-fill"></i>
-      </a>
+    <!-- Botón Siguiente -->
+    <li class="page-item">
+      <a class="page-link" [class.disabled]="nPage - -1 === oPage?.totalPages" (click)="goToNext()" href="#">
+        Siguiente</a>
     </li>
+
+    <div *ngIf="imagenActual" class="modal">
+      <div class="modal-content">
+        <span class="close" (click)="cerrarImagen()">&times;</span>
+        <img [src]="imagenActual" alt="Imagen de la carta" />
+      </div>
+    </div>
+
