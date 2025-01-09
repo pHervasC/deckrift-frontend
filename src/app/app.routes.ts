@@ -6,6 +6,7 @@ import { CartaAdminPlistRoutedComponent } from './component/carta/carta.admin.pl
 import { UsuarioAdminColeccionRoutedComponent } from './component/usuario/usuario.admin.coleccion.routed/usuario.admin.coleccion.routed.component';
 import { UsuarioAdminCreateRoutedComponent } from './component/usuario/usuario.admin.create.routed/usuario.admin.create.routed.component';
 
+
 export const routes: Routes = [
 
   { path: '', component: SharedHomeRoutedComponent },
