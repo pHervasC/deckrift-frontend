@@ -136,6 +136,5 @@ export class CartaAdminPlistRoutedComponent implements OnInit {
       this.imagenActual = null; // Cierra el modal
     }
 
-
   }
 

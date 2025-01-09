@@ -5,12 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { BotoneraService } from '../../../service/botonera.service';
 import { debounceTime, Subject } from 'rxjs';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
-import { TrimPipe } from '../../../pipe/trim.pipe';
 import { IAlmacen } from '../../../model/almacen.interface';
 import { AlmacenService } from '../../../service/almacen.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { CartaService } from '../../../service/carta.service';
+import { IUsuario } from '../../../model/usuario.interface';
 
 @Component({
   selector: 'app-usuario.admin.coleccion.routed',
@@ -36,9 +36,9 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
   constructor(
     private almacenService: AlmacenService,
     private oBotoneraService: BotoneraService,
-    private oRouter: Router,
     private route: ActivatedRoute,
-    private oCartaService: CartaService
+    private oCartaService: CartaService,
+ 
   ) {
     this.debounceSubject.pipe(debounceTime(10)).subscribe(() => {
       this.getPage();
@@ -55,15 +55,19 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
       .getCartasPorUsuario(this.usuarioId, this.nPage, this.nRpp)
       .subscribe({
         next: (oPageFromServer: IPage<IAlmacen>) => {
-          console.log('Cartas del usuario:', oPageFromServer);
+          this.oPage = oPageFromServer;
           this.cartas = oPageFromServer.content;
-          this.arrBotonera = this.oBotoneraService.getBotonera(this.nPage, oPageFromServer.totalPages);
+          this.arrBotonera = this.oBotoneraService.getBotonera(
+            this.nPage,
+            oPageFromServer.totalPages
+          );
         },
         error: (err: HttpErrorResponse) => {
           console.error('Error al obtener las cartas del usuario:', err);
         },
       });
   }
+  
 
   addCartasAleatorias(): void {
     this.almacenService.addCartasAleatorias(this.usuarioId, 5).subscribe({
@@ -85,20 +89,6 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
     return false;
   }
 
-  goToNext(): boolean {
-    this.nPage++;
-    this.getPage();
-    return false;
-  }
-
-  goToPrev(): boolean {
-    if (this.nPage > 0) {
-      this.nPage--;
-      this.getPage();
-    }
-    return false;
-  }
-
   sort(field: string): void {
     this.strField = field;
     this.strDir = this.strDir === 'asc' ? 'desc' : 'asc';
@@ -108,6 +98,20 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
   goToRpp(nrpp: number): boolean {
     this.nPage = 0;
     this.nRpp = nrpp;
+    this.getPage();
+    return false;
+  }
+
+  goToNext(): boolean {
+    if (this.oPage && this.nPage + 1 < this.oPage.totalPages) {
+      this.nPage++;
+      this.getPage();
+    }
+    return false;
+  }
+
+  goToPrev() {
+    this.nPage--;
     this.getPage();
     return false;
   }
@@ -135,6 +139,5 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
   cerrarImagen(): void {
     this.imagenActual = null; // Cierra el modal
   }
-
 
 }
