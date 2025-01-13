@@ -1,0 +1,27 @@
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+  <div class="bg-white shadow-lg rounded-lg p-6 max-w-md w-full">
+    <h2 class="text-2xl font-semibold text-center text-gray-800 mb-5">Eliminar Usuario</h2>
+
+    <div *ngIf="oUsuario" class="text-center mb-5">
+      <p class="text-gray-700">¿Estás seguro de que deseas eliminar el siguiente usuario?</p>
+      <p class="font-bold text-gray-800 mt-2">ID: {{ oUsuario.id }}</p>
+      <p class="font-bold text-gray-800">Nombre: {{ oUsuario.nombre }}</p>
+      <p class="font-bold text-gray-800">Email: {{ oUsuario.correo }}</p>
+    </div>
+
+    <div class="flex justify-center gap-4 mt-5">
+      <button
+        (click)="delete()"
+        class="bg-red-500 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-red-600 transition duration-200"
+      >
+        Confirmar
+      </button>
+      <button
+        (click)="cancel()"
+        class="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg shadow hover:bg-gray-400 transition duration-200"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>

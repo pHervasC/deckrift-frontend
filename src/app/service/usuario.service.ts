@@ -36,7 +36,7 @@ export class UsuarioService {
   }
 
   getOne(id: number): Observable<IUsuario> {
-    return this.oHttp.get<IUsuario>(this.serverURL + id, httpOptions);
+    return this.oHttp.get<IUsuario>(`${this.serverURL}/${id}`, httpOptions);
   }
 
   create(oUsuario: IUsuario): Observable<IUsuario> {
@@ -48,7 +48,7 @@ export class UsuarioService {
   }
 
   delete(id: number): Observable<void> {
-    return this.oHttp.delete<void>(this.serverURL + id, httpOptions);
+    return this.oHttp.delete<void>(`${this.serverURL}/${id}`, httpOptions);
   }
 
 }

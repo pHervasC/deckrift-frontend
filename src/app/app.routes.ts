@@ -5,7 +5,8 @@ import { SharedHomeRoutedComponent } from './component/shared/shared.home.routed
 import { CartaAdminPlistRoutedComponent } from './component/carta/carta.admin.plist.routed/carta.admin.plist.routed.component';
 import { UsuarioAdminColeccionRoutedComponent } from './component/usuario/usuario.admin.coleccion.routed/usuario.admin.coleccion.routed.component';
 import { UsuarioAdminCreateRoutedComponent } from './component/usuario/usuario.admin.create.routed/usuario.admin.create.routed.component';
-
+import { UsuarioDeleteRoutedComponent } from './component/usuario/usuario.delete.routed/usuario.delete.routed.component';
+import { UsuarioEditRoutedComponent } from './component/usuario/usuario.edit.routed/usuario.edit.routed.component';
 
 export const routes: Routes = [
 
@@ -16,9 +17,11 @@ export const routes: Routes = [
   // USUARIO
   { path: 'admin/usuario/plist', component: UsuarioAdminPlistRoutedComponent },
   { path: 'admin/usuario/coleccion/:id', component: UsuarioAdminColeccionRoutedComponent },
-  { path: 'admin/usuario/create', component: UsuarioAdminCreateRoutedComponent },
+  { path: 'usuario/create', component: UsuarioAdminCreateRoutedComponent },
+  { path: 'usuario/delete/:id', component: UsuarioDeleteRoutedComponent },
+  { path: 'usuario/edit/:id', component: UsuarioEditRoutedComponent },
   // CARTA
-  { path: 'admin/carta/plist', component: CartaAdminPlistRoutedComponent },
+  { path: 'carta/plist', component: CartaAdminPlistRoutedComponent },
 
 
 
