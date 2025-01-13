@@ -18,7 +18,7 @@ export class AlmacenService {
   constructor(private oHttp: HttpClient) {}
 
   // Obtener la colección de cartas de un usuario
-  getCartasPorUsuario(usuarioId: number, page: number, size: number): Observable<IPage<IAlmacen>> {
+  getCartasPorUsuario(usuarioId: number, page: number, size: number,): Observable<IPage<IAlmacen>> {
     return this.oHttp.get<IPage<IAlmacen>>(
       `${this.serverURL}/cartas/${usuarioId}?page=${page}&size=${size}`
     );

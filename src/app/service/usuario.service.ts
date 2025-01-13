@@ -44,7 +44,7 @@ export class UsuarioService {
   }
 
   update(oUsuario: IUsuario): Observable<IUsuario> {
-    return this.oHttp.put<IUsuario>(this.serverURL, oUsuario, httpOptions);
+    return this.oHttp.put<IUsuario>(`${this.serverURL}/${oUsuario.id}`, oUsuario, httpOptions);
   }
 
   delete(id: number): Observable<void> {

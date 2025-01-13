@@ -4,6 +4,11 @@ import { Router, RouterModule } from '@angular/router';
 import { UsuarioService } from '../../../service/usuario.service';
 import { IUsuario } from '../../../model/usuario.interface';
 import { CommonModule } from '@angular/common';
+import { jwtDecode } from 'jwt-decode';
+import { HttpClient } from '@angular/common/http';
+
+
+declare const google: any;
 
 @Component({
   selector: 'app-usuario-admin-create.routed',
@@ -19,6 +24,7 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
   strMessage: string = '';
 
   constructor(
+    private oHttp: HttpClient,
     private oUsuarioService: UsuarioService,
     private oRouter: Router
   ) {
@@ -29,7 +35,9 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    this.initializeGoogleLogin();
+  }
 
   onSubmit() {
     if (this.oUsuarioForm?.invalid) {
@@ -57,5 +65,38 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
       });
     }
   }
+
+  initializeGoogleLogin(): void {
+    (window as any ).google.accounts.id.initialize({
+      client_id: '642946707903-742gna6lhbktomd5mmk70nj5h4rg02fv.apps.googleusercontent.com',
+      callback: this.handleGoogleCredentialResponse.bind(this),
+    });
+
+    (window as any ).google.accounts.id.renderButton(
+      document.getElementById('g_id_signin'),
+      {
+        theme: 'outline',
+        size: 'large',
+      }
+    );
+  }
+
+  handleGoogleCredentialResponse(response: any) {
+    const token = response.credential;
+    console.log('Google Token:', token);
+
+    
+    this.oHttp.post('http://localhost:8080/api/auth/google', { token }).subscribe({
+      next: (res: any) => {
+        console.log('Respuesta del servidor:', res);
+        localStorage.setItem('jwtToken', res.jwtToken); // Guardar el JWT emitido por el servidor
+        alert(`Inicio de sesión exitoso. Bienvenido ${res.name}`);
+      },
+      error: (err) => {
+        console.error('Error al autenticar con Google:', err);
+        alert('Error al iniciar sesión');
+      },
+    });
+}
 
 }

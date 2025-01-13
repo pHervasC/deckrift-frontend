@@ -95,6 +95,11 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
     this.getPage();
   }
 
+  /**
+   * Ir a la página 1 con un nuevo número de registros por página (RPP).
+   * @param nrpp Número de registros por página.
+   * @returns false para evitar que el evento de click se propague.
+   */
   goToRpp(nrpp: number): boolean {
     this.nPage = 0;
     this.nRpp = nrpp;
