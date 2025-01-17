@@ -28,6 +28,7 @@ export class UsuarioEditRoutedComponent implements OnInit {
     this.oUsuarioForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       correo: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.minLength(6)]],
     });
   
     const id = this.oActivatedRoute.snapshot.params['id'];
@@ -47,7 +48,8 @@ export class UsuarioEditRoutedComponent implements OnInit {
   initializeForm(): void {
     this.oUsuarioForm = this.fb.group({
       nombre: [this.oUsuario.nombre, [Validators.required, Validators.minLength(3)]],
-      correo: [this.oUsuario.correo, [Validators.required, Validators.email]]
+      correo: [this.oUsuario.correo, [Validators.required, Validators.email]],
+      password: [this.oUsuario.password, [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -58,10 +60,10 @@ export class UsuarioEditRoutedComponent implements OnInit {
     }
   
     const usuario: IUsuario = {
-      id: this.oUsuario?.id, // Asegúrate de que el ID esté incluido correctamente
+      id: this.oUsuario?.id, 
       nombre: this.oUsuarioForm.get('nombre')?.value,
       correo: this.oUsuarioForm.get('correo')?.value,
-      password: this.oUsuario?.password      
+      password: this.oUsuarioForm.get('password')?.value,     
     };
     
     this.oUsuarioService.update(usuario).subscribe({
@@ -77,6 +79,10 @@ export class UsuarioEditRoutedComponent implements OnInit {
   }
 
   onBack(): void {
+    if (this.oUsuarioForm.get('password')?.value === '') {
+      alert('No se puede regresar sin contraseña.')
+    }else{
     this.oRouter.navigate(['/admin/usuario/plist']);
+  }
   }
 }

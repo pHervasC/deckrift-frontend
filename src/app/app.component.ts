@@ -12,4 +12,5 @@ import { SharedMenuUnroutedComponent } from './component/shared/shared.menu.unro
 })
 export class AppComponent {
   title = 'deckrift-frontend';
+strRuta: any;
 }

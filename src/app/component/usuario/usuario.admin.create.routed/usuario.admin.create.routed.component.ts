@@ -83,20 +83,24 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
 
   handleGoogleCredentialResponse(response: any) {
     const token = response.credential;
-    console.log('Google Token:', token);
 
-    
-    this.oHttp.post('http://localhost:8080/api/auth/google', { token }).subscribe({
+    this.oHttp.post('http://localhost:8085/api/auth/google', { token }).subscribe({
       next: (res: any) => {
-        console.log('Respuesta del servidor:', res);
-        localStorage.setItem('jwtToken', res.jwtToken); // Guardar el JWT emitido por el servidor
-        alert(`Inicio de sesión exitoso. Bienvenido ${res.name}`);
+        console.log('Respuesta del backend:', res);
+  
+        if (res && res.id) { // Verifica que el backend devuelve un `id`
+          this.oRouter.navigate([`/usuario/edit/${res.id}`]);
+        } else {
+          console.error('El backend no devolvió un ID válido.');
+          alert('Error al procesar la autenticación. Intenta nuevamente.');
+        }
       },
       error: (err) => {
-        console.error('Error al autenticar con Google:', err);
-        alert('Error al iniciar sesión');
+        console.error('Error al autenticar:', err);
+        alert('Error al autenticar con Google. Por favor, intenta nuevamente.');
       },
     });
 }
+
 
 }
