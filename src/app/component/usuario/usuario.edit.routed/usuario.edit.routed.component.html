@@ -71,6 +71,7 @@
      </button>
       <button
         type="button"
+        [disabled]="oUsuarioForm.invalid"
         class="bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg shadow hover:bg-gray-400 transition duration-200"
         (click)="onBack()"
       >

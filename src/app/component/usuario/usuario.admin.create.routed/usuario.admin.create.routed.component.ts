@@ -88,8 +88,8 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
       next: (res: any) => {
         console.log('Respuesta del backend:', res);
   
-        if (res && res.id) { // Verifica que el backend devuelve un `id`
-          this.oRouter.navigate([`/usuario/edit/${res.id}`]);
+        if (res && res.id) {
+          this.oRouter.navigate([`/home`]);
         } else {
           console.error('El backend no devolvió un ID válido.');
           alert('Error al procesar la autenticación. Intenta nuevamente.');

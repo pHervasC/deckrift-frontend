@@ -79,10 +79,13 @@ export class UsuarioEditRoutedComponent implements OnInit {
   }
 
   onBack(): void {
-    if (this.oUsuarioForm.get('password')?.value === '') {
-      alert('No se puede regresar sin contraseña.')
-    }else{
+    const passwordControl = this.oUsuarioForm.get('password');
+    
+    if (!passwordControl || passwordControl.value === '') {
+      alert('No se puede regresar sin contraseña.');
+      return;
+    }
+    
     this.oRouter.navigate(['/admin/usuario/plist']);
-  }
   }
 }
