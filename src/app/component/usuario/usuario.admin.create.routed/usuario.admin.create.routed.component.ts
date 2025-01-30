@@ -55,7 +55,6 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
       (usuario).subscribe({
         next: (oUsuario: IUsuario) => {
           alert('Usuario creado con éxito. ID asignado: ' + oUsuario.id);
-          // Redirigir a la lista de usuarios o página principal después de crear
           this.oRouter.navigate(['/admin/usuario/plist']);
         },
         error: (err) => {
