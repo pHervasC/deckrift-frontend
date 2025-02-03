@@ -2,39 +2,48 @@
   <!-- Contenedor principal -->
   <div class="container mx-auto flex items-center justify-between">
     <!-- Brand -->
+    @if (activeSession){
+    <a class="text-x font-bold" href="/home/registered">DECKRIFT</a>
+    } @else{
     <a class="text-x font-bold" href="#">DECKRIFT</a>
+    }
+    @if (activeSession){
 
+    @if (permisos === "Administrador"){
     <!-- Menú de navegación (versión desktop) -->
     <div class="hidden md:flex items-center space-x-4">
-      <a
-        href="/home"
-        class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
-        [ngClass]="{ 'bg-blue-600': strRuta == '/home' || strRuta == '/' || strRuta == '' }"
-        aria-current="page">
-        Inicio
-      </a>
-      <!-- Se muestra "Usuarios" solo si la sesión está iniciada -->
-      <a
-        *ngIf="activeSession"
-        href="/admin/usuario/plist"
-        class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+      <a href="/admin/usuario/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
         [ngClass]="{ 'bg-blue-600': strRuta == '/admin/usuario/plist' }">
         Usuarios
       </a>
+      <a href="/admin/carta/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+        [ngClass]="{ 'bg-blue-600': strRuta == '/admin/usuario/plist' }">
+        Cartas
+      </a>
     </div>
-
+    } @else {
+    <div class="hidden md:flex items-center space-x-4">
+      <a href="cartas/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+        [ngClass]="{ 'bg-blue-600': strRuta == '/admin/usuario/plist' }">
+        Cartas
+      </a>
+      <button (click)="verColeccion(this.id)" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+        [ngClass]="{ 'bg-blue-600': strRuta == '/admin/usuario/plist' }">
+        Coleccion
+    </button>
+    </div>
+    }
+    }
     <!-- Controles de sesión (versión desktop) -->
     <div class="hidden md:flex items-center space-x-4">
       <!-- Si no hay sesión activa: muestra Iniciar Sesión y Registrarse -->
       <ng-container *ngIf="!activeSession; else loggedInDesktop">
-        <a
-          href="/login"
+        <a href="/login"
           class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200"
           [ngClass]="{ 'bg-blue-600': strRuta == '/login' }">
           Iniciar Sesión
         </a>
-        <a
-          href="/usuario/create"
+        <a href="/usuario/create"
           class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200"
           [ngClass]="{ 'bg-blue-600': strRuta == '/usuario/create' }">
           Registrarse
@@ -42,13 +51,11 @@
       </ng-container>
       <!-- Si hay sesión activa: muestra el email y Logout -->
       <ng-template #loggedInDesktop>
-        <a
-          href="/byemail/{{userEmail}}"
+        <a href="/byemail/{{userEmail}}"
           class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200">
           {{ userEmail }}
         </a>
-        <a
-          href="/logout"
+        <a href="/logout"
           class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200">
           Logout
         </a>

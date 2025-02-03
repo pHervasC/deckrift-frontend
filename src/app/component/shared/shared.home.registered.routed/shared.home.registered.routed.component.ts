@@ -1,23 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { SessionService } from '../../../service/session.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { IUsuario } from '../../../model/usuario.interface';
 import { UsuarioService } from '../../../service/usuario.service';
+import { RouterModule } from '@angular/router';
+import { SessionService } from '../../../service/session.service';
 
 @Component({
-  selector: 'app-shared-menu-unrouted',
-  templateUrl: './shared.menu.unrouted.component.html',
-  styleUrls: ['./shared.menu.unrouted.component.css'],
+  selector: 'app-shared.home.registered.routed',
+  templateUrl: './shared.home.registered.routed.component.html',
+  styleUrls: ['./shared.home.registered.routed.component.css'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    RouterModule
+  ]
 })
-export class SharedMenuUnroutedComponent implements OnInit {
+export class SharedHomeRegisteredRoutedComponent implements OnInit {
 
+  fotoDni: string | undefined;
+  modalImage: string = '';
   strRuta: string = '';
   activeSession: boolean = false;
   userEmail: string = '';
-  permisos: string = '';
   id: number = 0;
 
   constructor(
@@ -35,13 +38,13 @@ export class SharedMenuUnroutedComponent implements OnInit {
       this.userEmail = this.oSessionService.getSessionEmail();
       this.oUsuarioService.getUsuarioByEmail(this.userEmail).subscribe({
         next: (data: IUsuario) => {
-          this.permisos = data.tipousuario?.descripcion || '';
           this.id = data.id;
         }
       })
     }
   }
-  ngOnInit() {
+
+  ngOnInit(): void {
     this.oSessionService.onLogin().subscribe({
       next: () => {
         this.activeSession = true;
@@ -54,9 +57,12 @@ export class SharedMenuUnroutedComponent implements OnInit {
         this.userEmail = '';
       },
     });
+
   }
 
   verColeccion(idUsuario: number) {
-    this.oRouter.navigate(['usuario/coleccion', idUsuario]);
+    this.oRouter.navigate(['admin/usuario/coleccion', idUsuario]);
 }
+
+
 }

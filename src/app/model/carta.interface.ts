@@ -3,4 +3,5 @@ export interface ICarta {
   nombre: string;
   tipo: string;
   rareza: string;
+  imagen: Blob;
 }

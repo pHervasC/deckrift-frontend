@@ -65,7 +65,7 @@ export class SharedLoginRoutedComponent implements OnInit {
           this.oSessionService.login(token);
 
           // Redirigir al home
-          this.oRouter.navigate(['/']);
+          this.oRouter.navigate(['/home/registered']);
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error al realizar la solicitud', error);

@@ -1,0 +1,73 @@
+<div
+  class="flex flex-col justify-center items-center bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen"
+>
+  <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg">
+    <h1 class="text-2xl font-bold text-center mb-6">Añadir Nueva Carta</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="oCartaForm" enctype="multipart/form-data">
+      <!-- Nombre -->
+      <div class="mb-4">
+        <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+        <input
+          type="text"
+          id="nombre"
+          formControlName="nombre"
+          class="mt-1 block w-full border rounded-lg shadow-md focus:ring focus:ring-blue-300"
+          placeholder="Nombre de la carta"
+        />
+        <div
+          *ngIf="oCartaForm.get('nombre')?.invalid && oCartaForm.get('nombre')?.touched"
+          class="text-red-500 text-sm"
+        >
+          El nombre es obligatorio.
+        </div>
+      </div>
+
+      <!-- Tipo -->
+      <div class="mb-4">
+        <label for="tipo" class="block text-sm font-medium text-gray-700">Tipo</label>
+        <input
+          type="text"
+          id="tipo"
+          formControlName="tipo"
+          class="mt-1 block w-full border rounded-lg shadow-md focus:ring focus:ring-blue-300"
+          placeholder="Tipo de la carta"
+        />
+      </div>
+
+      <!-- Rareza -->
+      <div class="mb-4">
+        <label for="rareza" class="block text-sm font-medium text-gray-700">Rareza</label>
+        <input
+          type="text"
+          id="rareza"
+          formControlName="rareza"
+          class="mt-1 block w-full border rounded-lg shadow-md focus:ring focus:ring-blue-300"
+          placeholder="Rareza de la carta"
+        />
+      </div>
+
+      <!-- Imagen -->
+      <div class="mb-4">
+        <label for="imagen" class="block text-sm font-medium text-gray-700">Imagen</label>
+        <input
+          type="file"
+          id="imagen"
+          (change)="onFileChange($event)"
+          accept=".png,.jpg,.jpeg,.webp"
+          class="mt-1 block w-full border rounded-lg shadow-md focus:ring focus:ring-blue-300"
+        />
+      </div>
+
+      <!-- Botón enviar -->
+      <div class="mt-6">
+        <button
+          type="submit"
+          [disabled]="oCartaForm.invalid || !imagen"
+          class="bg-blue-600 hover:bg-blue-700 text-white w-full py-3 rounded-lg shadow-md"
+        >
+          Añadir Carta
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

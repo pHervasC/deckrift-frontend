@@ -9,13 +9,13 @@ import { HttpClient } from '@angular/common/http';
 import { GoogleLoginService } from '../../../service/google-login.service';
 
 @Component({
-  selector: 'app-usuario-admin-create.routed',
-  templateUrl: './usuario.admin.create.routed.component.html',
-  styleUrls: ['./usuario.admin.create.routed.component.css'],
+  selector: 'app-usuario-create.routed',
+  templateUrl: './usuario.create.routed.component.html',
+  styleUrls: ['./usuario.create.routed.component.css'],
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule],
 })
-export class UsuarioAdminCreateRoutedComponent implements OnInit {
+export class UsuarioCreateRoutedComponent implements OnInit {
 
   private clientId = '642946707903-742gna6lhbktomd5mmk70nj5h4rg02fv.apps.googleusercontent.com';
   id: any;

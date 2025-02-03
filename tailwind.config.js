@@ -15,6 +15,8 @@ module.exports = {
       backgroundImage: {
         'unlogged': "url('/img/background_unlogged.png')",
         'register': "url('/img/register.jpg')",
+        'logged': "url('/img/background_logged.jpg')",
+        'cartaPlist': "url('/img/cartaPlist.webp')",
       },
     },
   },
