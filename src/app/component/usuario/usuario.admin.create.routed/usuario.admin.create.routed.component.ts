@@ -4,11 +4,9 @@ import { Router, RouterModule } from '@angular/router';
 import { UsuarioService } from '../../../service/usuario.service';
 import { IUsuario } from '../../../model/usuario.interface';
 import { CommonModule } from '@angular/common';
-import { jwtDecode } from 'jwt-decode';
+import { CryptoService } from '../../../service/crypto.service';
 import { HttpClient } from '@angular/common/http';
-
-
-declare const google: any;
+import { GoogleLoginService } from '../../../service/google-login.service';
 
 @Component({
   selector: 'app-usuario-admin-create.routed',
@@ -19,6 +17,7 @@ declare const google: any;
 })
 export class UsuarioAdminCreateRoutedComponent implements OnInit {
 
+  private clientId = '642946707903-742gna6lhbktomd5mmk70nj5h4rg02fv.apps.googleusercontent.com';
   id: any;
   oUsuarioForm: FormGroup;
   strMessage: string = '';
@@ -26,7 +25,9 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
   constructor(
     private oHttp: HttpClient,
     private oUsuarioService: UsuarioService,
-    private oRouter: Router
+    private oRouter: Router,
+    private googleLoginService: GoogleLoginService,
+    private cryptoService: CryptoService
   ) {
     this.oUsuarioForm = new FormGroup({
       nombre: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
@@ -36,7 +37,11 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initializeGoogleLogin();
+    this.googleLoginService.initializeGoogleLogin(
+      this.clientId,
+      this.handleGoogleCredentialResponse.bind(this),
+      'g_id_signin'
+    );
   }
 
   onSubmit() {
@@ -44,18 +49,22 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
       alert('Formulario inválido. Por favor, revisa los campos e intenta nuevamente.');
       return;
     } else {
+      // Encriptar la contraseña antes de enviarla
+      const hashedPassword = this.cryptoService.getHashSHA256(this.oUsuarioForm.get('password')?.value);
+
+      // Crear el objeto usuario
       const usuario: IUsuario = {
         id: this.id,
         nombre: this.oUsuarioForm.get('nombre')?.value,
         correo: this.oUsuarioForm.get('email')?.value,
-        password: this.oUsuarioForm.get('password')?.value,
+        password: hashedPassword, // Usar la contraseña encriptada
       };
 
-      this.oUsuarioService.create
-      (usuario).subscribe({
+      // Llamar al servicio para crear el usuario
+      this.oUsuarioService.create(usuario).subscribe({
         next: (oUsuario: IUsuario) => {
           alert('Usuario creado con éxito. ID asignado: ' + oUsuario.id);
-          this.oRouter.navigate(['/admin/usuario/plist']);
+          this.oRouter.navigate(['/login']);
         },
         error: (err) => {
           console.error('Error al crear el usuario:', err);
@@ -65,30 +74,16 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
     }
   }
 
-  initializeGoogleLogin(): void {
-    (window as any ).google.accounts.id.initialize({
-      client_id: '642946707903-742gna6lhbktomd5mmk70nj5h4rg02fv.apps.googleusercontent.com',
-      callback: this.handleGoogleCredentialResponse.bind(this),
-    });
 
-    (window as any ).google.accounts.id.renderButton(
-      document.getElementById('g_id_signin'),
-      {
-        theme: 'outline',
-        size: 'large',
-      }
-    );
-  }
-
-  handleGoogleCredentialResponse(response: any) {
+  handleGoogleCredentialResponse(response: any): void {
     const token = response.credential;
 
     this.oHttp.post('http://localhost:8085/api/auth/google', { token }).subscribe({
       next: (res: any) => {
         console.log('Respuesta del backend:', res);
-  
+
         if (res && res.id) {
-          this.oRouter.navigate([`/home`]);
+          this.oRouter.navigate(['/home']);
         } else {
           console.error('El backend no devolvió un ID válido.');
           alert('Error al procesar la autenticación. Intenta nuevamente.');
@@ -99,7 +94,6 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
         alert('Error al autenticar con Google. Por favor, intenta nuevamente.');
       },
     });
-}
-
+  }
 
 }

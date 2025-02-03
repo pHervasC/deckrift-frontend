@@ -51,4 +51,11 @@ export class UsuarioService {
     return this.oHttp.delete<void>(`${this.serverURL}/${id}`, httpOptions);
   }
 
+  getUsuarioByEmail(email: string): Observable<IUsuario> {
+    let URL: string = '';
+    URL += this.serverURL + '/byemail';
+    URL += '/' + email;
+    return this.oHttp.get<IUsuario>(URL);
+  }
+
 }

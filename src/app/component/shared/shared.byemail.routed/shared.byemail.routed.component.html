@@ -1,0 +1,44 @@
+<div class="flex justify-center items-center min-h-screen bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-500">
+  <div class="w-full md:w-10/12 lg:w-7/12 bg-white rounded-2xl shadow-2xl p-8">
+    <!-- Encabezado -->
+    <h1 class="text-center text-3xl font-bold text-gray-800">
+      <i class="bi bi-person-circle text-indigo-600 text-4xl align-middle mr-2"></i>
+      Perfil de {{ oUsuario.nombre }}
+      <i class="bi bi-card-list text-indigo-600 text-4xl align-middle ml-2"></i>
+    </h1>
+
+    <!-- Tabla de información -->
+    <table class="w-full my-8 border-collapse shadow-md rounded-2xl overflow-hidden">
+      <tbody>
+        <!-- Fila ID -->
+        <tr class="bg-indigo-100">
+          <th class="bg-indigo-700 text-white text-right pr-5 py-4 border-b border-indigo-200">
+            ID
+          </th>
+          <td class="text-left pl-5 py-4 text-gray-800 font-medium">
+            {{ oUsuario.id }}
+          </td>
+        </tr>
+        <!-- Fila Correo -->
+        <tr class="bg-indigo-50">
+          <th class="bg-green-700 text-white text-right pr-5 py-4 border-b border-green-200">
+            Correo
+          </th>
+          <td class="text-left pl-5 py-4 text-gray-800 font-medium">
+            {{ oUsuario.correo }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Botón para ver la colección -->
+    <div class="flex justify-center mt-6">
+      <a
+      [routerLink]="'/admin/usuario/coleccion/' + oUsuario.id"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105"
+      >
+        Ver Colección
+      </a>
+    </div>
+  </div>
+</div>

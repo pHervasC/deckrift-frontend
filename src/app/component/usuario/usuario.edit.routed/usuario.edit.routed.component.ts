@@ -30,7 +30,7 @@ export class UsuarioEditRoutedComponent implements OnInit {
       correo: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.minLength(6)]],
     });
-  
+
     const id = this.oActivatedRoute.snapshot.params['id'];
     this.oUsuarioService.getOne(id).subscribe({
       next: (usuario: IUsuario) => {
@@ -49,7 +49,6 @@ export class UsuarioEditRoutedComponent implements OnInit {
     this.oUsuarioForm = this.fb.group({
       nombre: [this.oUsuario.nombre, [Validators.required, Validators.minLength(3)]],
       correo: [this.oUsuario.correo, [Validators.required, Validators.email]],
-      password: [this.oUsuario.password, [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -58,18 +57,18 @@ export class UsuarioEditRoutedComponent implements OnInit {
       alert('Formulario inválido. Por favor, revisa los campos e intenta nuevamente.');
       return;
     }
-  
+
     const usuario: IUsuario = {
-      id: this.oUsuario?.id, 
+      id: this.oUsuario?.id,
       nombre: this.oUsuarioForm.get('nombre')?.value,
       correo: this.oUsuarioForm.get('correo')?.value,
-      password: this.oUsuarioForm.get('password')?.value,     
+      password: this.oUsuarioForm.get('password')?.value,
     };
-    
+
     this.oUsuarioService.update(usuario).subscribe({
       next: (oUsuarioActualizado: IUsuario) => {
         alert('Usuario actualizado con éxito.');
-        this.oRouter.navigate(['/admin/usuario/plist']);
+        this.oRouter.navigate(['/home']);
       },
       error: (err) => {
         console.error('Error al actualizar el usuario:', err);
@@ -79,13 +78,6 @@ export class UsuarioEditRoutedComponent implements OnInit {
   }
 
   onBack(): void {
-    const passwordControl = this.oUsuarioForm.get('password');
-    
-    if (!passwordControl || passwordControl.value === '') {
-      alert('No se puede regresar sin contraseña.');
-      return;
-    }
-    
-    this.oRouter.navigate(['/admin/usuario/plist']);
+    this.oRouter.navigate(['/home']);
   }
 }

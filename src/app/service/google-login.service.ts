@@ -17,4 +17,23 @@ export class GoogleLoginService {
       document.body.appendChild(script);
     }
   }
+
+  initializeGoogleLogin(
+    clientId: string,
+    callback: (response: any) => void,
+    buttonId: string
+  ): void {
+    (window as any).google.accounts.id.initialize({
+      client_id: clientId,
+      callback,
+    });
+
+    (window as any).google.accounts.id.renderButton(
+      document.getElementById(buttonId),
+      {
+        theme: 'outline',
+        size: 'large',
+      }
+    );
+  }
 }

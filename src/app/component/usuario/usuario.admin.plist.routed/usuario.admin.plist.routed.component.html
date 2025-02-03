@@ -14,21 +14,33 @@
 
   <!-- Opciones de registros por página -->
   <div class="flex justify-center gap-2 mb-4">
-    <li class="list-none" [class.bg-blue-500]="nRpp === 10" [class.text-white]="nRpp === 10">
+    <li
+      class="list-none"
+      [class.bg-blue-500]="nRpp === 10"
+      [class.text-white]="nRpp === 10"
+    >
       <a
         class="px-3 py-1 border rounded cursor-pointer hover:bg-blue-100"
         (click)="goToRpp(10)"
         >10</a
       >
     </li>
-    <li class="list-none" [class.bg-blue-500]="nRpp === 50" [class.text-white]="nRpp === 50">
+    <li
+      class="list-none"
+      [class.bg-blue-500]="nRpp === 50"
+      [class.text-white]="nRpp === 50"
+    >
       <a
         class="px-3 py-1 border rounded cursor-pointer hover:bg-blue-100"
         (click)="goToRpp(50)"
         >50</a
       >
     </li>
-    <li class="list-none" [class.bg-blue-500]="nRpp === 100" [class.text-white]="nRpp === 100">
+    <li
+      class="list-none"
+      [class.bg-blue-500]="nRpp === 100"
+      [class.text-white]="nRpp === 100"
+    >
       <a
         class="px-3 py-1 border rounded cursor-pointer hover:bg-blue-100"
         (click)="goToRpp(100)"
@@ -42,8 +54,12 @@
     <thead>
       <tr class="bg-gray-200">
         <th class="border px-4 py-2 cursor-pointer" (click)="sort('id')">ID</th>
-        <th class="border px-4 py-2 cursor-pointer" (click)="sort('nombre')">Nombre</th>
-        <th class="border px-4 py-2 cursor-pointer" (click)="sort('correo')">Correo</th>
+        <th class="border px-4 py-2 cursor-pointer" (click)="sort('nombre')">
+          Nombre
+        </th>
+        <th class="border px-4 py-2 cursor-pointer" (click)="sort('correo')">
+          Correo
+        </th>
         <th class="border px-4 py-2">Acciones</th>
       </tr>
     </thead>
@@ -92,21 +108,16 @@
 
       <!-- Botones de página -->
       <li *ngFor="let pag of arrBotonera" [ngSwitch]="pag">
-        <span
-          *ngSwitchCase="'...'"
-          class="px-3 py-1 text-gray-500"
-        >
-          ...
-        </span>
+        <span *ngSwitchCase="'...'" class="px-3 py-1 text-gray-500"> ... </span>
         <a
-        *ngSwitchDefault
-        class="px-3 py-1 border rounded cursor-pointer hover:bg-blue-100"
-        [class.bg-blue-500]="nPage === +pag - 1"
-        [class.text-white]="nPage === +pag - 1"
-        (click)="goToPage(+pag - 1)"
-      >
-        {{ pag }}
-      </a>
+          *ngSwitchDefault
+          class="px-3 py-1 border rounded cursor-pointer hover:bg-blue-100"
+          [class.bg-blue-500]="nPage === +pag"
+          [class.text-white]="nPage === +pag"
+          (click)="goToPage(+pag)"
+        >
+          {{ pag }}
+        </a>
       </li>
 
       <!-- Botón Siguiente -->
