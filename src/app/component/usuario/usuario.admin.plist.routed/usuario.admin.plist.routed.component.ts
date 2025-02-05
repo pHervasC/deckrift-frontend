@@ -75,7 +75,7 @@ export class UsuarioAdminPlistRoutedComponent implements OnInit {
   }
 
   create(): void {
-    this.oRouter.navigate(['/admin/usuario/create']);
+    this.oRouter.navigate(['/admin/usuario/createAdmin']);
   }
 
   goToPage(p: number) {
