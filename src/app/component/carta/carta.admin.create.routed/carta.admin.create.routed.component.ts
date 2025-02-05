@@ -20,6 +20,7 @@ import { CartaService } from '../../../service/carta.service';
 export class CartaAdminCreateRoutedComponent {
   oCartaForm: FormGroup;
   imagen: File | null = null;
+  imagenPreview: string | null = null; // Para previsualizar la imagen
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,11 +34,18 @@ export class CartaAdminCreateRoutedComponent {
     });
   }
 
-  // Manejar la selección del archivo
+  // Manejar la selección del archivo y previsualizar la imagen
   onFileChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files?.length) {
       this.imagen = input.files[0];
+
+      // Crear previsualización de la imagen seleccionada
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagenPreview = reader.result as string;
+      };
+      reader.readAsDataURL(this.imagen);
     }
   }
 

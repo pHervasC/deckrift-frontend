@@ -45,9 +45,8 @@ export class CartaService {
     });
   }
 
-
-  update(oUsuario: ICarta): Observable<ICarta> {
-    return this.oHttp.put<ICarta>(this.serverURL, oUsuario, httpOptions);
+  update(id: number, formData: FormData): Observable<ICarta> {
+    return this.oHttp.put<ICarta>(`${this.serverURL}/${id}`, formData, {headers: { 'enctype': 'multipart/form-data' }});
   }
 
   delete(id: number): Observable<void> {

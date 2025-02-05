@@ -18,6 +18,8 @@ import { CartaPlistRoutedComponent } from './component/carta/carta.plist.routed/
 import { CartaAdminCreateRoutedComponent } from './component/carta/carta.admin.create.routed/carta.admin.create.routed.component';
 import { UsuarioColeccionRoutedComponent } from './component/usuario/usuario.coleccion.routed/usuario.coleccion.routed.component';
 import { CartaAdminDeleteRoutedComponent } from './component/carta/carta.admin.delete.routed/carta.admin.delete.routed.component';
+import { Component } from '@angular/core';
+import { CartaAdminEditRoutedComponent } from './component/carta/carta.admin.edit.routed/carta.admin.edit.routed.component';
 
 export const routes: Routes = [
 
@@ -39,6 +41,7 @@ export const routes: Routes = [
   { path: 'admin/carta/plist', component: CartaAdminPlistRoutedComponent, canActivate: [AdminGuard] },
   { path: 'admin/carta/create', component: CartaAdminCreateRoutedComponent, canActivate: [AdminGuard] },
   { path: 'admin/carta/delete/:id', component: CartaAdminDeleteRoutedComponent, canActivate: [AdminGuard]},
+  { path: 'admin/carta/edit/:id', component: CartaAdminEditRoutedComponent, canActivate: [AdminGuard]}, 
   { path: 'cartas/plist', component: CartaPlistRoutedComponent, canActivate: [AuditorGuard] },
 
 
