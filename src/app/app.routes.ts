@@ -17,6 +17,7 @@ import { AuditorGuard } from './guards/auditor.guard';
 import { CartaPlistRoutedComponent } from './component/carta/carta.plist.routed/carta.plist.routed.component';
 import { CartaAdminCreateRoutedComponent } from './component/carta/carta.admin.create.routed/carta.admin.create.routed.component';
 import { UsuarioColeccionRoutedComponent } from './component/usuario/usuario.coleccion.routed/usuario.coleccion.routed.component';
+import { CartaAdminDeleteRoutedComponent } from './component/carta/carta.admin.delete.routed/carta.admin.delete.routed.component';
 
 export const routes: Routes = [
 
@@ -30,14 +31,16 @@ export const routes: Routes = [
   // USUARIO
   { path: 'admin/usuario/plist', component: UsuarioAdminPlistRoutedComponent, canActivate: [AdminGuard] },
   { path: 'admin/usuario/coleccion/:id', component: UsuarioAdminColeccionRoutedComponent, canActivate: [AdminGuard] },
+  { path: 'usuario/delete/:id', component: UsuarioDeleteRoutedComponent, canActivate: [AdminGuard] },
+  { path: 'usuario/edit/:id', component: UsuarioEditRoutedComponent, canActivate: [AuditorGuard] },
+  { path: 'usuario/coleccion/:id', component: UsuarioColeccionRoutedComponent, canActivate: [AuditorGuard] },
   { path: 'usuario/create', component: UsuarioCreateRoutedComponent },
-  { path: 'usuario/delete/:id', component: UsuarioDeleteRoutedComponent },
-  { path: 'usuario/edit/:id', component: UsuarioEditRoutedComponent },
-  { path: 'usuario/coleccion/:id', component: UsuarioColeccionRoutedComponent },
   // CARTA
   { path: 'admin/carta/plist', component: CartaAdminPlistRoutedComponent, canActivate: [AdminGuard] },
   { path: 'admin/carta/create', component: CartaAdminCreateRoutedComponent, canActivate: [AdminGuard] },
+  { path: 'admin/carta/delete/:id', component: CartaAdminDeleteRoutedComponent, canActivate: [AdminGuard]},
   { path: 'cartas/plist', component: CartaPlistRoutedComponent, canActivate: [AuditorGuard] },
+
 
 
 

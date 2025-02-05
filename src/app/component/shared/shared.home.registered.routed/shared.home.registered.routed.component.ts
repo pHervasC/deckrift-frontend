@@ -61,7 +61,7 @@ export class SharedHomeRegisteredRoutedComponent implements OnInit {
   }
 
   verColeccion(idUsuario: number) {
-    this.oRouter.navigate(['admin/usuario/coleccion', idUsuario]);
+    this.oRouter.navigate(['usuario/coleccion', idUsuario]);
 }
 
 

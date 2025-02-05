@@ -36,19 +36,22 @@ export class CartaService {
   }
 
   getOne(id: number): Observable<ICarta> {
-    return this.oHttp.get<ICarta>(this.serverURL + id, httpOptions);
+    return this.oHttp.get<ICarta>(`${this.serverURL}/${id}`, httpOptions);
   }
 
-  create(oUsuario: ICarta): Observable<ICarta> {
-    return this.oHttp.post<ICarta>(this.serverURL, oUsuario, httpOptions);
+  create(formData: FormData): Observable<any> {
+    return this.oHttp.post<any>(`${this.serverURL}/carta`, formData, {
+      headers: { 'enctype': 'multipart/form-data' },
+    });
   }
+
 
   update(oUsuario: ICarta): Observable<ICarta> {
     return this.oHttp.put<ICarta>(this.serverURL, oUsuario, httpOptions);
   }
 
   delete(id: number): Observable<void> {
-    return this.oHttp.delete<void>(this.serverURL + id, httpOptions);
+    return this.oHttp.delete<void>(`${this.serverURL}/${id}`, httpOptions);
   }
 
   getImage(id: number) {

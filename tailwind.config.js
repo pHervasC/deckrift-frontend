@@ -17,6 +17,7 @@ module.exports = {
         'register': "url('/img/register.jpg')",
         'logged': "url('/img/background_logged.jpg')",
         'cartaPlist': "url('/img/cartaPlist.webp')",
+        'profile': "url('/img/profile.jpg')",
       },
     },
   },
