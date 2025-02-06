@@ -68,7 +68,7 @@ export class UsuarioEditRoutedComponent implements OnInit {
     this.oUsuarioService.update(usuario).subscribe({
       next: (oUsuarioActualizado: IUsuario) => {
         alert('Usuario actualizado con éxito.');
-        this.oRouter.navigate(['/home']);
+        this.oRouter.navigate(['/admin/usuario/plist']);
       },
       error: (err) => {
         console.error('Error al actualizar el usuario:', err);
@@ -78,6 +78,6 @@ export class UsuarioEditRoutedComponent implements OnInit {
   }
 
   onBack(): void {
-    this.oRouter.navigate(['/home']);
+    this.oRouter.navigate(['/admin/usuario/plist']);
   }
 }

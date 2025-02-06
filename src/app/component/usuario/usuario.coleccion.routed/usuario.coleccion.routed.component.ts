@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { IAlmacen } from '../../../model/almacen.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -8,6 +8,8 @@ import { BotoneraService } from '../../../service/botonera.service';
 import { CartaService } from '../../../service/carta.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { debounceTime, Subject } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-usuario.coleccion.routed',
@@ -18,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class UsuarioColeccionRoutedComponent implements OnInit {
 
+  cartaSeleccionada: any = null;
   oPage: IPage<IAlmacen> | null = null;
   usuarioId!: number;
   nPage: number = 0;
@@ -27,12 +30,19 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
   imagenes: { [key: number]: string } = {}; // Almacena imágenes en caché
   cartas: IAlmacen[] = [];
 
+  private debounceSubject = new Subject<string>();
+  readonly dialog = inject(MatDialog);
+
   constructor(
     private almacenService: AlmacenService,
     private oBotoneraService: BotoneraService,
     private route: ActivatedRoute,
     private oCartaService: CartaService,
-  ) {}
+  ) {
+    this.debounceSubject.pipe(debounceTime(10)).subscribe(() => {
+          this.getPage();
+        });
+  }
 
   ngOnInit(): void {
     this.usuarioId = +this.route.snapshot.paramMap.get('id')!;
@@ -41,7 +51,7 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
 
   getPage(): void {
     this.almacenService
-      .getCartasPorUsuario(this.usuarioId, this.nPage, this.nRpp)
+      .getCartasPorUsuario(this.usuarioId, this.nPage, this.nRpp, this.strFiltro)
       .subscribe({
         next: (oPageFromServer: IPage<IAlmacen>) => {
           this.oPage = oPageFromServer;
@@ -101,5 +111,16 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
       this.nPage--;
       this.getPage();
     }
+  }
+  filter(event: KeyboardEvent) {
+    this.debounceSubject.next(this.strFiltro);
+  }
+
+  mostrarPopUp(carta: any): void {
+    this.cartaSeleccionada = carta;
+  }
+
+  cerrarPopUp(): void {
+    this.cartaSeleccionada = null
   }
 }

@@ -7,8 +7,8 @@
     } @else{
     <a class="text-x font-bold" href="#">DECKRIFT</a>
     }
-    
-    @if (activeSession){
+
+    @if (activeSession) {
     @if (permisos === "Administrador"){
     <!-- Menú de navegación (versión desktop) -->
     <div class="hidden md:flex items-center space-x-4">
@@ -24,7 +24,7 @@
     } @else {
     <div class="hidden md:flex items-center space-x-4">
       <a href="cartas/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
-        [ngClass]="{ 'bg-blue-600': strRuta == '/admin/usuario/plist' }">
+        [ngClass]="{ 'bg-blue-600': strRuta == 'cartas/plist' }">
         Cartas
       </a>
       <button (click)="verColeccion(this.id)" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
@@ -33,7 +33,7 @@
     </button>
     </div>
     }
-    }
+  }
     <!-- Controles de sesión (versión desktop) -->
     <div class="hidden md:flex items-center space-x-4">
       <!-- Si no hay sesión activa: muestra Iniciar Sesión y Registrarse -->

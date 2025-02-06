@@ -18,11 +18,13 @@ export class AlmacenService {
   constructor(private oHttp: HttpClient) {}
 
   // Obtener la colección de cartas de un usuario
-  getCartasPorUsuario(usuarioId: number, page: number, size: number,): Observable<IPage<IAlmacen>> {
-    return this.oHttp.get<IPage<IAlmacen>>(
-      `${this.serverURL}/cartas/${usuarioId}?page=${page}&size=${size}`
-    );
-  }
+  getCartasPorUsuario(usuarioId: number, page: number, size: number, filtro: string = ''): Observable<IPage<IAlmacen>> {
+    let URL = `${this.serverURL}/cartas/${usuarioId}?page=${page}&size=${size}`;
+    if (filtro) URL += `&filter=${encodeURIComponent(filtro)}`;
+
+    return this.oHttp.get<IPage<IAlmacen>>(URL);
+}
+
 
     getPage(
       page: number,
@@ -48,6 +50,14 @@ export class AlmacenService {
   // Añadir cartas aleatorias a un usuario
   addCartasAleatorias(usuarioId: number, cantidad: number): Observable<string> {
     return this.oHttp.post(`${this.serverURL}/addCartas/${usuarioId}`, { cantidad }, { responseType: 'text' });
+  }
+
+  deleteCarta(usuarioId: number, cartaId: number) {
+    return this.oHttp.delete(`${this.serverURL}/delete/${usuarioId}/${cartaId}`);
+  }
+
+  addCarta(usuarioId: number, cartaId: number): Observable<any> {
+    return this.oHttp.post(`${this.serverURL}/add/${usuarioId}/${cartaId}`, {});
   }
 
 }

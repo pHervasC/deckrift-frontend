@@ -1,0 +1,52 @@
+<div class="container mx-auto p-4">
+  <h2 class="text-2xl font-semibold text-center mb-6">Seleccionar Carta</h2>
+
+  <div class="mb-4 text-center">
+    <input
+      type="text"
+      class="w-full px-4 py-2 border rounded shadow focus:outline-none focus:ring focus:ring-blue-300"
+      placeholder="Buscar cartas"
+      (keyup)="filter($event)"
+      [(ngModel)]="strFiltro"
+    />
+  </div>
+
+  <div class="overflow-y-auto max-h-96">
+    <table class="w-full border-collapse border text-left">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="border px-4 py-2">ID</th>
+          <th class="border px-4 py-2">Nombre</th>
+          <th class="border px-4 py-2">Tipo</th>
+          <th class="border px-4 py-2">Rareza</th>
+          <th class="border px-4 py-2 text-center">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let carta of oPage?.content" class="hover:bg-gray-100">
+          <td class="border px-4 py-2">{{ carta.id }}</td>
+          <td class="border px-4 py-2">{{ carta.nombre }}</td>
+          <td class="border px-4 py-2">{{ carta.tipo }}</td>
+          <td class="border px-4 py-2">{{ carta.rareza }}</td>
+          <td class="border px-4 py-2 text-center">
+            <button
+              class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+              (click)="select(carta)"
+            >
+              Añadir
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="text-center mt-4">
+    <button
+      class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+      (click)="dialogRef.close()"
+    >
+      Cerrar
+    </button>
+  </div>
+</div>

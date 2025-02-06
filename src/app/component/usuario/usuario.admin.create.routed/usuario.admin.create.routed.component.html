@@ -1,63 +1,110 @@
-<div class="container mx-auto p-4">
-  <h1 class="text-2xl font-bold text-center mb-4">Crear Nuevo Usuario</h1>
-  <form [formGroup]="oUsuarioForm" (ngSubmit)="onSubmit()" class="space-y-4">
-    <div>
-      <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
-      <input
-        type="text"
-        id="nombre"
-        formControlName="nombre"
-        class="w-full mt-1 px-4 py-2 border rounded shadow-sm focus:ring focus:ring-blue-300"
-      />
-      <p *ngIf="oUsuarioForm.get('nombre')?.invalid && oUsuarioForm.get('nombre')?.touched" class="text-red-500 text-sm">
-        El nombre es obligatorio (entre 3 y 50 caracteres).
-      </p>
-    </div>
-
-    <div>
-      <label for="correo" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
-      <input
-        type="email"
-        id="correo"
-        formControlName="correo"
-        class="w-full mt-1 px-4 py-2 border rounded shadow-sm focus:ring focus:ring-blue-300"
-      />
-      <p *ngIf="oUsuarioForm.get('correo')?.invalid && oUsuarioForm.get('correo')?.touched" class="text-red-500 text-sm">
-        Introduce un correo válido.
-      </p>
-    </div>
-
-    <div>
-      <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-      <input
-        type="password"
-        id="password"
-        formControlName="password"
-        class="w-full mt-1 px-4 py-2 border rounded shadow-sm focus:ring focus:ring-blue-300"
-      />
-      <p *ngIf="oUsuarioForm.get('password')?.invalid && oUsuarioForm.get('password')?.touched" class="text-red-500 text-sm">
-        La contraseña debe tener al menos 6 caracteres.
-      </p>
-    </div>
-
-    <div class="flex items-center">
-      <input
-        type="checkbox"
-        id="isAdmin"
-        formControlName="isAdmin"
-        class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring focus:ring-blue-300"
-      />
-      <label for="isAdmin" class="ml-2 block text-sm text-gray-900">
-        ¿Es administrador?
-      </label>
-    </div>
-
-    <button
-      type="submit"
-      [disabled]="oUsuarioForm.invalid"
-      class="w-full bg-blue-500 text-white py-2 rounded shadow hover:bg-blue-600"
-    >
+<div
+  class="flex flex-col justify-center items-center min-h-screen bg-gradient-to-br from-blue-100 to-blue-200 p-6"
+>
+  <div class="bg-white shadow-xl rounded-2xl p-10 max-w-lg w-full transform transition duration-300 hover:scale-105">
+    <h1 class="text-3xl font-extrabold text-center text-blue-600 mb-8">
       Crear Usuario
-    </button>
-  </form>
+    </h1>
+
+    <form [formGroup]="oUsuarioForm" (ngSubmit)="onSubmit()">
+      <!-- Nombre -->
+      <div class="mb-6">
+        <label for="nombre" class="block text-sm font-medium text-gray-700 mb-2">
+          Nombre
+        </label>
+        <input
+          type="text"
+          id="nombre"
+          formControlName="nombre"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+          placeholder="Introduce el nombre"
+        />
+        <div
+          *ngIf="oUsuarioForm.get('nombre')?.invalid && oUsuarioForm.get('nombre')?.touched"
+          class="text-red-500 text-sm mt-1"
+        >
+          El nombre es obligatorio y debe tener entre 3 y 50 caracteres.
+        </div>
+      </div>
+
+      <!-- Correo -->
+      <div class="mb-6">
+        <label for="correo" class="block text-sm font-medium text-gray-700 mb-2">
+          Correo
+        </label>
+        <input
+          type="email"
+          id="correo"
+          formControlName="correo"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+          placeholder="Introduce el correo electrónico"
+        />
+        <div
+          *ngIf="oUsuarioForm.get('correo')?.invalid && oUsuarioForm.get('correo')?.touched"
+          class="text-red-500 text-sm mt-1"
+        >
+          El correo es obligatorio y debe ser válido.
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="mb-6">
+        <label
+          for="password"
+          class="block text-sm font-medium text-gray-700 mb-2"
+        >
+          Contraseña
+        </label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+          placeholder="Introduce una contraseña segura"
+        />
+        <div
+          *ngIf="oUsuarioForm.get('password')?.invalid && oUsuarioForm.get('password')?.touched"
+          class="text-red-500 text-sm mt-1"
+        >
+          La contraseña debe tener al menos 6 caracteres.
+        </div>
+      </div>
+
+      <!-- Tipo de Usuario -->
+      <div class="mb-6">
+        <label
+          for="id_tipousuario"
+          class="block text-sm font-medium text-gray-700 mb-2"
+        >
+          Tipo de Usuario
+        </label>
+        <select
+          id="id_tipousuario"
+          formControlName="id_tipousuario"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+        >
+          <option value="" disabled selected>Selecciona el tipo de usuario</option>
+          <option value="1">Administrador</option>
+          <option value="2">Usuario</option>
+        </select>
+        <div
+          *ngIf="oUsuarioForm.get('id_tipousuario')?.invalid && oUsuarioForm.get('id_tipousuario')?.touched"
+          class="text-red-500 text-sm mt-1"
+        >
+          Debes seleccionar un tipo de usuario.
+        </div>
+      </div>
+
+      <!-- Botón Enviar -->
+      <div class="mt-6">
+        <button
+          type="submit"
+          [disabled]="oUsuarioForm.invalid"
+          class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-lg shadow-lg text-lg font-semibold tracking-wide transform transition duration-300 hover:scale-105 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          Crear Usuario
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

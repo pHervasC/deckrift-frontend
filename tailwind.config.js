@@ -18,6 +18,7 @@ module.exports = {
         'logged': "url('/img/background_logged.jpg')",
         'cartaPlist': "url('/img/cartaPlist.webp')",
         'profile': "url('/img/profile.jpg')",
+        'coleccion': "url('/img/coleccion.png')",
       },
     },
   },

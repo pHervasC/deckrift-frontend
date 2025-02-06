@@ -10,10 +10,10 @@ import { AlmacenService } from '../../../service/almacen.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { CartaService } from '../../../service/carta.service';
-import { IUsuario } from '../../../model/usuario.interface';
+import { CartaAdminSelectorUnroutedComponent } from '../../carta/carta.admin.selector.unrouted/carta.admin.selector.unrouted.component';
 
 @Component({
-  selector: 'app-usuario.admin.coleccion.routed',
+  selector: 'app-usuario-admin-coleccion-routed',
   templateUrl: './usuario.admin.coleccion.routed.component.html',
   styleUrls: ['./usuario.admin.coleccion.routed.component.css'],
   standalone: true,
@@ -30,6 +30,7 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
   arrBotonera: string[] = [];
   imagenActual: string | null = null;
   cartas: IAlmacen[] = [];
+  mostrarModal: boolean = false;
   private debounceSubject = new Subject<string>();
   readonly dialog = inject(MatDialog);
 
@@ -37,8 +38,7 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
     private almacenService: AlmacenService,
     private oBotoneraService: BotoneraService,
     private route: ActivatedRoute,
-    private oCartaService: CartaService,
-
+    private oCartaService: CartaService
   ) {
     this.debounceSubject.pipe(debounceTime(10)).subscribe(() => {
       this.getPage();
@@ -52,7 +52,7 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
 
   getPage(): void {
     this.almacenService
-      .getCartasPorUsuario(this.usuarioId, this.nPage, this.nRpp)
+      .getCartasPorUsuario(this.usuarioId, this.nPage, this.nRpp, this.strFiltro)
       .subscribe({
         next: (oPageFromServer: IPage<IAlmacen>) => {
           this.oPage = oPageFromServer;
@@ -62,21 +62,35 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
             oPageFromServer.totalPages
           );
         },
-        error: (err: HttpErrorResponse) => {
-          console.error('Error al obtener las cartas del usuario:', err);
+        error: (err) => {
+          console.error('Error al obtener las cartas:', err);
         },
       });
+}
+
+
+  openAddCartaModal(): void {
+    const dialogRef = this.dialog.open(CartaAdminSelectorUnroutedComponent, {
+      width: '800px',
+    });
+
+    dialogRef.afterClosed().subscribe((selectedCarta) => {
+      if (selectedCarta) {
+        console.log('Carta seleccionada:', selectedCarta);
+        this.añadirCarta(selectedCarta.id);
+      }
+    });
   }
 
-
-  addCartasAleatorias(): void {
-    this.almacenService.addCartasAleatorias(this.usuarioId, 5).subscribe({
-      next: (response: string) => {
-        console.log(response);
+  añadirCarta(cartaId: number): void {
+    this.almacenService.addCarta(this.usuarioId, cartaId).subscribe({
+      next: () => {
+        alert('Carta añadida correctamente.');
         this.getPage();
       },
       error: (err: HttpErrorResponse) => {
-        console.error('Error al añadir cartas:', err);
+        console.error('Error al añadir la carta:', err);
+        alert('No se pudo añadir la carta.');
       },
     });
   }
@@ -123,21 +137,35 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
   verImagen(id: number): void {
     this.oCartaService.getImage(id).subscribe({
       next: (blob: Blob) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.imagenActual = reader.result as string; // Convertir el blob a data URL
-        };
-        reader.readAsDataURL(blob);
+        const objectURL = URL.createObjectURL(blob); // Convertimos el Blob en una URL válida
+        this.imagenActual = objectURL;
+        this.mostrarModal = true;
       },
       error: (err) => {
         console.error('Error al cargar la imagen:', err);
         this.imagenActual = null;
+        this.mostrarModal = false;
       },
     });
   }
 
   cerrarImagen(): void {
-    this.imagenActual = null; // Cierra el modal
+    this.imagenActual = null;
+    this.mostrarModal = false;
   }
 
+  eliminarCarta(cartaId: number) {
+    if (confirm('¿Estás seguro de que quieres eliminar esta carta?')) {
+      this.almacenService.deleteCarta(this.usuarioId, cartaId).subscribe({
+        next: () => {
+          alert('Carta eliminada correctamente.');
+          this.getPage();
+        },
+        error: (err) => {
+          console.error('Error al eliminar la carta:', err);
+          alert('No se pudo eliminar la carta.');
+        },
+      });
+    }
+  }
 }

@@ -44,7 +44,7 @@ export class UsuarioService {
   }
 
   createAdmin(usuario: IUsuario): Observable<IUsuario> {
-    return this.oHttp.post<IUsuario>(`${this.serverURL}/admin-create`, usuario); // Endpoint actualizado
+    return this.oHttp.post<IUsuario>(`${this.serverURL}/admin-create`, usuario);
   }
 
   update(oUsuario: IUsuario): Observable<IUsuario> {
