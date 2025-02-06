@@ -1,0 +1,72 @@
+<div class="min-h-screen flex flex-col items-center bg-gray-900 relative">
+  <!-- Botones en la parte superior -->
+  <div class="absolute top-4 w-full flex justify-between px-10">
+    <!-- Botón para abrir sobre -->
+    <button
+      *ngIf="mostrarBotonAbrir"
+      class="btn-open mt-10 px-6 py-3 bg-yellow-500 text-black font-bold text-lg rounded-lg shadow-lg hover:bg-yellow-600 transition-all"
+      (click)="abrirSobre()"
+    >
+      Abrir sobre
+    </button>
+
+    <!-- Botón para volver a la colección -->
+    <button
+      *ngIf="mostrarBotonAbrir"
+      class="px-6 py-3 bg-blue-500 text-white font-bold text-lg rounded-lg shadow-lg hover:bg-blue-600 transition-all"
+      (click)="verColeccion(this.usuarioId)"
+    >
+      Volver a Colección
+    </button>
+  </div>
+
+  <!-- Contenedor del sobre y animación (visible solo si sobreAbierto es true) -->
+  <div
+    id="pack-opened"
+    class="relative mt-32 transition-opacity duration-1000"
+  >
+    <div class="pack-flash"
+    [class.open]="sobreAbierto"
+    [class.hidden]="!sobreAbierto && !mostrarBotonAbrir">
+      <div class="pack-flash-pack">
+        <img class="front" src="https://s3-eu-west-1.amazonaws.com/epicsgg/assets/images/packs/STANDARD-BOTTOM.png">
+        <div class="top">
+          <img src="https://s3-eu-west-1.amazonaws.com/epicsgg/assets/images/packs/STANDARD-TOP-01.png">
+          <div class="cut">
+            <img src="https://s3-eu-west-1.amazonaws.com/epicsgg/assets/images/packs/FLARE.png">
+          </div>
+          <span>
+            <img src="https://s3-eu-west-1.amazonaws.com/epicsgg/assets/images/packs/STANDARD-TOP-02.png">
+            <span>
+              <img src="https://s3-eu-west-1.amazonaws.com/epicsgg/assets/images/packs/STANDARD-TOP-03.png">
+              <span>
+                <img src="https://s3-eu-west-1.amazonaws.com/epicsgg/assets/images/packs/STANDARD-TOP-04.png">
+              </span>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenedor de cartas reveladas -->
+    <div class="cards-reveal">
+      <ul class="flex flex-wrap justify-center gap-4 mt-12">
+        <li
+          *ngFor="let carta of cartasReveladas; let i = index"
+          [class]="'card-0' + (i + 1)"
+          class="w-40 h-60"
+        >
+          <div class="carta cursor-pointer" (click)="flip($event)">
+            <div class="frente">
+              <img
+                [src]="carta.imageUrl"
+                [alt]="'Carta ' + carta.nombre"
+                class="w-full h-full object-cover rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -48,9 +48,12 @@ export class AlmacenService {
 
 
   // Añadir cartas aleatorias a un usuario
-  addCartasAleatorias(usuarioId: number, cantidad: number): Observable<string> {
-    return this.oHttp.post(`${this.serverURL}/addCartas/${usuarioId}`, { cantidad }, { responseType: 'text' });
+  
+  addCartasAleatorias(usuarioId: number, cantidad: number): Observable<any[]> {
+    return this.oHttp.post<any[]>(`${this.serverURL}/addCartas/${usuarioId}`, { cantidad });
   }
+  
+  
 
   deleteCarta(usuarioId: number, cartaId: number) {
     return this.oHttp.delete(`${this.serverURL}/delete/${usuarioId}/${cartaId}`);

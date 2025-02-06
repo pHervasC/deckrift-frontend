@@ -46,6 +46,12 @@ export class SharedMenuUnroutedComponent implements OnInit {
       next: () => {
         this.activeSession = true;
         this.userEmail = this.oSessionService.getSessionEmail();
+        this.oUsuarioService.getUsuarioByEmail(this.userEmail).subscribe({
+          next: (data: IUsuario) => {
+            this.permisos = data.tipousuario?.descripcion || '';
+            this.id = data.id;
+          }
+        })
       },
     });
     this.oSessionService.onLogout().subscribe({

@@ -21,7 +21,7 @@ import { CartaAdminDeleteRoutedComponent } from './component/carta/carta.admin.d
 import { Component } from '@angular/core';
 import { CartaAdminEditRoutedComponent } from './component/carta/carta.admin.edit.routed/carta.admin.edit.routed.component';
 import { UsuarioAdminCreateRoutedComponent } from './component/usuario/usuario.admin.create.routed/usuario.admin.create.routed.component';
-
+import { SobreAbrirRoutedComponent } from './component/sobre/sobre.abrir.routed/sobre.abrir.routed.component';
 export const routes: Routes = [
 
   { path: '', component: SharedHomeRoutedComponent },
@@ -46,7 +46,8 @@ export const routes: Routes = [
   { path: 'admin/carta/edit/:id', component: CartaAdminEditRoutedComponent, canActivate: [AdminGuard]}, 
   { path: 'cartas/plist', component: CartaPlistRoutedComponent, canActivate: [AuditorGuard] },
 
-
+  // SOBRE
+  { path: 'sobre/abrir/:id', component:SobreAbrirRoutedComponent, canActivate: [AuditorGuard]},
 
 
 

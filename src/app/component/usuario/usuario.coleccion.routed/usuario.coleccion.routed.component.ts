@@ -32,6 +32,7 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
 
   private debounceSubject = new Subject<string>();
   readonly dialog = inject(MatDialog);
+  oRouter: any;
 
   constructor(
     private almacenService: AlmacenService,
@@ -83,15 +84,6 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
         },
       });
     }
-  }
-
-  addCartasAleatorias(): void {
-    this.almacenService.addCartasAleatorias(this.usuarioId, 5).subscribe({
-      next: () => this.getPage(),
-      error: (err: HttpErrorResponse) => {
-        console.error('Error al añadir cartas:', err);
-      },
-    });
   }
 
   goToPage(p: number): void {

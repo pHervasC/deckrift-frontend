@@ -17,12 +17,12 @@
 
   <!-- Botón Añadir sobre -->
   <div class="mb-8 text-center">
-    <button
+    <a
       class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg transition-all"
-      (click)="addCartasAleatorias()"
+      [routerLink]="['/sobre/abrir', usuarioId]"
     >
-      Añadir sobre
-    </button>
+      Abrir sobre
+  </a>
   </div>
 
   <!-- Grid de cartas -->
