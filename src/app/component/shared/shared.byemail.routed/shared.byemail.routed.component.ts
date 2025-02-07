@@ -42,8 +42,4 @@ export class SharedByemailRoutedComponent implements OnInit {
     });
   }
 
-  verColeccion(idUsuario: number) {
-    this.oRouter.navigate(['admin/usuario/coleccion', idUsuario]);
-}
-
 }

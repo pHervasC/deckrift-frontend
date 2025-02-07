@@ -24,7 +24,7 @@ export class AdminGuard implements CanActivate {
                     if (data.tipousuario?.descripcion === 'Administrador') {
                         return true;
                     } else {
-                        this.oRouter.navigate(['/home']);
+                        this.oRouter.navigate(['/home/registered']);
                         return false;
                     }
                 })
