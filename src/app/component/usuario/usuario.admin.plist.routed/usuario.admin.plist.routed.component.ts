@@ -53,7 +53,6 @@ export class UsuarioAdminPlistRoutedComponent implements OnInit {
       .getPage(this.nPage, this.nRpp, this.strField, this.strDir, this.strFiltro)
       .subscribe({
         next: (oPageFromServer: IPage<IUsuario>) => {
-          console.log(oPageFromServer);
           this.oPage = oPageFromServer;
           this.arrBotonera = this.oBotoneraService.getBotonera(
             this.nPage,

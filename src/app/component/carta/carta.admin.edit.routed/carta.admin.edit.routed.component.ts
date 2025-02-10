@@ -16,8 +16,9 @@ export class CartaAdminEditRoutedComponent implements OnInit {
   id!: number;
   carta!: ICarta;
   oCartaForm!: FormGroup;
-  imagenCarta: string | null = null; // URL de la imagen actual o nueva
-  nuevaImagen: File | null = null; // Nueva imagen seleccionada por el usuario
+  imagenCarta: string | null = null;
+  nuevaImagen: File | null = null;
+  mostrarModal: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -58,7 +59,7 @@ export class CartaAdminEditRoutedComponent implements OnInit {
       next: (blob: Blob) => {
         const reader = new FileReader();
         reader.onload = () => {
-          this.imagenCarta = reader.result as string; // Convertir Blob en URL base64
+          this.imagenCarta = reader.result as string;
         };
         reader.readAsDataURL(blob);
       },
@@ -73,13 +74,20 @@ export class CartaAdminEditRoutedComponent implements OnInit {
     if (input.files?.length) {
       this.nuevaImagen = input.files[0];
 
-      // Generar la vista previa de la nueva imagen
       const reader = new FileReader();
       reader.onload = () => {
-        this.imagenCarta = reader.result as string; // Actualizar la URL base64 para previsualizar
+        this.imagenCarta = reader.result as string;
       };
       reader.readAsDataURL(this.nuevaImagen);
     }
+  }
+
+  openModal(): void {
+    this.mostrarModal = true;
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal = false;
   }
 
   onSubmit(): void {
@@ -99,7 +107,7 @@ export class CartaAdminEditRoutedComponent implements OnInit {
 
     this.cartaService.update(this.id, formData).subscribe({
       next: () => {
-        alert('Carta actualizada correctamente');
+        this.mostrarModal = false;
         this.router.navigate(['/admin/carta/plist']);
       },
       error: (err) => {

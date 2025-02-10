@@ -19,6 +19,7 @@ module.exports = {
         'cartaPlist': "url('/img/cartaPlist.webp')",
         'profile': "url('/img/profile.jpg')",
         'coleccion': "url('/img/coleccion.png')",
+        'logout': "url('/img/logout.webp')",
       },
     },
   },

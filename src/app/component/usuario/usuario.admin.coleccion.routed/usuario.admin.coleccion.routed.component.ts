@@ -31,6 +31,11 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
   imagenActual: string | null = null;
   cartas: IAlmacen[] = [];
   mostrarModal: boolean = false;
+  mostrarEliminarModal: boolean = false;
+  cartaSeleccionadaParaEliminar: number | null = null;
+  mostrarEliminarModalPlus: boolean = false;
+  cartaSeleccionadaParaEliminarPlus: number | null = null;
+  mostrarVaciarModal: boolean = false;
   private debounceSubject = new Subject<string>();
   readonly dialog = inject(MatDialog);
 
@@ -66,8 +71,7 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
           console.error('Error al obtener las cartas:', err);
         },
       });
-}
-
+  }
 
   openAddCartaModal(): void {
     const dialogRef = this.dialog.open(CartaAdminSelectorUnroutedComponent, {
@@ -76,7 +80,6 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((selectedCarta) => {
       if (selectedCarta) {
-        console.log('Carta seleccionada:', selectedCarta);
         this.añadirCarta(selectedCarta.id);
       }
     });
@@ -85,12 +88,10 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
   añadirCarta(cartaId: number): void {
     this.almacenService.addCarta(this.usuarioId, cartaId).subscribe({
       next: () => {
-        alert('Carta añadida correctamente.');
         this.getPage();
       },
       error: (err: HttpErrorResponse) => {
         console.error('Error al añadir la carta:', err);
-        alert('No se pudo añadir la carta.');
       },
     });
   }
@@ -137,7 +138,7 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
   verImagen(id: number): void {
     this.oCartaService.getImage(id).subscribe({
       next: (blob: Blob) => {
-        const objectURL = URL.createObjectURL(blob); // Convertimos el Blob en una URL válida
+        const objectURL = URL.createObjectURL(blob);
         this.imagenActual = objectURL;
         this.mostrarModal = true;
       },
@@ -154,18 +155,91 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
     this.mostrarModal = false;
   }
 
-  eliminarCarta(cartaId: number) {
-    if (confirm('¿Estás seguro de que quieres eliminar esta carta?')) {
-      this.almacenService.deleteCarta(this.usuarioId, cartaId).subscribe({
+  openEliminarModal(cartaId: number) {
+    this.cartaSeleccionadaParaEliminar = cartaId;
+    this.mostrarEliminarModal = true;
+  }
+
+  confirmarEliminarCarta() {
+    if (this.cartaSeleccionadaParaEliminar !== null) {
+      this.almacenService.deleteCarta(this.usuarioId, this.cartaSeleccionadaParaEliminar).subscribe({
         next: () => {
-          alert('Carta eliminada correctamente.');
+          this.mostrarEliminarModal = false;
           this.getPage();
         },
         error: (err) => {
           console.error('Error al eliminar la carta:', err);
-          alert('No se pudo eliminar la carta.');
         },
       });
     }
+  }
+
+  cancelarEliminar() {
+    this.mostrarEliminarModal = false;
+    this.cartaSeleccionadaParaEliminar = null;
+  }
+
+  openEliminarModalPlus(cartaId: number): void {
+    this.cartaSeleccionadaParaEliminarPlus = cartaId;
+    this.mostrarEliminarModalPlus = true;
+  }
+
+  // Confirmar eliminación completa
+  confirmarEliminarCartaPlus(): void {
+    if (this.cartaSeleccionadaParaEliminarPlus !== null) {
+      this.almacenService
+        .deleteAllCarta(
+          this.usuarioId,
+          this.cartaSeleccionadaParaEliminarPlus
+        )
+        .subscribe({
+          next: () => {
+            this.getPage();
+            this.cerrarEliminarPlus();
+          },
+          error: (err) => {
+            console.error(
+              'Error al eliminar todas las cartas de esta cantidad:',
+              err
+            );
+          },
+        });
+    }
+  }
+
+  cancelarEliminarPlus(): void {
+    this.cerrarEliminarPlus();
+  }
+
+  cerrarEliminarPlus(): void {
+    this.cartaSeleccionadaParaEliminarPlus = null;
+    this.mostrarEliminarModalPlus = false;
+  }
+
+  openVaciarColeccionModal(): void {
+    this.mostrarVaciarModal = true;
+  }
+
+  // Confirmar vaciado de colección
+  confirmarVaciarColeccion(): void {
+    this.almacenService.vaciarColeccion(this.usuarioId).subscribe({
+      next: () => {
+        this.getPage(); // Refresca la lista de cartas
+        this.cerrarVaciarModal();
+      },
+      error: (err) => {
+        console.error('Error al vaciar la colección:', err);
+      },
+    });
+  }
+
+  // Cancelar el vaciado
+  cancelarVaciarColeccion(): void {
+    this.cerrarVaciarModal();
+  }
+
+  // Cerrar el modal
+  cerrarVaciarModal(): void {
+    this.mostrarVaciarModal = false;
   }
 }

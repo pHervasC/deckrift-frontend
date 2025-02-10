@@ -52,12 +52,19 @@ export class AlmacenService {
   addCartasAleatorias(usuarioId: number, cantidad: number): Observable<any[]> {
     return this.oHttp.post<any[]>(`${this.serverURL}/addCartas/${usuarioId}`, { cantidad });
   }
-  
-  
 
   deleteCarta(usuarioId: number, cartaId: number) {
     return this.oHttp.delete(`${this.serverURL}/delete/${usuarioId}/${cartaId}`);
   }
+
+  deleteAllCarta(usuarioId: number, cartaId: number) {
+    return this.oHttp.delete(`${this.serverURL}/delete/all/${usuarioId}/${cartaId}`);
+  }
+
+  vaciarColeccion(usuarioId: number): Observable<void> {
+    return this.oHttp.delete<void>(`${this.serverURL}/usuario/${usuarioId}/vaciar`);
+  }
+  
 
   addCarta(usuarioId: number, cartaId: number): Observable<any> {
     return this.oHttp.post(`${this.serverURL}/add/${usuarioId}/${cartaId}`, {});

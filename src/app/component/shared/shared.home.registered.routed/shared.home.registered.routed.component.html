@@ -1,26 +1,38 @@
-<body class="overflow-hidden">
-  <div
-    class="header-container flex flex-col justify-center items-center bg-logged bg-cover bg-center h-screen opacity-85"
-  >
-    <div class="bg-white rounded-lg shadow-lg p-8">
-      <h1 class="header-title text-black text-4xl font-bold text-center pt-8">
-        Deckrift
-      </h1>
-      <div class="button-container flex justify-center gap-4 mt-4">
-        <button 
-          class="header-button bg-blue-600 hover:bg-blue-700 text-black text-right font-medium py-2 px-4 rounded-lg transition duration-200"
-          (click)="verColeccion(this.id)">
-          Ver Colección
-        </button>
-        <a 
-          class="header-button bg-red-600 hover:bg-red-700 text-black font-medium py-2 px-4 rounded-lg transition duration-200"
-          href="/logout">
-          Cerrar Sesión
+<div
+  class="header-container flex flex-col justify-center items-center bg-logged bg-cover bg-center h-screen opacity-85"
+>
+  <!-- Cuadrado blanco ligeramente más ancho -->
+  <div class="bg-white rounded-lg shadow-lg p-8 relative w-10/12 md:w-2/3 lg:w-1/2">
+    <!-- Contenedor para el sprite animado -->
+    <div
+      class="sprite-container mx-auto mb-4"
+      [class.hidden]="!showSprite"
+      [style.backgroundImage]="'url(' + sprites[currentSpriteIndex] + ')'"
+    ></div>
+
+    <h1 class="header-title text-black text-4xl font-bold text-center mb-4">
+      Deckrift
+    </h1>
+
+    <!-- Botones -->
+    <div class="button-container flex justify-center gap-4 mb-4">
+      <button
+        class="header-button bg-blue-600 hover:bg-blue-700 text-black text-right font-medium py-2 px-4 rounded-lg transition duration-200"
+        (click)="verColeccion(this.id)"
+      >
+        Ver Colección
+      </button>
+      <a
+        class="header-button bg-red-600 hover:bg-red-700 text-black font-medium py-2 px-4 rounded-lg transition duration-200"
+        href="/logout"
+      >
+        Cerrar Sesión
       </a>
-      </div>
-      <p class="header-description text-black text-center text-lg mt-4">
-        El mejor servicio para apertura de sobres y intercambio de cartas
-      </p>
     </div>
+
+    <!-- Descripción -->
+    <p class="header-description text-black text-center text-lg mt-2">
+      El mejor servicio para apertura de sobres.
+    </p>
   </div>
-</body>
+</div>

@@ -21,6 +21,7 @@ export class CartaAdminCreateRoutedComponent {
   oCartaForm: FormGroup;
   imagen: File | null = null;
   imagenPreview: string | null = null; // Para previsualizar la imagen
+  mostrarModal: boolean = false; // Controla el modal
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,10 +50,19 @@ export class CartaAdminCreateRoutedComponent {
     }
   }
 
+  // Abre el modal de confirmación
+  openModal(): void {
+    this.mostrarModal = true;
+  }
+
+  // Cierra el modal
+  cerrarModal(): void {
+    this.mostrarModal = false;
+  }
+
   // Enviar el formulario al backend
   onSubmit(): void {
     if (this.oCartaForm.invalid || !this.imagen) {
-      alert('Formulario inválido. Revisa los campos.');
       return;
     }
 
@@ -64,7 +74,7 @@ export class CartaAdminCreateRoutedComponent {
 
     this.cartaService.create(formData).subscribe({
       next: () => {
-        alert('Carta añadida correctamente');
+        this.mostrarModal = false;
         this.router.navigate(['/admin/carta/plist']);
       },
       error: (err) => {

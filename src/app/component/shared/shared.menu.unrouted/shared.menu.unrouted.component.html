@@ -14,12 +14,21 @@
     <div class="hidden md:flex items-center space-x-4">
       <a href="/admin/usuario/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
         [ngClass]="{ 'bg-blue-600': strRuta == '/admin/usuario/plist' }">
-        Usuarios
+        A.Usuarios
       </a>
       <a href="/admin/carta/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
         [ngClass]="{ 'bg-blue-600': strRuta == '/admin/carta/plist' }">
+        A.Cartas
+      </a>
+
+      <a href="cartas/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+        [ngClass]="{ 'bg-blue-600': strRuta == 'cartas/plist' }">
         Cartas
       </a>
+      <button (click)="verColeccion(this.id)" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+        [ngClass]="{ 'bg-blue-600': strRuta == '/usuario/coleccion/:id' }">
+        Coleccion
+    </button>
     </div>
     } @else {
     <div class="hidden md:flex items-center space-x-4">

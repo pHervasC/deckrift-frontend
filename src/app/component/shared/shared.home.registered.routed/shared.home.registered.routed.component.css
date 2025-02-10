@@ -1,0 +1,15 @@
+.sprite-container {
+  width: 96px;
+  height: 96px;
+  background-size: cover;
+  background-position: center;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.sprite-container.hidden {
+  opacity: 0;
+  transform: scale(0.9);
+}

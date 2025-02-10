@@ -1,65 +1,104 @@
-<div class="bg-white overflow-hidden shadow rounded-lg border max-w-4xl mx-auto mt-10">
-  <div class="px-4 py-5 sm:px-6">
-    <h3 class="text-lg leading-6 font-medium text-gray-900">
+<div
+  class="flex flex-col justify-center items-center min-h-screen bg-gradient-to-br from-blue-100 to-blue-200 p-6"
+>
+  <div class="bg-white shadow-xl rounded-2xl p-10 max-w-lg w-full transform transition duration-300 hover:scale-105">
+    <h1 class="text-3xl font-extrabold text-center text-blue-600 mb-8">
       Editar Usuario
-    </h3>
-    <p class="mt-1 max-w-2xl text-sm text-gray-500">
-      Modifica la información del usuario.
-    </p>
-  </div>
+    </h1>
 
-  <form [formGroup]="oUsuarioForm" (ngSubmit)="onEdit()">
-    <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
-      <dl class="sm:divide-y sm:divide-gray-200">
-        <!-- Nombre Completo -->
-        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">Nombre completo</dt>
-          <dd class="mt-1 sm:mt-0 sm:col-span-2">
-            <input
-              type="text"
-              formControlName="nombre"
-              class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Escribe el nombre completo"
-            />
-            <div *ngIf="oUsuarioForm.get('nombre')?.invalid && oUsuarioForm.get('nombre')?.touched" class="text-sm text-red-500">
-              El nombre es obligatorio.
-            </div>
-          </dd>
+    <form [formGroup]="oUsuarioForm" (ngSubmit)="onSubmit()">
+      <!-- Nombre -->
+      <div class="mb-6">
+        <label for="nombre" class="block text-sm font-medium text-gray-700 mb-2">
+          Nombre
+        </label>
+        <input
+          type="text"
+          id="nombre"
+          formControlName="nombre"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+          placeholder="Introduce el nombre"
+        />
+        <div
+          *ngIf="oUsuarioForm.get('nombre')?.invalid && oUsuarioForm.get('nombre')?.touched"
+          class="text-red-500 text-sm mt-1"
+        >
+          El nombre es obligatorio y debe tener entre 3 y 50 caracteres.
         </div>
+      </div>
 
-        <!-- Correo Electrónico -->
-        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm font-medium text-gray-500">Correo electrónico</dt>
-          <dd class="mt-1 sm:mt-0 sm:col-span-2">
-            <input
-              type="email"
-              formControlName="correo"
-              class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Escribe el correo electrónico"
-            />
-            <div *ngIf="oUsuarioForm.get('correo')?.invalid && oUsuarioForm.get('correo')?.touched" class="text-sm text-red-500">
-              Introduce un correo válido.
-            </div>
-          </dd>
+      <!-- Correo -->
+      <div class="mb-6">
+        <label for="correo" class="block text-sm font-medium text-gray-700 mb-2">
+          Correo
+        </label>
+        <input
+          type="email"
+          id="correo"
+          formControlName="correo"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+          placeholder="Introduce el correo electrónico"
+        />
+        <div
+          *ngIf="oUsuarioForm.get('correo')?.invalid && oUsuarioForm.get('correo')?.touched"
+          class="text-red-500 text-sm mt-1"
+        >
+          El correo es obligatorio y debe ser válido.
         </div>
-    </dl>
-  </div>
+      </div>
 
-    <div class="flex justify-end gap-4 px-4 py-5 sm:px-6">
-      <button
-    type="submit"
-    [disabled]="oUsuarioForm.invalid"
-    class="bg-blue-500 text-white font-medium py-2 px-4 rounded-lg shadow hover:bg-blue-600 transition duration-200"
-     >
-    Guardar Cambios
-     </button>
-      <button
-        type="button"
-        class="bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg shadow hover:bg-gray-400 transition duration-200"
-        (click)="onBack()"
-      >
-        Cancelar
-      </button>
-    </div>
-  </form>
+      <!-- Contraseña -->
+      <div class="mb-6">
+        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+          Contraseña
+        </label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+          placeholder="Introduce una contraseña segura"
+        />
+        <div
+          *ngIf="oUsuarioForm.get('password')?.invalid && oUsuarioForm.get('password')?.touched"
+          class="text-red-500 text-sm mt-1"
+        >
+          La contraseña debe tener al menos 6 caracteres.
+        </div>
+      </div>
+
+      <!-- Tipo de Usuario -->
+      <div class="mb-6">
+        <label for="id_tipousuario" class="block text-sm font-medium text-gray-700 mb-2">
+          Tipo de Usuario
+        </label>
+        <select
+          id="id_tipousuario"
+          formControlName="id_tipousuario"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-md focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
+        >
+          <option value="" disabled selected>Selecciona el tipo de usuario</option>
+          <option value="1">Administrador</option>
+          <option value="2">Usuario</option>
+        </select>
+        <div
+          *ngIf="oUsuarioForm.get('id_tipousuario')?.invalid && oUsuarioForm.get('id_tipousuario')?.touched"
+          class="text-red-500 text-sm mt-1"
+        >
+          Debes seleccionar un tipo de usuario.
+        </div>
+      </div>
+
+      <!-- Botón Enviar -->
+      <div class="mt-6">
+        <button
+          type="submit"
+          [disabled]="oUsuarioForm.invalid"
+          class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-lg shadow-lg text-lg font-semibold tracking-wide transform transition duration-300 hover:scale-105 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          Guardar Cambios
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

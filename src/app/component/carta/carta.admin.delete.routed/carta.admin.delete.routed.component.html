@@ -16,21 +16,25 @@
       </div>
     </div>
 
-    <!-- Botones de Confirmar y Cancelar -->
+    <!-- Botones -->
     <div class="flex justify-center gap-4 mt-6">
-      <!-- Botón de Confirmar -->
-      <button
-        (click)="confirmarEliminacion()"
-        class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105">
+      <button (click)="abrirModal()" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105">
         Sí, eliminar
       </button>
-
-      <!-- Botón de Cancelar -->
-      <button
-        (click)="cancelarEliminacion()"
-        class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105">
+      <button (click)="cancelar()" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105">
         Cancelar
       </button>
     </div>
   </div>
 </div>
+
+<!-- Modal de confirmación -->
+<app-confirm-modal
+  *ngIf="mostrarModal"
+  title="Confirmar Eliminación"
+  [message]="'¿Estás seguro de que deseas eliminar la carta ' + carta.nombre + '?'"
+  confirmText="Sí, eliminar"
+  cancelText="Cancelar"
+  (onConfirm)="confirmarEliminacion()"
+  (onCancel)="cancelarEliminacion()"
+></app-confirm-modal>
