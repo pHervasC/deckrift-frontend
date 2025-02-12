@@ -4,6 +4,7 @@ import { UsuarioService } from '../../../service/usuario.service';
 import { IUsuario } from '../../../model/usuario.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SessionService } from '../../../service/session.service';
 
 @Component({
   selector: 'app-usuario-delete',
@@ -18,6 +19,7 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
   constructor(
     private oUsuarioService: UsuarioService,
     private oActivatedRoute: ActivatedRoute,
+    private oSessionService: SessionService,
     private oRouter: Router
   ) {}
 
@@ -40,7 +42,8 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
       this.oUsuarioService.delete(this.oUsuario.id).subscribe({
         next: () => {
           alert(`Usuario con ID ${this.oUsuario!.id} ha sido eliminado.`);
-          this.oRouter.navigate(['/admin/usuario/plist']);
+          this.oSessionService.logout();
+          this.oRouter.navigate(['/']);
         },
         error: (error) => {
           console.error('Error al eliminar el Usuario:', error);
@@ -49,7 +52,6 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
       });
     }
   }
-
   cancel(): void {
     this.oRouter.navigate(['/admin/usuario/plist']);
   }
