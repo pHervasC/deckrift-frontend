@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CartaService } from '../../../service/carta.service';
 import { ICarta } from '../../../model/carta.interface';
 import { CommonModule } from '@angular/common';
-import { ConfirmModalComponent } from '../../modal/ConfirmModal/ConfirmModal.component';
+import { ConfirmModalComponent } from '../../modal/confirmModal/confirmModal.component';
 
 
 @Component({
