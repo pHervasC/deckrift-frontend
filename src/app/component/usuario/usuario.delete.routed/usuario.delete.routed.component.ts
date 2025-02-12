@@ -17,6 +17,7 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
   oUsuario: IUsuario | null = null;
   userEmail: string = '';
   permisos: string = '';
+  id_Admin: number = 0;
 
   constructor(
     private oUsuarioService: UsuarioService,
@@ -31,6 +32,7 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
     this.oUsuarioService.getUsuarioByEmail(this.userEmail).subscribe({
       next: (data: IUsuario) => {
         this.permisos = data.tipousuario?.descripcion || '';
+        this.id_Admin = data.id;
       }
     })
     this.oUsuarioService.getOne(id).subscribe({
@@ -49,24 +51,13 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
     if (this.oUsuario) {
       this.oUsuarioService.delete(this.oUsuario.id).subscribe({
         next: () => {
-          alert(`Usuario con ID ${this.oUsuario!.id} ha sido eliminado.`);
+
+          if (this.id_Admin === this.oUsuario!.id) {
           this.oSessionService.logout();
           this.oRouter.navigate(['/']);
-        },
-        error: (error) => {
-          console.error('Error al eliminar el Usuario:', error);
-          alert('Error al eliminar el Usuario.');
-        }
-      });
-    }
-  }
-
-  deleteAdmin(): void {
-    if (this.oUsuario) {
-      this.oUsuarioService.delete(this.oUsuario.id).subscribe({
-        next: () => {
-          alert(`Usuario con ID ${this.oUsuario!.id} ha sido eliminado.`);
-          this.oRouter.navigate(['/admin/usuario/plist']);
+          } else {
+            this.oRouter.navigate(['/admin/usuario/plist']);
+          }
         },
         error: (error) => {
           console.error('Error al eliminar el Usuario:', error);
