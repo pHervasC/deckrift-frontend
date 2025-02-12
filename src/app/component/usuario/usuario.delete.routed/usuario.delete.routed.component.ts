@@ -15,6 +15,8 @@ import { SessionService } from '../../../service/session.service';
 })
 export class UsuarioDeleteRoutedComponent implements OnInit {
   oUsuario: IUsuario | null = null;
+  userEmail: string = '';
+  permisos: string = '';
 
   constructor(
     private oUsuarioService: UsuarioService,
@@ -25,6 +27,12 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.oActivatedRoute.snapshot.params['id'];
+    this.userEmail = this.oSessionService.getSessionEmail();
+    this.oUsuarioService.getUsuarioByEmail(this.userEmail).subscribe({
+      next: (data: IUsuario) => {
+        this.permisos = data.tipousuario?.descripcion || '';
+      }
+    })
     this.oUsuarioService.getOne(id).subscribe({
       next: (oUsuario: IUsuario) => {
         this.oUsuario = oUsuario;
@@ -52,6 +60,22 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
       });
     }
   }
+
+  deleteAdmin(): void {
+    if (this.oUsuario) {
+      this.oUsuarioService.delete(this.oUsuario.id).subscribe({
+        next: () => {
+          alert(`Usuario con ID ${this.oUsuario!.id} ha sido eliminado.`);
+          this.oRouter.navigate(['/admin/usuario/plist']);
+        },
+        error: (error) => {
+          console.error('Error al eliminar el Usuario:', error);
+          alert('Error al eliminar el Usuario.');
+        }
+      });
+    }
+  }
+
   cancel(): void {
     this.oRouter.navigate(['/admin/usuario/plist']);
   }
