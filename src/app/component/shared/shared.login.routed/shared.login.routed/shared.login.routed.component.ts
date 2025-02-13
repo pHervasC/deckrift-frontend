@@ -24,6 +24,8 @@ export class SharedLoginRoutedComponent implements OnInit {
 
   private clientId = '642946707903-742gna6lhbktomd5mmk70nj5h4rg02fv.apps.googleusercontent.com';
   errorMessage: string | null = null;
+  mostrarModalExito: boolean = false;
+  mostrarModalError: boolean = false;
 
   loginForm: FormGroup = new FormGroup({});
 
@@ -55,27 +57,31 @@ export class SharedLoginRoutedComponent implements OnInit {
     if (this.loginForm.valid) {
       // Encriptar la contraseña
       const hashedPassword = this.oCryptoService.getHashSHA256(this.loginForm.value.password);
-
       // Llamar al servicio de login
       this.oLoginService.login(this.loginForm.value.email, hashedPassword).subscribe({
         next: (token: string) => {
-          alert('Inicio de sesión exitoso');
-
           // Almacenar el token en la sesión
           this.oSessionService.login(token);
-
-          // Redirigir al home
-          this.oRouter.navigate(['/home/registered']);
+          this.mostrarModalExito = true;
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error al realizar la solicitud', error);
-          alert('Correo o contraseña incorrectos');
+          this.mostrarModalError = true;
           this.errorMessage = 'Correo o contraseña incorrectos';
         }
       });
     } else {
       alert('Formulario inválido. Por favor, revisa los campos.');
     }
+  }
+
+  cerrarModalExito() {
+    this.mostrarModalExito = false;
+    this.oRouter.navigate(['/home/registered']);
+  }
+
+  cerrarModalError() {
+    this.mostrarModalError = false;
   }
 
   handleGoogleCredentialResponse(response: any): void {
@@ -87,14 +93,15 @@ export class SharedLoginRoutedComponent implements OnInit {
 
         if (res && res.id) {
           this.oRouter.navigate(['/home']);
+          this.mostrarModalExito = true;
         } else {
           console.error('El backend no devolvió un ID válido.');
-          alert('Error al procesar la autenticación. Intenta nuevamente.');
+          this.mostrarModalError = true;
         }
       },
       error: (err) => {
         console.error('Error al autenticar:', err);
-        alert('Error al autenticar con Google. Por favor, intenta nuevamente.');
+        this.mostrarModalError = true;
       },
     });
   }
