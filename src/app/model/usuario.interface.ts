@@ -6,4 +6,5 @@ export interface IUsuario {
   correo: string;
   password?: string;
   tipousuario?: ITipoUsuario;
+  emailVerified: boolean;
 }

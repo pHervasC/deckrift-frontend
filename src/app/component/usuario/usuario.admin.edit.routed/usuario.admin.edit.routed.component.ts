@@ -42,6 +42,7 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
       correo: ['', [Validators.required, Validators.email]],
       password: ['', []], // Sin `Validators.required`, es opcional
       id_tipousuario: ['', [Validators.required]],
+      emailVerified: [{ value: this.oUsuarioForm.get('emailVerified')?.value, disabled: true }]
     });
   }
 
@@ -70,6 +71,7 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
         id: this.usuarioId,
         nombre: this.oUsuarioForm.value.nombre,
         correo: this.oUsuarioForm.value.correo,
+        emailVerified: this.oUsuarioForm.get('emailVerified')?.value,
         tipousuario: {
           id: this.oUsuarioForm.get('id_tipousuario')?.value,
           descripcion: '',
@@ -90,7 +92,7 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
         },
       });
     }
-  }
+}
 
   closeModal() {
     this.showModal = false;

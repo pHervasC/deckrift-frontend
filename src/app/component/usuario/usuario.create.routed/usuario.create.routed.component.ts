@@ -23,6 +23,7 @@ export class UsuarioCreateRoutedComponent implements OnInit {
   oUsuarioForm: FormGroup;
   mostrarModalExito: boolean = false;
   mostrarModalError: boolean = false;
+  mensajeModal: string = '';
 
   constructor(
     private oHttp: HttpClient,
@@ -59,40 +60,54 @@ export class UsuarioCreateRoutedComponent implements OnInit {
       nombre: this.oUsuarioForm.get('nombre')?.value,
       correo: this.oUsuarioForm.get('email')?.value,
       password: hashedPassword,
+      emailVerified: false
     };
 
     this.oUsuarioService.create(usuario).subscribe({
       next: () => {
-        this.mostrarModalExito = true; // Muestra el modal de éxito
+        this.mensajeModal = "Tu cuenta ha sido creada correctamente. Revisa tu correo para verificar tu email.";
+        this.mostrarModalExito = true;
       },
       error: (err) => {
         console.error('Error al crear el usuario:', err);
+        this.mensajeModal = "Hubo un problema al crear tu cuenta. Inténtalo de nuevo.";
+        this.mostrarModalError = true;
       },
     });
   }
 
   cerrarModal() {
     this.mostrarModalExito = false;
-    this.oRouter.navigate(['/login']); // Redirige al usuario al login después de cerrar el modal
+    this.oRouter.navigate(['/login']);
   }
 
   handleGoogleCredentialResponse(response: any): void {
     const googleToken = response.credential;
 
-    this.oHttp.post<{ token: string; name: string; id: number; correo:string; tipoUsuario: number }>(
+    this.oHttp.post<{ token: string; name: string; id: number; correo: string; tipoUsuario: number; emailVerified: boolean }>(
       'http://localhost:8085/api/auth/google',
       { token: googleToken }
     ).subscribe({
       next: (res) => {
         if (res && res.token) {
           this.oSessionService.login(res.token);
-          this.oRouter.navigate(['/home/registered']);
+
+          if (res.emailVerified) {
+            this.oRouter.navigate(['/home/registered']);
+          } else {
+            this.oRouter.navigate(['/verify-email'], { queryParams: { google: 'true' } });
+          }
+
+          this.mensajeModal = "Inicio de sesión exitoso con Google.";
           this.mostrarModalExito = true;
         } else {
+          this.mensajeModal = "Hubo un problema con la autenticación de Google.";
           this.mostrarModalError = true;
         }
       },
       error: (err) => {
+        console.error("Error en Google Login:", err);
+        this.mensajeModal = "Error en el inicio de sesión con Google.";
         this.mostrarModalError = true;
       },
     });

@@ -66,6 +66,7 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
       nombre: this.oUsuarioForm.get('nombre')?.value,
       correo: this.oUsuarioForm.get('correo')?.value,
       password: hashedPassword,
+      emailVerified: false,
       tipousuario: {
         id: this.oUsuarioForm.get('id_tipousuario')?.value,
         descripcion: '',
