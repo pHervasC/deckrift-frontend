@@ -21,6 +21,7 @@ import { CartaAdminEditRoutedComponent } from './component/carta/carta.admin.edi
 import { UsuarioAdminCreateRoutedComponent } from './component/usuario/usuario.admin.create.routed/usuario.admin.create.routed.component';
 import { SobreAbrirRoutedComponent } from './component/sobre/sobre.abrir.routed/sobre.abrir.routed.component';
 import { UsuarioEditRoutedComponent } from './component/usuario/usuario.edit.routed/usuario.edit.routed.component';
+import { VerifiedEmailRoutedComponent } from './component/verified/verified.email.routed/verified.email.routed.component';
 export const routes: Routes = [
 
   //Shared
@@ -30,6 +31,7 @@ export const routes: Routes = [
   { path: 'login', component: SharedLoginRoutedComponent},
   { path: 'logout', component: SharedLogoutRoutedComponent},
   { path: 'byemail/:email', component: SharedByemailRoutedComponent, canActivate: [AuditorGuard] },
+  { path: 'verify-email', component: VerifiedEmailRoutedComponent },
 
   // USUARIO
   { path: 'admin/usuario/plist', component: UsuarioAdminPlistRoutedComponent, canActivate: [AdminGuard] },
@@ -45,7 +47,7 @@ export const routes: Routes = [
   { path: 'admin/carta/plist', component: CartaAdminPlistRoutedComponent, canActivate: [AdminGuard] },
   { path: 'admin/carta/create', component: CartaAdminCreateRoutedComponent, canActivate: [AdminGuard] },
   { path: 'admin/carta/delete/:id', component: CartaAdminDeleteRoutedComponent, canActivate: [AdminGuard]},
-  { path: 'admin/carta/edit/:id', component: CartaAdminEditRoutedComponent, canActivate: [AdminGuard]}, 
+  { path: 'admin/carta/edit/:id', component: CartaAdminEditRoutedComponent, canActivate: [AdminGuard]},
   { path: 'cartas/plist', component: CartaPlistRoutedComponent, canActivate: [AuditorGuard] },
 
   // SOBRE
