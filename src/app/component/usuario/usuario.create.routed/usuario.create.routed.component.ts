@@ -79,25 +79,20 @@ export class UsuarioCreateRoutedComponent implements OnInit {
   handleGoogleCredentialResponse(response: any): void {
     const googleToken = response.credential;
 
-    console.log("🔹 Token de Google recibido:", googleToken);
-
     this.oHttp.post<{ token: string; name: string; id: number; correo:string; tipoUsuario: number }>(
       'http://localhost:8085/api/auth/google',
       { token: googleToken }
     ).subscribe({
       next: (res) => {
-        console.log("🔹 Tipo de Usuario ID:", res.tipoUsuario);
         if (res && res.token) {
           this.oSessionService.login(res.token);
           this.oRouter.navigate(['/home/registered']);
           this.mostrarModalExito = true;
         } else {
-          console.error('⛔ El backend no devolvió un token válido.');
           this.mostrarModalError = true;
         }
       },
       error: (err) => {
-        console.error('🚨 Error al autenticar con Google:', err);
         this.mostrarModalError = true;
       },
     });

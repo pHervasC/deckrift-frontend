@@ -65,7 +65,6 @@ export class SharedLoginRoutedComponent implements OnInit {
           this.mostrarModalExito = true;
         },
         error: (error: HttpErrorResponse) => {
-          console.error('Error al realizar la solicitud', error);
           this.mostrarModalError = true;
           this.errorMessage = 'Correo o contraseña incorrectos';
         }
@@ -85,9 +84,7 @@ export class SharedLoginRoutedComponent implements OnInit {
   handleGoogleCredentialResponse(response: any): void {
     const googleToken = response.credential;
 
-    console.log("🔹 Token de Google recibido:", googleToken);
-
-    this.oHttp.post<{ token: string; name: string; id: number; correo:string }>(
+    this.oHttp.post<{ token: string; name: string; id: number; correo:string; tipoUsuario: number }>(
       'http://localhost:8085/api/auth/google',
       { token: googleToken }
     ).subscribe({
@@ -97,12 +94,10 @@ export class SharedLoginRoutedComponent implements OnInit {
           this.oRouter.navigate(['/home/registered']);
           this.mostrarModalExito = true;
         } else {
-          console.error('⛔ El backend no devolvió un token válido.');
           this.mostrarModalError = true;
         }
       },
       error: (err) => {
-        console.error('🚨 Error al autenticar con Google:', err);
         this.mostrarModalError = true;
       },
     });
