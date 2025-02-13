@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { UsuarioService } from '../../../service/usuario.service';
@@ -22,9 +22,12 @@ export class UsuarioCreateRoutedComponent implements OnInit {
   id: any;
   oUsuarioForm: FormGroup;
   mostrarModalExito: boolean = false;
+  mostrarModalExitoGoogle: boolean = false;
   mostrarModalError: boolean = false;
 
+
   constructor(
+    private cdRef: ChangeDetectorRef,
     private oHttp: HttpClient,
     private oUsuarioService: UsuarioService,
     private oRouter: Router,
@@ -63,7 +66,7 @@ export class UsuarioCreateRoutedComponent implements OnInit {
 
     this.oUsuarioService.create(usuario).subscribe({
       next: () => {
-        this.mostrarModalExito = true; // Muestra el modal de éxito
+        this.mostrarModalExito = true;
       },
       error: (err) => {
         console.error('Error al crear el usuario:', err);
@@ -73,12 +76,17 @@ export class UsuarioCreateRoutedComponent implements OnInit {
 
   cerrarModal() {
     this.mostrarModalExito = false;
-    this.oRouter.navigate(['/login']); // Redirige al usuario al login después de cerrar el modal
+    this.oRouter.navigate(['/login']); 
+  }
+
+  cerrarModalGoogle() {
+    this.mostrarModalExito = false;
+    this.oRouter.navigate(['/home/registered']); 
   }
 
   handleGoogleCredentialResponse(response: any): void {
     const googleToken = response.credential;
-
+  
     this.oHttp.post<{ token: string; name: string; id: number; correo:string; tipoUsuario: number }>(
       'http://localhost:8085/api/auth/google',
       { token: googleToken }
@@ -86,14 +94,17 @@ export class UsuarioCreateRoutedComponent implements OnInit {
       next: (res) => {
         if (res && res.token) {
           this.oSessionService.login(res.token);
-          this.oRouter.navigate(['/home/registered']);
-          this.mostrarModalExito = true;
+          this.mostrarModalExitoGoogle = true;
+          this.cdRef.detectChanges();
         } else {
           this.mostrarModalError = true;
+          this.cdRef.detectChanges();
         }
       },
       error: (err) => {
+        console.error('Error en la autenticación de Google', err);
         this.mostrarModalError = true;
+        this.cdRef.detectChanges();
       },
     });
   }

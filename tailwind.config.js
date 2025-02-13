@@ -20,6 +20,7 @@ module.exports = {
         'profile': "url('/img/profile.jpg')",
         'coleccion': "url('/img/coleccion.png')",
         'logout': "url('/img/logout.webp')",
+        'delete': "url('/img/delete.jpg')",
       },
     },
   },

@@ -19,6 +19,7 @@ export class SharedMenuUnroutedComponent implements OnInit {
   userEmail: string = '';
   permisos: string = '';
   id: number = 0;
+  nombre: string = '';
 
   constructor(
     private oRouter: Router,
@@ -37,6 +38,7 @@ export class SharedMenuUnroutedComponent implements OnInit {
         next: (data: IUsuario) => {
           this.permisos = data.tipousuario?.descripcion || '';
           this.id = data.id;
+          this.nombre = data.nombre;
         }
       })
     }
@@ -50,6 +52,7 @@ export class SharedMenuUnroutedComponent implements OnInit {
           next: (data: IUsuario) => {
             this.permisos = data.tipousuario?.descripcion || '';
             this.id = data.id;
+            this.nombre = data.nombre;
           }
         })
       },

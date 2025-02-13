@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { debounceTime, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { UsuarioService } from '../../../service/usuario.service';
+import { IUsuario } from '../../../model/usuario.interface';
 
 @Component({
   selector: 'app-usuario.coleccion.routed',
@@ -23,12 +25,15 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
   cartaSeleccionada: any = null;
   oPage: IPage<IAlmacen> | null = null;
   usuarioId!: number;
+  usuario!: IUsuario;
   nPage: number = 0;
   nRpp: number = 6; // Mostrar 6 cartas por página
   strFiltro: string = '';
   arrBotonera: string[] = [];
   imagenes: { [key: number]: string } = {}; // Almacena imágenes en caché
   cartas: IAlmacen[] = [];
+  nombre: string = '';
+  isLoading: boolean = false;
 
   private debounceSubject = new Subject<string>();
   readonly dialog = inject(MatDialog);
@@ -37,16 +42,18 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
   constructor(
     private almacenService: AlmacenService,
     private oBotoneraService: BotoneraService,
+    private oUsuarioService: UsuarioService,
     private route: ActivatedRoute,
     private oCartaService: CartaService,
   ) {
-    this.debounceSubject.pipe(debounceTime(10)).subscribe(() => {
-          this.getPage();
-        });
+    this.debounceSubject.pipe(debounceTime(1000)).subscribe(() => {
+      this.goToPage(0);
+    });
   }
 
   ngOnInit(): void {
     this.usuarioId = +this.route.snapshot.paramMap.get('id')!;
+    this.getone();
     this.getPage();
   }
 
@@ -62,11 +69,22 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
             oPageFromServer.totalPages
           );
           this.cartas.forEach((carta) => this.cargarImagen(carta.carta.id));
+          this.isLoading = false;
         },
         error: (err: HttpErrorResponse) => {
           console.error('Error al obtener las cartas del usuario:', err);
+          this.isLoading = false;
         },
       });
+  }
+
+  getone(): void {
+    this.oUsuarioService.getOne(this.usuarioId).subscribe({
+      next: (usuario: IUsuario) => {
+        this.usuario = usuario;
+        this.nombre = usuario.nombre;
+      }
+    })
   }
 
   cargarImagen(id: number): void {
@@ -104,7 +122,9 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
       this.getPage();
     }
   }
+
   filter(event: KeyboardEvent) {
+    this.isLoading = true;
     this.debounceSubject.next(this.strFiltro);
   }
 
@@ -113,6 +133,6 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
   }
 
   cerrarPopUp(): void {
-    this.cartaSeleccionada = null
+    this.cartaSeleccionada = null;
   }
 }

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GoogleLoginService } from '../../../../service/google-login.service';
@@ -35,7 +35,8 @@ export class SharedLoginRoutedComponent implements OnInit {
     private oRouter: Router,
     private oCryptoService: CryptoService,
     private oHttp: HttpClient,
-    private googleLoginService: GoogleLoginService
+    private googleLoginService: GoogleLoginService,
+    private cdRef: ChangeDetectorRef,
   ) {
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -83,7 +84,7 @@ export class SharedLoginRoutedComponent implements OnInit {
 
   handleGoogleCredentialResponse(response: any): void {
     const googleToken = response.credential;
-
+  
     this.oHttp.post<{ token: string; name: string; id: number; correo:string; tipoUsuario: number }>(
       'http://localhost:8085/api/auth/google',
       { token: googleToken }
@@ -91,14 +92,17 @@ export class SharedLoginRoutedComponent implements OnInit {
       next: (res) => {
         if (res && res.token) {
           this.oSessionService.login(res.token);
-          this.oRouter.navigate(['/home/registered']);
           this.mostrarModalExito = true;
+          this.cdRef.detectChanges();
         } else {
           this.mostrarModalError = true;
+          this.cdRef.detectChanges();
         }
       },
       error: (err) => {
+        console.error('Error en la autenticación de Google', err);
         this.mostrarModalError = true;
+        this.cdRef.detectChanges();
       },
     });
   }
