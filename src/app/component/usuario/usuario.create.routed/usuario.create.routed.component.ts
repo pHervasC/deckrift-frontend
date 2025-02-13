@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { CryptoService } from '../../../service/crypto.service';
 import { HttpClient } from '@angular/common/http';
 import { GoogleLoginService } from '../../../service/google-login.service';
+import { SessionService } from '../../../service/session.service';
 
 @Component({
   selector: 'app-usuario-create-routed',
@@ -20,14 +21,16 @@ export class UsuarioCreateRoutedComponent implements OnInit {
   private clientId = '642946707903-742gna6lhbktomd5mmk70nj5h4rg02fv.apps.googleusercontent.com';
   id: any;
   oUsuarioForm: FormGroup;
-  mostrarModalExito: boolean = false; // Controla la visibilidad del modal
+  mostrarModalExito: boolean = false;
+  mostrarModalError: boolean = false;
 
   constructor(
     private oHttp: HttpClient,
     private oUsuarioService: UsuarioService,
     private oRouter: Router,
     private googleLoginService: GoogleLoginService,
-    private cryptoService: CryptoService
+    private cryptoService: CryptoService,
+    private oSessionService: SessionService
   ) {
     this.oUsuarioForm = new FormGroup({
       nombre: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
@@ -74,18 +77,28 @@ export class UsuarioCreateRoutedComponent implements OnInit {
   }
 
   handleGoogleCredentialResponse(response: any): void {
-    const token = response.credential;
+    const googleToken = response.credential;
 
-    this.oHttp.post('http://localhost:8085/api/auth/google', { token }).subscribe({
-      next: (res: any) => {
-        if (res && res.id) {
-          this.oRouter.navigate(['/home']);
+    console.log("🔹 Token de Google recibido:", googleToken);
+
+    this.oHttp.post<{ token: string; name: string; id: number; correo:string; tipoUsuario: number }>(
+      'http://localhost:8085/api/auth/google',
+      { token: googleToken }
+    ).subscribe({
+      next: (res) => {
+        console.log("🔹 Tipo de Usuario ID:", res.tipoUsuario);
+        if (res && res.token) {
+          this.oSessionService.login(res.token);
+          this.oRouter.navigate(['/home/registered']);
+          this.mostrarModalExito = true;
         } else {
-          console.error('El backend no devolvió un ID válido.');
+          console.error('⛔ El backend no devolvió un token válido.');
+          this.mostrarModalError = true;
         }
       },
       error: (err) => {
-        console.error('Error al autenticar:', err);
+        console.error('🚨 Error al autenticar con Google:', err);
+        this.mostrarModalError = true;
       },
     });
   }

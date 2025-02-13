@@ -19,6 +19,11 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
   permisos: string = '';
   id_Admin: number = 0;
 
+  showConfirmModal: boolean = false;
+  showSuccessModal: boolean = false;
+  showErrorModal: boolean = false;
+  errorMessage: string = '';
+
   constructor(
     private oUsuarioService: UsuarioService,
     private oActivatedRoute: ActivatedRoute,
@@ -41,33 +46,47 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar el Usuario:', err);
-        alert('Error al cargar el Usuario.');
-        this.oRouter.navigate(['/admin/usuario/plist']);
+        this.errorMessage = 'Error al cargar el usuario.';
+        this.showErrorModal = true;
       }
     });
   }
 
   delete(): void {
+    this.showConfirmModal = true;
+  }
+
+  confirmDelete(): void {
     if (this.oUsuario) {
       this.oUsuarioService.delete(this.oUsuario.id).subscribe({
         next: () => {
+          this.showConfirmModal = false;
+          this.showSuccessModal = true;
 
           if (this.id_Admin === this.oUsuario!.id) {
-          this.oSessionService.logout();
-          this.oRouter.navigate(['/']);
-          } else {
-            this.oRouter.navigate(['/admin/usuario/plist']);
+            this.oSessionService.logout();
           }
         },
         error: (error) => {
           console.error('Error al eliminar el Usuario:', error);
-          alert('Error al eliminar el Usuario.');
+          this.showConfirmModal = false;
+          this.errorMessage = 'Error al eliminar el usuario. Intenta nuevamente.';
+          this.showErrorModal = true;
         }
       });
     }
   }
 
-  cancel(): void {
+  cancelDelete(): void {
+    this.showConfirmModal = false;
+  }
+
+  closeSuccessModal(): void {
+    this.showSuccessModal = false;
     this.oRouter.navigate(['/admin/usuario/plist']);
+  }
+
+  closeErrorModal(): void {
+    this.showErrorModal = false;
   }
 }

@@ -18,12 +18,16 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
   usuarioId!: number;
   usuario!: IUsuario;
 
+  showModal: boolean = false;
+  showErrorModal: boolean = false;
+  errorMessage: string = "";
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private usuarioService: UsuarioService,
-    private cryptoService: CryptoService // Importamos el servicio para hashear
+    private cryptoService: CryptoService
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +55,11 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
           id_tipousuario: usuario.tipousuario?.id,
         });
       },
-      error: (err) => console.error('Error al cargar datos del usuario:', err),
+      error: (err) => {
+        console.error('Error al cargar datos del usuario:', err);
+        this.errorMessage = 'No se pudo cargar la información del usuario.';
+        this.showErrorModal = true;
+      },
     });
   }
 
@@ -64,20 +72,32 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
         correo: this.oUsuarioForm.value.correo,
         tipousuario: {
           id: this.oUsuarioForm.get('id_tipousuario')?.value,
-          descripcion: '', 
+          descripcion: '',
         },
         ...(this.oUsuarioForm.value.password
           ? { password: this.cryptoService.getHashSHA256(this.oUsuarioForm.value.password) } // Hashear solo si la contraseña es proporcionada
           : {}),
       };
-  
+
       this.usuarioService.update(updatedUsuario).subscribe({
         next: () => {
-          alert('Usuario actualizado con éxito');
-          this.router.navigate(['/admin/usuario/plist']);
+          this.showModal = true;
         },
-        error: (err) => console.error('Error al actualizar usuario:', err),
+        error: (err) => {
+          console.error('Error al actualizar usuario:', err);
+          this.errorMessage = 'Hubo un error al actualizar el usuario. Intenta nuevamente.';
+          this.showErrorModal = true;
+        },
       });
     }
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.router.navigate(['/admin/usuario/plist']);
+  }
+
+  closeErrorModal() {
+    this.showErrorModal = false;
   }
 }

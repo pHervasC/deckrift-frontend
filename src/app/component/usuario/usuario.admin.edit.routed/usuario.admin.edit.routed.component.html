@@ -102,3 +102,37 @@
     </form>
   </div>
 </div>
+
+<!-- Modal de confirmación -->
+<div
+  *ngIf="showModal"
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+>
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+    <h2 class="text-xl font-bold text-blue-600 mb-4">Usuario Actualizado</h2>
+    <p class="text-gray-700">El usuario ha sido actualizado correctamente.</p>
+    <button
+      (click)="closeModal()"
+      class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700"
+    >
+      Aceptar
+    </button>
+  </div>
+</div>
+
+<!-- Modal de error -->
+<div
+  *ngIf="showErrorModal"
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+>
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+    <h2 class="text-xl font-bold text-red-600 mb-4">Error</h2>
+    <p class="text-gray-700">{{ errorMessage }}</p>
+    <button
+      (click)="closeErrorModal()"
+      class="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700"
+    >
+      Cerrar
+    </button>
+  </div>
+</div>

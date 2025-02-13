@@ -18,6 +18,10 @@ export class UsuarioEditRoutedComponent implements OnInit {
   usuarioId!: number;
   usuario!: IUsuario;
 
+  showSuccessModal: boolean = false;
+  showErrorModal: boolean = false;
+  errorMessage: string = '';
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -49,31 +53,49 @@ export class UsuarioEditRoutedComponent implements OnInit {
           email: usuario.correo,
         });
       },
-      error: (err) => console.error('Error al cargar datos del usuario:', err),
+      error: (err) => {
+        console.error('Error al cargar datos del usuario:', err);
+        this.errorMessage = 'No se pudo cargar la información del usuario.';
+        this.showErrorModal = true;
+      },
     });
   }
 
   onSubmit(): void {
-    if (this.oUsuarioForm.valid) {
-      const updatedUsuario = {
-        id: this.usuarioId,
-        nombre: this.oUsuarioForm.value.nombre,
-        correo: this.oUsuarioForm.value.email, // Asegúrate de usar "correo"
-        password: this.cryptoService.getHashSHA256(this.oUsuarioForm.value.password), // Hasheamos la contraseña
-      };
-
-      console.log("Enviando datos al backend:", updatedUsuario); // Verifica qué se envía al backend
-
-      this.usuarioService.update(updatedUsuario).subscribe({
-        next: () => {
-          alert('Usuario actualizado con éxito');
-          this.router.navigate(['/usuario/coleccion', this.usuarioId]);
-        },
-        error: (err) => {
-          console.error('Error al actualizar usuario:', err);
-        },
-      });
+    if (this.oUsuarioForm.invalid) {
+      this.errorMessage = 'Formulario inválido. Por favor, revisa los campos.';
+      this.showErrorModal = true;
+      return;
     }
+
+    const updatedUsuario = {
+      id: this.usuarioId,
+      nombre: this.oUsuarioForm.value.nombre,
+      correo: this.oUsuarioForm.value.email,
+      ...(this.oUsuarioForm.value.password
+        ? { password: this.cryptoService.getHashSHA256(this.oUsuarioForm.value.password) }
+        : {}),
+    };
+
+    this.usuarioService.update(updatedUsuario).subscribe({
+      next: () => {
+        this.showSuccessModal = true;
+      },
+      error: (err) => {
+        console.error('Error al actualizar usuario:', err);
+        this.errorMessage = 'Hubo un error al actualizar el usuario. Intenta nuevamente.';
+        this.showErrorModal = true;
+      },
+    });
+  }
+
+  closeSuccessModal(): void {
+    this.showSuccessModal = false;
+    this.router.navigate(['/usuario/coleccion', this.usuarioId]);
+  }
+
+  closeErrorModal(): void {
+    this.showErrorModal = false;
   }
 
 }

@@ -70,8 +70,6 @@ export class SharedLoginRoutedComponent implements OnInit {
           this.errorMessage = 'Correo o contraseña incorrectos';
         }
       });
-    } else {
-      alert('Formulario inválido. Por favor, revisa los campos.');
     }
   }
 
@@ -85,26 +83,29 @@ export class SharedLoginRoutedComponent implements OnInit {
   }
 
   handleGoogleCredentialResponse(response: any): void {
-    const token = response.credential;
+    const googleToken = response.credential;
 
-    this.oHttp.post('http://localhost:8085/api/auth/google', { token }).subscribe({
-      next: (res: any) => {
-        console.log('Respuesta del backend:', res);
+    console.log("🔹 Token de Google recibido:", googleToken);
 
-        if (res && res.id) {
-          this.oRouter.navigate(['/home']);
+    this.oHttp.post<{ token: string; name: string; id: number; correo:string }>(
+      'http://localhost:8085/api/auth/google',
+      { token: googleToken }
+    ).subscribe({
+      next: (res) => {
+        if (res && res.token) {
+          this.oSessionService.login(res.token);
+          this.oRouter.navigate(['/home/registered']);
           this.mostrarModalExito = true;
         } else {
-          console.error('El backend no devolvió un ID válido.');
+          console.error('⛔ El backend no devolvió un token válido.');
           this.mostrarModalError = true;
         }
       },
       error: (err) => {
-        console.error('Error al autenticar:', err);
+        console.error('🚨 Error al autenticar con Google:', err);
         this.mostrarModalError = true;
       },
     });
   }
-
 
 }

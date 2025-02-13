@@ -91,10 +91,6 @@ export class CartaAdminEditRoutedComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.oCartaForm.invalid) {
-      alert('Formulario inválido. Revisa los campos.');
-      return;
-    }
 
     const formData = new FormData();
     formData.append('nombre', this.oCartaForm.get('nombre')?.value);

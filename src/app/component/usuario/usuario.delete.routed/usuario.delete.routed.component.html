@@ -17,11 +17,70 @@
         Confirmar
       </button>
       <button
-        (click)="cancel()"
+        (click)="cancelDelete()"
         class="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg shadow hover:bg-gray-400 transition duration-200"
       >
         Cancelar
       </button>
     </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div
+  *ngIf="showConfirmModal"
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+>
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+    <h2 class="text-xl font-bold text-red-600 mb-4">Eliminar Usuario</h2>
+    <p class="text-gray-700">¿Estás seguro de que deseas eliminar este usuario?</p>
+    <div class="mt-4 flex justify-center space-x-4">
+      <button
+        (click)="confirmDelete()"
+        class="px-6 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700"
+      >
+        Eliminar
+      </button>
+      <button
+        (click)="cancelDelete()"
+        class="px-6 py-2 bg-gray-400 text-white rounded-lg shadow-md hover:bg-gray-500"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de éxito -->
+<div
+  *ngIf="showSuccessModal"
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+>
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+    <h2 class="text-xl font-bold text-blue-600 mb-4">Usuario Eliminado</h2>
+    <p class="text-gray-700">El usuario ha sido eliminado correctamente.</p>
+    <button
+      (click)="closeSuccessModal()"
+      class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700"
+    >
+      Aceptar
+    </button>
+  </div>
+</div>
+
+<!-- Modal de error -->
+<div
+  *ngIf="showErrorModal"
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+>
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+    <h2 class="text-xl font-bold text-red-600 mb-4">Error</h2>
+    <p class="text-gray-700">{{ errorMessage }}</p>
+    <button
+      (click)="closeErrorModal()"
+      class="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700"
+    >
+      Cerrar
+    </button>
   </div>
 </div>

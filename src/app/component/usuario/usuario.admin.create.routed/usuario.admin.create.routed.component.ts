@@ -23,6 +23,11 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
   oUsuarioForm: FormGroup;
   oUsuario: IUsuario | undefined;
 
+  showModal: boolean = false;
+  showErrorModal: boolean = false;
+  createdUserId: number | null = null;
+  errorMessage: string = '';
+
   constructor(
     private oUsuarioService: UsuarioService,
     private oRouter: Router,
@@ -47,7 +52,8 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
 
   onSubmit(): void {
     if (this.oUsuarioForm.invalid) {
-      alert('Formulario inválido. Por favor, revisa los campos.');
+      this.errorMessage = 'Formulario inválido. Por favor, revisa los campos.';
+      this.showErrorModal = true;
       return;
     }
 
@@ -62,20 +68,29 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
       password: hashedPassword,
       tipousuario: {
         id: this.oUsuarioForm.get('id_tipousuario')?.value,
-        descripcion: '', 
+        descripcion: '',
       },
     };
 
     this.oUsuarioService.createAdmin(usuario).subscribe({
       next: (oUsuario: IUsuario) => {
         this.oUsuario = oUsuario;
-        alert('Usuario creado con éxito. ID: ' + this.oUsuario.id);
-        this.oRouter.navigate(['/admin/usuario/plist']);
+        this.showModal = true;
       },
       error: (err) => {
         console.error('Error al crear el usuario:', err);
-        alert('Hubo un error al crear el usuario. Por favor, intenta nuevamente.');
+        this.errorMessage = 'Hubo un error al crear el usuario. Por favor, intenta nuevamente.';
+        this.showErrorModal = true;
       },
     });
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.oRouter.navigate(['/admin/usuario/plist']);
+  }
+
+  closeErrorModal() {
+    this.showErrorModal = false;
   }
 }
