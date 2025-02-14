@@ -53,12 +53,28 @@
 
           <!-- Contraseña -->
           <div>
-            <input
-              type="password"
-              formControlName="password"
-              placeholder="Contraseña"
-              class="block w-full px-4 border-none bg-gray-100 h-12 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0"
-            />
+            <div class="relative">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                placeholder="Contraseña"
+                class="block w-full px-4 border-none bg-gray-100 h-12 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0"
+              />
+              <div
+                class="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
+                (click)="togglePasswordVisibility()"
+              >
+                <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 12c0 4.418 4.5 9 9 9s9-4.582 9-9-4.5-9-9-9-9 4.582-9 9z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 12c0 4.418 4.5 9 9 9s9-4.582 9-9-4.5-9-9-9-9 4.582-9 9z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 3l18 18" />
+                </svg>
+              </div>
+            </div>
             <div
               *ngIf="oUsuarioForm.get('password')?.invalid && oUsuarioForm.get('password')?.touched"
               class="text-red-500 text-sm mt-1"
@@ -67,7 +83,7 @@
             </div>
           </div>
 
-          <!--Estado verificacion email-->
+          <!--Estado verificación email-->
           <div>
             <label>Estado de Verificación:</label>
             <input type="text" [value]="oUsuarioForm.get('emailVerified')?.value ? 'Verificado' : 'No Verificado'" disabled
@@ -89,7 +105,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Modal de éxito -->
 <div

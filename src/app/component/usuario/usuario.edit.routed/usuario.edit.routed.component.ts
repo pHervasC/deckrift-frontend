@@ -5,6 +5,7 @@ import { UsuarioService } from '../../../service/usuario.service';
 import { IUsuario } from '../../../model/usuario.interface';
 import { CommonModule } from '@angular/common';
 import { CryptoService } from '../../../service/crypto.service';
+import { SessionService } from '../../../service/session.service';
 
 @Component({
   selector: 'app-usuario-edit-routed',
@@ -21,13 +22,15 @@ export class UsuarioEditRoutedComponent implements OnInit {
   showSuccessModal: boolean = false;
   showErrorModal: boolean = false;
   errorMessage: string = '';
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private usuarioService: UsuarioService,
-    private cryptoService: CryptoService // Servicio de encriptación
+    private cryptoService: CryptoService, // Servicio de encriptación
+    private oSessionService: SessionService,
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +48,9 @@ export class UsuarioEditRoutedComponent implements OnInit {
     });
   }
 
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
 
   loadUsuarioData(): void {
     this.usuarioService.getOne(this.usuarioId).subscribe({
@@ -97,7 +103,8 @@ export class UsuarioEditRoutedComponent implements OnInit {
 
   closeSuccessModal(): void {
     this.showSuccessModal = false;
-    this.router.navigate(['/usuario/coleccion', this.usuarioId]);
+    this.router.navigate(['/home']);
+    this.oSessionService.logout();
   }
 
   closeErrorModal(): void {

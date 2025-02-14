@@ -5,6 +5,7 @@ import { UsuarioService } from '../../../service/usuario.service';
 import { IUsuario } from '../../../model/usuario.interface';
 import { CommonModule } from '@angular/common';
 import { CryptoService } from '../../../service/crypto.service';
+import { SessionService } from '../../../service/session.service';
 
 @Component({
   selector: 'app-usuario-admin-edit',
@@ -19,6 +20,9 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
   usuario!: IUsuario;
   showPassword: boolean = false;
 
+  userEmail: string = '';
+  id_Admin: number = 0;
+
   showModal: boolean = false;
   showErrorModal: boolean = false;
   errorMessage: string = "";
@@ -28,6 +32,7 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private usuarioService: UsuarioService,
+    private oSessionService: SessionService,
     private cryptoService: CryptoService
   ) {}
 
@@ -35,6 +40,12 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
     this.usuarioId = Number(this.route.snapshot.paramMap.get('id'));
     this.initializeForm();
     this.loadUsuarioData();
+    this.userEmail = this.oSessionService.getSessionEmail();
+    this.usuarioService.getUsuarioByEmail(this.userEmail).subscribe({
+      next: (data: IUsuario) => {
+        this.id_Admin = data.id;
+      }
+    })
   }
 
   initializeForm(): void {
@@ -90,6 +101,9 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
       this.usuarioService.update(updatedUsuario).subscribe({
         next: () => {
           this.showModal = true;
+          if (this.id_Admin === this.usuario!.id) {
+            this.oSessionService.logout();
+          }
         },
         error: (err) => {
           console.error('Error al actualizar usuario:', err);
