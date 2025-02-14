@@ -35,6 +35,7 @@ export class CartaPlistRoutedComponent implements OnInit {
   ) {
     this.debounceSubject.pipe(debounceTime(1000)).subscribe(() => {
       this.getPage();
+      this.goToPage(1);
     });
   }
 
@@ -53,7 +54,7 @@ export class CartaPlistRoutedComponent implements OnInit {
             this.nPage,
             oPageFromServer.totalPages
           );
-          this.cargarImagenes(); // Cargar las imágenes automáticamente
+          this.cargarImagenes(); 
           this.isLoading = false;
         },
         error: (err) => {

@@ -41,7 +41,7 @@ export class UsuarioAdminPlistRoutedComponent implements OnInit {
   ) {
     this.debounceSubject.pipe(debounceTime(1000)).subscribe(() => {
       this.getPage();
-      this.goToPage(0);
+      this.goToPage(1);
     });
   }
 

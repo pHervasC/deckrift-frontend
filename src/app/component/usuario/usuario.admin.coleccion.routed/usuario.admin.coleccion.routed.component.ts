@@ -45,8 +45,9 @@ export class UsuarioAdminColeccionRoutedComponent implements OnInit {
     private route: ActivatedRoute,
     private oCartaService: CartaService
   ) {
-    this.debounceSubject.pipe(debounceTime(10)).subscribe(() => {
+    this.debounceSubject.pipe(debounceTime(1000)).subscribe(() => {
       this.getPage();
+      this.goToPage(1);
     });
   }
 
