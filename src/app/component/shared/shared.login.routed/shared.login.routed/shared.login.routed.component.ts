@@ -58,24 +58,35 @@ export class SharedLoginRoutedComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      // Encriptar la contraseña
       const hashedPassword = this.oCryptoService.getHashSHA256(this.loginForm.value.password);
-      // Llamar al servicio de login
+
       this.oLoginService.login(this.loginForm.value.email, hashedPassword).subscribe({
         next: (token: string) => {
-          // Almacenar el token en la sesión
           this.oSessionService.login(token);
           this.mostrarModalExito = true;
-          this.cdRef.detectChanges(); // Forzar detección de cambios
+          this.cdRef.detectChanges();
         },
         error: (error: HttpErrorResponse) => {
+          console.error("Error en la petición:", error);
+
+          if (error.status === 401) {
+            try {
+              // Intentamos convertir el error en texto limpio
+              this.errorMessage = JSON.parse(error.error)?.error || "Debes verificar tu email antes de iniciar sesión.";
+            } catch {
+              this.errorMessage = error.error || "Debes verificar tu email antes de iniciar sesión.";
+            }
+          } else {
+            this.errorMessage = "Correo o contraseña incorrectos.";
+          }
+
           this.mostrarModalError = true;
-          this.errorMessage = 'Correo o contraseña incorrectos';
-          this.cdRef.detectChanges(); // Forzar detección de cambios
+          this.cdRef.detectChanges();
         }
       });
     }
   }
+
 
   cerrarModalExito() {
     this.mostrarModalExito = false;
@@ -84,6 +95,10 @@ export class SharedLoginRoutedComponent implements OnInit {
 
   cerrarModalError() {
     this.mostrarModalError = false;
+  }
+
+  register() {
+    this.oRouter.navigate(['/usuario/create']);
   }
 
   handleGoogleCredentialResponse(response: any): void {

@@ -95,9 +95,9 @@
           <!-- Link a Registro -->
           <div class="text-center mt-4">
             <label class="text-sm sm:text-base text-gray-700">¿No tienes una cuenta?</label>
-            <a routerLink="/register" class="ml-1 text-sm sm:text-base text-blue-500 font-semibold hover:underline transition-colors duration-200">
+            <button (click)="register()" class="ml-1 text-sm sm:text-base text-blue-500 font-semibold hover:underline transition-colors duration-200">
               Regístrate
-            </a>
+            </button>
           </div>
         </form>
       </div>
@@ -130,7 +130,7 @@
 >
   <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
     <h2 class="text-base sm:text-lg font-semibold text-red-600">Error</h2>
-    <p class="text-sm sm:text-base text-gray-700 mt-2">Correo o contraseña incorrectos.</p>
+    <p class="text-sm sm:text-base text-gray-700 mt-2">{{ errorMessage }}</p>
     <div class="flex justify-center mt-4">
       <button
         (click)="cerrarModalError()"
@@ -141,3 +141,4 @@
     </div>
   </div>
 </div>
+
