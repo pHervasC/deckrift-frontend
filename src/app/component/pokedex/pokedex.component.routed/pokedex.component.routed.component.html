@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex</title>
+    <link rel="stylesheet" href="pokedex.component.routed.component.css">
+</head>
+<body>
+
+    <header>
+        <nav class="nav">
+            <img src="assets/img/pokedex.png" alt="Logo Pokédex">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <button class="btn btn-header" (click)="filtrarPorTipo('all')">Ver todos</button>
+                </li>
+                <li *ngFor="let tipo of tiposPokemon" class="nav-item">
+                    <button
+                        class="btn btn-header"
+                        [ngClass]="tipo"
+                        (click)="filtrarPorTipo(tipo)">
+                        {{ tipo | titlecase }}
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div id="todos">
+            <div class="pokemon-todos" id="listaPokemon">
+                <div *ngFor="let poke of pokemonesFiltrados" class="pokemon">
+                    <p class="pokemon-id-back">#{{ poke.id | number:'3.0' }}</p>
+                    <div class="pokemon-imagen">
+                        <img [src]="poke.imagen" [alt]="poke.nombre">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="nombre-contenedor">
+                            <p class="pokemon-id">#{{ poke.id | number:'3.0' }}</p>
+                            <h2 class="pokemon-nombre">{{ poke.nombre | titlecase }}</h2>
+                        </div>
+                        <div class="pokemon-tipos">
+                            <p *ngFor="let tipo of poke.tipos" [ngClass]="tipo" class="tipo">
+                                {{ tipo | titlecase }}
+                            </p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="stat">{{ poke.altura }}m</p>
+                            <p class="stat">{{ poke.peso }}kg</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

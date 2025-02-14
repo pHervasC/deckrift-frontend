@@ -24,6 +24,7 @@ export class CartaPlistRoutedComponent implements OnInit {
   strFiltro: string = '';
   arrBotonera: string[] = [];
   imagenes: { [key: number]: string } = {}; // Diccionario para almacenar las imágenes
+  isLoading: boolean = false;
 
   private debounceSubject = new Subject<string>();
 
@@ -32,7 +33,7 @@ export class CartaPlistRoutedComponent implements OnInit {
     private oBotoneraService: BotoneraService,
     private oRouter: Router
   ) {
-    this.debounceSubject.pipe(debounceTime(300)).subscribe(() => {
+    this.debounceSubject.pipe(debounceTime(1000)).subscribe(() => {
       this.getPage();
     });
   }
@@ -42,6 +43,7 @@ export class CartaPlistRoutedComponent implements OnInit {
   }
 
   getPage() {
+    this.isLoading = true;
     this.oCartaService
       .getPage(this.nPage, this.nRpp, this.strField, this.strDir, this.strFiltro)
       .subscribe({
@@ -52,9 +54,11 @@ export class CartaPlistRoutedComponent implements OnInit {
             oPageFromServer.totalPages
           );
           this.cargarImagenes(); // Cargar las imágenes automáticamente
+          this.isLoading = false;
         },
         error: (err) => {
           console.error(err);
+          this.isLoading = false;
         },
       });
   }
@@ -77,6 +81,7 @@ export class CartaPlistRoutedComponent implements OnInit {
       });
     }
   }
+
   goToPage(p: number) {
     if (p) {
       this.nPage = p - 1;
@@ -108,5 +113,10 @@ export class CartaPlistRoutedComponent implements OnInit {
     this.nRpp = nrpp;
     this.getPage();
     return false;
+  }
+
+  filter(event: KeyboardEvent) {
+    this.isLoading = true;
+    this.debounceSubject.next(this.strFiltro);
   }
 }

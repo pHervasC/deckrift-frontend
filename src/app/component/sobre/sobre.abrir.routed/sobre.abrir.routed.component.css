@@ -24,17 +24,17 @@ body {
   }
   button:hover {
     background: #bc1360;
-  } 
+  }
   button:active {
     box-shadow: inset 0 0 0 3px rgba(0,0,0,0.4);
   }
-  
+
   #pack-opened {
     position: relative;
     opacity: 1;
     transition: opacity 1s ease-in-out;
   }
-  
+
   #pack-opened.hidden {
     opacity: 0;
     pointer-events: none;
@@ -51,30 +51,30 @@ body {
     perspective: 5000px;
     -webkit-perspective: 5000px;
   }
-  
+
   #pack-opened .pack-flash .pack-flash-light, #pack-opened .pack-flash .pack-flash-particles, #pack-opened .pack-flash .pack-flash-pack {
     position: absolute;
     top: 0;
     left: 0
   }
-  
+
   #pack-opened .pack-flash .pack-flash-light, #pack-opened .pack-flash .pack-flash-particles {
     width: 100%;
   }
-  
+
   #pack-opened.open .pack-flash .pack-flash-light {
     -webkit-animation: pack-flash-light 3s ease-out;
     animation: pack-flash-light 3s ease-out;
     opacity: 0;
   }
-  
+
   #pack-opened.open .pack-flash .pack-flash-particles {
     -webkit-animation: pack-flash-particles 3s ease-out;
     animation: pack-flash-particles 3s ease-out;
     opacity: 0
   }
-  
-  
+
+
   #pack-opened .pack-flash .pack-flash-pack {
     position: relative;
     opacity: 1;
@@ -85,13 +85,13 @@ body {
     transform-style: preserve-3d;
     background-size: 0 0
   }
-  
+
   #pack-opened.open .pack-flash .pack-flash-pack {
     opacity: 0;
     -webkit-animation: pack-flash-pack 3s ease-in-out;
     animation: pack-flash-pack 3s ease-in-out;
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .front {
     position: absolute;
     left: 0;
@@ -100,8 +100,8 @@ body {
     bottom: 0;
     width: 100%;
   }
-  
-  
+
+
   #pack-opened .pack-flash .pack-flash-pack .bottom {
     position: absolute;
     top: 100%;
@@ -109,112 +109,112 @@ body {
     width: 110%;
     height: 6.74157303%
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .top {
     position: absolute;
     bottom: 100%;
     left: 0;
     width: 100%;
   }
-  
+
   #pack-opened.open .pack-flash .pack-flash-pack .top {
    -webkit-animation: pack-flash-pack-top .9s ease-in 1.2s forwards;
     animation: pack-flash-pack-top .9s ease-in 1.2s forwards;
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .top img, #pack-opened .pack-flash .pack-flash-pack .top span {
     float: left;
     height: 100%;
     width: 25%;
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .top img {
     height: 100%;
     width: 100%;
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .top .cut {
     position: absolute;
     bottom: 0;
     top: 100%;
     opacity: 0;
     z-index: 9;
-  
+
   }
-  
+
   #pack-opened.open .pack-flash .pack-flash-pack .top .cut {
     -webkit-animation: pack-flash-pack-cut .9s ease-out;
     animation: pack-flash-pack-cut .9s ease-out;
     opacity: 0;
-  
+
     width: 120px;
     height: 120px;
     margin-left: -60px;
     margin-top: -60px;
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .top .cut img {
     width: 100%;
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .top span {
     -webkit-transform-origin: 0% 100%;
     -ms-transform-origin: 0% 100%;
     transform-origin: 0% 100%;
     display: inline-block;
   }
-  
-  
+
+
   #pack-opened.open .pack-flash .pack-flash-pack .top span {
     -webkit-animation: pack-flash-pack-rip .75s ease-in-out .9s forwards;
     animation: pack-flash-pack-rip .75s ease-in-out .9s forwards;
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .top>img {
     width: 25%
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .top>span {
     width: 75%
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .top>span>img {
     width: 33.33%
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .top>span>span {
     width: 66.66%
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .top>span>span>img {
     width: 50%
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .top>span>span>span {
     width: 50%
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .top>span>span>span>img {
     width: 100%
   }
-  
+
   #pack-opened .pack-flash .pack-flash-pack .pack-count-corner {
     top: 0;
     right: 0px;
     z-index: 3
   }
-  
+
   #pack-opened .cards-reveal ul li {
     width: 200px; /* Tamaño fijo */
     height: auto;
     position: absolute; /* Cambiado de absolute a relative */
-    display: flex; 
+    display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1; /* Ajusta el nivel de las cartas */
     transition: transform 0.5s ease, z-index 0.5s ease; /* Para animación más suave */
   }
-  
+
   #pack-opened .cards-reveal ul {
     display: flex;
     justify-content: center;
@@ -223,7 +223,7 @@ body {
     margin: 0;
     padding: 0;
   }
-  
+
   #pack-opened .cards-reveal ul li {
     width: 180px; /* Reducir el ancho de las cartas */
     height: auto;
@@ -236,7 +236,7 @@ body {
     transform: translateX(0); /* Valor inicial para todas las cartas */
     transition: transform 0.5s ease; /* Para suavizar cualquier cambio */
   }
-  
+
   #pack-opened .cards-reveal ul li img {
     width: 100%;
     height: auto;
@@ -248,38 +248,38 @@ body {
     animation-delay: 2.5s; /* Puedes aumentar este valor si deseas más tiempo antes de que aparezca */
     z-index: 5;
   }
-  
+
   #pack-opened.open .cards-reveal ul li.card-02 {
     animation: card-spread-02 5s ease forwards; /* Cambia de 0.5s a 1s */
     animation-delay: 3.5s; /* Retrasa la aparición de esta carta */
     z-index: 4;
   }
-  
+
   #pack-opened.open .cards-reveal ul li.card-05 {
     animation: card-spread-05 5s ease forwards; /* Cambia de 0.5s a 1s */
     animation-delay: 4.5s;
     z-index: 3;
   }
-  
+
   #pack-opened.open .cards-reveal ul li.card-04 {
     animation: card-spread-04 5s ease forwards; /* Cambia de 0.5s a 1s */
     animation-delay: 5.5s;
     z-index: 2;
   }
-  
+
   #pack-opened.open .cards-reveal ul li.card-03 {
     animation: card-spread-03 5s ease forwards; /* Cambia de 0.5s a 1s */
     animation-delay: 6.5s;
     z-index: 1;
   }
-  
+
   #pack-opened.open .cards-reveal ul li.gold {
-    box-shadow: 0 0 100px #fede3c;  
+    box-shadow: 0 0 100px #fede3c;
   }
-  
-  
-  
-  
+
+
+
+
   @keyframes pack-flash-pack {
     0% {
       -webkit-transform: scale(1) rotateY(0deg);
@@ -314,7 +314,7 @@ body {
       opacity: 0;
     }
   }
-  
+
   @keyframes pack-flash-pack-top {
     0% {
       -webkit-transform: rotate(0deg);
@@ -331,7 +331,7 @@ body {
       opacity: 0
     }
   }
-  
+
   @keyframes pack-flash-pack-cut {
     0% {
       left: 0;
@@ -350,7 +350,7 @@ body {
       transform: rotate(90deg);
     }
   }
-  
+
   @keyframes pack-flash-pack-rip {
     0% {
       -webkit-transform: rotate(0deg);
@@ -363,7 +363,7 @@ body {
       transform: rotate(-40deg)
     }
   }
-  
+
   @keyframes pack-flash-light {
     0% {
       -webkit-transform: scale(.8) translateZ(-300px);
@@ -383,7 +383,7 @@ body {
       opacity: 0
     }
   }
-  
+
   @keyframes card-spread-01 {
     0% {
       transform: translateX(0);
@@ -395,7 +395,7 @@ body {
       transform: translateX(-50%); /* Mantener posición final más cercana */
     }
   }
-  
+
   @keyframes card-spread-02 {
     0% {
       transform: translateX(0);
@@ -407,7 +407,7 @@ body {
       transform: translateX(-25%);
     }
   }
-  
+
   @keyframes card-spread-03 {
     0% {
       transform: translateX(0);
@@ -419,7 +419,7 @@ body {
       transform: translateX(0%);
     }
   }
-  
+
   @keyframes card-spread-04 {
     0% {
       transform: translateX(0);
@@ -431,7 +431,7 @@ body {
       transform: translateX(25%);
     }
   }
-  
+
   @keyframes card-spread-05 {
     0% {
       transform: translateX(0);
@@ -443,5 +443,4 @@ body {
       transform: translateX(50%);
     }
   }
-  
-  
+

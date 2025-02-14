@@ -39,8 +39,9 @@ export class UsuarioAdminPlistRoutedComponent implements OnInit {
     private oBotoneraService: BotoneraService,
     private oRouter: Router,
   ) {
-    this.debounceSubject.pipe(debounceTime(10)).subscribe(() => {
+    this.debounceSubject.pipe(debounceTime(1000)).subscribe(() => {
       this.getPage();
+      this.goToPage(0);
     });
   }
 

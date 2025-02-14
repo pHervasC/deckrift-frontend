@@ -25,7 +25,7 @@ export class UsuarioCreateRoutedComponent implements OnInit {
   mostrarModalExitoGoogle: boolean = false;
   mostrarModalError: boolean = false;
   mensajeModal: string = '';
-
+  showPassword: boolean = false;
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -66,15 +66,22 @@ export class UsuarioCreateRoutedComponent implements OnInit {
       emailVerified: false
     };
 
+    // Mostrar mensaje inmediatamente
+    this.mensajeModal = "Procesando registro...";
+    this.mostrarModalExito = true;
+    this.cdRef.detectChanges();
+
     this.oUsuarioService.create(usuario).subscribe({
       next: () => {
         this.mensajeModal = "Tu cuenta ha sido creada correctamente. Revisa tu correo para verificar tu email.";
-        this.mostrarModalExito = true;
+        this.cdRef.detectChanges();
       },
       error: (err) => {
         console.error('Error al crear el usuario:', err);
         this.mensajeModal = "Hubo un problema al crear tu cuenta. Inténtalo de nuevo.";
         this.mostrarModalError = true;
+        this.mostrarModalExito = false;
+        this.cdRef.detectChanges();
       },
     });
   }
@@ -117,4 +124,21 @@ export class UsuarioCreateRoutedComponent implements OnInit {
       },
     });
   }
+
+  togglePW(): void {
+
+    this.showPassword = !this.showPassword;
+
+    const passwordInput = document.querySelector<HTMLInputElement>('[formControlName="password"]');
+    const eyeIcon = document.querySelector('.eye');
+
+    if (passwordInput) {
+      passwordInput.type = this.showPassword ? 'text' : 'password';
+    }
+
+    if (eyeIcon) {
+      eyeIcon.classList.toggle('slash', this.showPassword);
+    }
+  }
+
 }

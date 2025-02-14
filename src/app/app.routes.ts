@@ -22,6 +22,7 @@ import { UsuarioAdminCreateRoutedComponent } from './component/usuario/usuario.a
 import { SobreAbrirRoutedComponent } from './component/sobre/sobre.abrir.routed/sobre.abrir.routed.component';
 import { UsuarioEditRoutedComponent } from './component/usuario/usuario.edit.routed/usuario.edit.routed.component';
 import { VerifiedEmailRoutedComponent } from './component/verified/verified.email.routed/verified.email.routed.component';
+import { PokedexComponent } from './component/pokedex/pokedex.component.routed/pokedex.component.routed.component';
 export const routes: Routes = [
 
   //Shared
@@ -53,6 +54,8 @@ export const routes: Routes = [
   // SOBRE
   { path: 'sobre/abrir/:id', component:SobreAbrirRoutedComponent, canActivate: [AuditorGuard]},
 
+  //Pokedex
+  { path: 'pokedex', component: PokedexComponent, canActivate: [AuditorGuard]},
 
 
 ];

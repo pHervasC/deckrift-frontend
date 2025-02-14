@@ -8,24 +8,23 @@ import { LoginService } from '../../../../service/login.service';
 import { SessionService } from '../../../../service/session.service';
 import { CryptoService } from './../../../../service/crypto.service';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './shared.login.routed.component.html',
   styleUrls: ['./shared.login.routed.component.css'],
   standalone: true,
   imports: [
-  FormsModule,
+    FormsModule,
     ReactiveFormsModule,
     CommonModule
   ]
 })
 export class SharedLoginRoutedComponent implements OnInit {
-
   private clientId = '642946707903-742gna6lhbktomd5mmk70nj5h4rg02fv.apps.googleusercontent.com';
   errorMessage: string | null = null;
   mostrarModalExito: boolean = false;
   mostrarModalError: boolean = false;
+  showPassword: boolean = false; // Añadida variable para mostrar/ocultar contraseña
 
   loginForm: FormGroup = new FormGroup({});
 
@@ -42,8 +41,6 @@ export class SharedLoginRoutedComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(5)])
     });
-
-
   }
 
   ngOnInit() {
@@ -52,7 +49,12 @@ export class SharedLoginRoutedComponent implements OnInit {
       this.handleGoogleCredentialResponse.bind(this),
       'g_id_signin'
     );
-   }
+  }
+
+  // Añadido método para mostrar/ocultar contraseña
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
 
   onSubmit() {
     if (this.loginForm.valid) {
@@ -64,10 +66,12 @@ export class SharedLoginRoutedComponent implements OnInit {
           // Almacenar el token en la sesión
           this.oSessionService.login(token);
           this.mostrarModalExito = true;
+          this.cdRef.detectChanges(); // Forzar detección de cambios
         },
         error: (error: HttpErrorResponse) => {
           this.mostrarModalError = true;
           this.errorMessage = 'Correo o contraseña incorrectos';
+          this.cdRef.detectChanges(); // Forzar detección de cambios
         }
       });
     }
@@ -84,8 +88,8 @@ export class SharedLoginRoutedComponent implements OnInit {
 
   handleGoogleCredentialResponse(response: any): void {
     const googleToken = response.credential;
-  
-    this.oHttp.post<{ token: string; name: string; id: number; correo:string; tipoUsuario: number }>(
+
+    this.oHttp.post<{ token: string; name: string; id: number; correo: string; tipoUsuario: number }>(
       'http://localhost:8085/api/auth/google',
       { token: googleToken }
     ).subscribe({
@@ -106,5 +110,4 @@ export class SharedLoginRoutedComponent implements OnInit {
       },
     });
   }
-
 }

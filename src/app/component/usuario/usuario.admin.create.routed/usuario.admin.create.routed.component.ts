@@ -27,6 +27,7 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
   showErrorModal: boolean = false;
   createdUserId: number | null = null;
   errorMessage: string = '';
+  showPassword: boolean = false;
 
   constructor(
     private oUsuarioService: UsuarioService,
@@ -66,7 +67,7 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
       nombre: this.oUsuarioForm.get('nombre')?.value,
       correo: this.oUsuarioForm.get('correo')?.value,
       password: hashedPassword,
-      emailVerified: false,
+      emailVerified: true,
       tipousuario: {
         id: this.oUsuarioForm.get('id_tipousuario')?.value,
         descripcion: '',
@@ -94,4 +95,9 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
   closeErrorModal() {
     this.showErrorModal = false;
   }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
 }

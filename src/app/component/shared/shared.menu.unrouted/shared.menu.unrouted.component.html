@@ -29,6 +29,10 @@
         [ngClass]="{ 'bg-blue-600': strRuta == '/usuario/coleccion/:id' }">
         Coleccion
     </button>
+    <a href="pokedex" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+        [ngClass]="{ 'bg-blue-600': strRuta == 'pokedex' }">
+        Pokedex
+      </a>
     </div>
     } @else {
     <div class="hidden md:flex items-center space-x-4">
@@ -40,6 +44,11 @@
         [ngClass]="{ 'bg-blue-600': strRuta == '/usuario/coleccion/:id' }">
         Coleccion
     </button>
+
+    <a href="pokedex" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+        [ngClass]="{ 'bg-blue-600': strRuta == 'pokedex' }">
+        Pokedex
+      </a>
     </div>
     }
   }

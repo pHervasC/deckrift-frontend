@@ -1,28 +1,30 @@
-
 <div class="bg-cartaPlist bg-cover bg-center min-h-screen">
-  <!-- Contenedor principal -->
   <div class="container mx-auto">
     <!-- Título -->
     <h1 class="text-center text-black text-4xl font-bold mb-6">Cartas</h1>
+
+    <!-- Buscador -->
+    <div class="mb-6 w-full flex justify-center">
+      <input
+        type="text"
+        placeholder="Buscar cartas"
+        [(ngModel)]="strFiltro"
+        (keyup)="filter($event)"
+        class="w-3/4 md:w-1/2 px-4 py-2 border rounded-lg shadow focus:outline-none focus:ring focus:ring-blue-300"
+      />
+    </div>
+
+    <!-- Loader de Pokéball -->
+    <div *ngIf="isLoading" class="flex justify-center items-center w-full mt-4 mb-4">
+      <div class="loader"></div>
+    </div>
+
     <!-- Grid de cartas -->
-    <div
-      class="grid grid-cols-3 gap-4 bg-white bg-opacity-50 rounded-lg p-4 shadow-lg"
-    >
-      <div
-        *ngFor="let carta of oPage?.content"
-        class="rounded-lg shadow-md p-4 flex flex-col items-center"
-      >
+    <div *ngIf="!isLoading" class="grid grid-cols-3 gap-4 bg-white bg-opacity-50 rounded-lg p-4 shadow-lg">
+      <div *ngFor="let carta of oPage?.content" class="rounded-lg shadow-md p-4 flex flex-col items-center">
         <!-- Mostrar imagen de la carta -->
-        <img
-          *ngIf="imagenes[carta.id]"
-          [src]="imagenes[carta.id]"
-          alt="Carta {{ carta.id }}"
-          class="w-60 h-80 rounded-lg"
-        />
-        <!-- Mensaje si no hay imagen disponible -->
-        <div *ngIf="!imagenes[carta.id]" class="text-gray-500">
-          Imagen no disponible
-        </div>
+        <img *ngIf="imagenes[carta.id]" [src]="imagenes[carta.id]" alt="Carta {{ carta.id }}" class="w-60 h-80 rounded-lg" />
+        <div *ngIf="!imagenes[carta.id]" class="text-gray-500">Imagen no disponible</div>
         <div class="mt-4 text-center">
           <p class="font-semibold">{{ carta.nombre }}</p>
         </div>
@@ -32,36 +34,18 @@
     <!-- Paginación -->
     <nav class="flex justify-center mt-6">
       <ul class="flex gap-2">
-        <!-- Botón Anterior -->
         <li>
-          <button
-            class="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50"
-            [disabled]="nPage === 0"
-            (click)="nPage > 0 && goToPrev()"
-          >
+          <button class="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50" [disabled]="nPage === 0" (click)="goToPrev()">
             Anterior
           </button>
         </li>
-
-        <!-- Botones de página -->
         <li *ngFor="let pag of arrBotonera">
-          <button
-            class="px-3 py-1 border rounded hover:bg-blue-100"
-            [class.bg-blue-500]="nPage === +pag - 1"
-            [class.text-white]="nPage === +pag - 1"
-            (click)="goToPage(+pag)"
-          >
+          <button class="px-3 py-1 border rounded hover:bg-blue-100" [class.bg-blue-500]="nPage === +pag - 1" [class.text-white]="nPage === +pag - 1" (click)="goToPage(+pag)">
             {{ pag }}
           </button>
         </li>
-
-        <!-- Botón Siguiente -->
         <li>
-          <button
-            class="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50"
-            [disabled]="!oPage || nPage + 1 === oPage.totalPages"
-            (click)="oPage && nPage + 1 < oPage.totalPages && goToNext()"
-          >
+          <button class="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50" [disabled]="!oPage || nPage + 1 === oPage.totalPages" (click)="goToNext()">
             Siguiente
           </button>
         </li>

@@ -17,6 +17,7 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
   oUsuarioForm!: FormGroup;
   usuarioId!: number;
   usuario!: IUsuario;
+  showPassword: boolean = false;
 
   showModal: boolean = false;
   showErrorModal: boolean = false;
@@ -40,10 +41,14 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
     this.oUsuarioForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       correo: ['', [Validators.required, Validators.email]],
-      password: ['', []], // Sin `Validators.required`, es opcional
+      password: ['', []],
       id_tipousuario: ['', [Validators.required]],
-      emailVerified: [{ value: this.oUsuarioForm.get('emailVerified')?.value, disabled: true }]
+      emailVerified: [{ value: false, disabled: true }]
     });
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword; // Alternar la visibilidad de la contraseña
   }
 
   loadUsuarioData(): void {
@@ -54,6 +59,7 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
           nombre: usuario.nombre,
           correo: usuario.correo,
           id_tipousuario: usuario.tipousuario?.id,
+          emailVerified: usuario.emailVerified
         });
       },
       error: (err) => {
@@ -71,7 +77,7 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
         id: this.usuarioId,
         nombre: this.oUsuarioForm.value.nombre,
         correo: this.oUsuarioForm.value.correo,
-        emailVerified: this.oUsuarioForm.get('emailVerified')?.value,
+        emailVerified: this.usuario.emailVerified,
         tipousuario: {
           id: this.oUsuarioForm.get('id_tipousuario')?.value,
           descripcion: '',
