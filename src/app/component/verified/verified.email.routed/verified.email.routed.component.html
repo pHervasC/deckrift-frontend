@@ -2,10 +2,6 @@
   <div class="bg-white shadow-lg rounded-lg p-6 text-center">
     <h2 class="text-2xl font-bold text-gray-700">{{ mensaje }}</h2>
 
-    <p *ngIf="googleUser" class="mt-4 text-gray-500">
-      Redirigiendo a la página principal en 3 segundos...
-    </p>
-
     <p *ngIf="!googleUser" class="mt-4 text-gray-500">
       Redirigiendo al login en 3 segundos...
     </p>

@@ -54,7 +54,8 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
       correo: ['', [Validators.required, Validators.email]],
       password: ['', []],
       id_tipousuario: ['', [Validators.required]],
-      emailVerified: [{ value: false, disabled: true }]
+      emailVerified: [{ value: false, disabled: true }],
+      monedas: [0, [Validators.required, Validators.min(0)]],
     });
   }
 
@@ -70,7 +71,8 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
           nombre: usuario.nombre,
           correo: usuario.correo,
           id_tipousuario: usuario.tipousuario?.id,
-          emailVerified: usuario.emailVerified
+          emailVerified: usuario.emailVerified,
+          monedas: usuario.monedas,
         });
       },
       error: (err) => {
@@ -93,6 +95,7 @@ export class UsuarioAdminEditRoutedComponent implements OnInit {
           id: this.oUsuarioForm.get('id_tipousuario')?.value,
           descripcion: '',
         },
+        monedas: this.oUsuarioForm.value.monedas,
         ...(this.oUsuarioForm.value.password
           ? { password: this.cryptoService.getHashSHA256(this.oUsuarioForm.value.password) } // Hashear solo si la contraseña es proporcionada
           : {}),

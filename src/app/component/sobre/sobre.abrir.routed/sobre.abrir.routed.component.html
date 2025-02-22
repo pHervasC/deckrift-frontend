@@ -70,3 +70,62 @@
     </div>
   </div>
 </div>
+
+<!-- Modal de error -->
+<div
+  *ngIf="mostrarModalError"
+  class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 px-4"
+>
+  <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
+    <h2 class="text-base sm:text-lg font-semibold text-gray-800">
+      Error
+    </h2>
+
+    <!-- Spinner mientras procesa -->
+    <div *ngIf="mensajeModal === 'Procesando...'" class="my-4">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+    </div>
+
+    <p class="text-sm sm:text-base text-gray-700 mt-2">{{ mensajeModal }}</p>
+
+    <div class="flex justify-center mt-4">
+      <button
+        (click)="cerrarModal()"
+        class="px-4 sm:px-6 py-2 bg-blue-600 text-white text-sm sm:text-base rounded-lg shadow-md hover:bg-blue-700 transition-all duration-200"
+      >
+        OK
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para gastar monedas -->
+<div
+  *ngIf="mostrarModalConfirmacion"
+  class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 px-4"
+>
+  <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
+    <h2 class="text-base sm:text-lg font-semibold text-gray-800">
+      Usar Monedas
+    </h2>
+    <p class="text-sm sm:text-base text-gray-700 mt-2">
+      Has alcanzado el límite de 2 sobres por día. ¿Quieres gastar 10 monedas para abrir otro sobre?
+    </p>
+
+    <div class="flex justify-center mt-4 space-x-4">
+      <button
+        (click)="confirmarUsoMonedas()"
+        class="px-4 sm:px-6 py-2 bg-green-600 text-white text-sm sm:text-base rounded-lg shadow-md hover:bg-green-700 transition-all duration-200"
+      >
+        Sí, gastar 10 monedas
+      </button>
+
+      <button
+        (click)="cerrarModal()"
+        class="px-4 sm:px-6 py-2 bg-red-600 text-white text-sm sm:text-base rounded-lg shadow-md hover:bg-red-700 transition-all duration-200"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>

@@ -7,4 +7,5 @@ export interface IUsuario {
   password?: string;
   tipousuario?: ITipoUsuario;
   emailVerified: boolean;
+  monedas: number;
 }

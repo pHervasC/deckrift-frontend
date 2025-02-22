@@ -15,7 +15,10 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
   sobreAbierto: boolean = false;
   cartasReveladas: any[] = [];
   usuarioId!: number;
-  mostrarBotonAbrir: boolean = true; // Controla la visibilidad del botón "Abrir sobre"
+  mostrarBotonAbrir: boolean = true;
+  mostrarModalConfirmacion: boolean = false;
+  mostrarModalError: boolean = false;
+  mensajeModal: string = '';
 
   constructor(
     private almacenService: AlmacenService,
@@ -29,55 +32,85 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Simulamos el comportamiento del JavaScript en Angular
     document.querySelector('.btn-open')?.addEventListener('click', () => {
       document.getElementById('pack-opened')?.classList.toggle('open');
     });
   }
 
   abrirSobre(): void {
+    // Limpiar las cartas anteriores
+    this.cartasReveladas = [];
+
     this.sobreAbierto = true;
-    this.mostrarBotonAbrir = false; // Oculta el botón de "Abrir sobre"
+    this.mostrarBotonAbrir = false;
 
-    // Retrasar la aparición de las cartas para que el sobre desaparezca primero
-    setTimeout(() => {
-      this.almacenService.addCartasAleatorias(this.usuarioId, 5).subscribe({
-        next: (cartas: any[]) => {
-          this.cartasReveladas = [];
+    this.almacenService.puedeAbrirSobre(this.usuarioId).subscribe({
+      next: (puedeAbrir) => {
+        if (puedeAbrir) {
+          this.procesarApertura(false);
+        } else {
+          this.mostrarModalConfirmacion = true;
+        }
+      },
+      error: () => {
+        this.mostrarMensajeError("Error al verificar si puedes abrir el sobre.");
+      },
+    });
+  }
 
-          // Mostrar cartas una por una con delay
+  mostrarConfirmacionGastarMonedas(): void {
+    this.mensajeModal = "Has alcanzado el límite de 2 sobres por día. ¿Quieres gastar 10 monedas para abrir otro sobre?";
+    this.mostrarModalConfirmacion = true;
+  }
+
+  confirmarUsoMonedas(): void {
+    this.mostrarModalConfirmacion = false;
+    this.procesarApertura(true);
+  }
+
+  procesarApertura(usarMonedas: boolean): void {
+    this.almacenService.addCartasAleatorias(this.usuarioId, 5, usarMonedas).subscribe({
+      next: (respuesta) => {
+        const cartas = Array.isArray(respuesta) ? respuesta as any[] : (respuesta as any)?.cartas as any[];
+
+        if (!Array.isArray(cartas)) {
+          this.mostrarMensajeError("Error: Datos de cartas no válidos.");
+          return;
+        }
+
+        // Esperamos 3 segundos para que termine la animación del sobre
+        setTimeout(() => {
           cartas.forEach((carta: any, index: number) => {
             setTimeout(() => {
               this.cartaService.getImage(carta.id).subscribe({
                 next: (blob: Blob) => {
-                  const reader = new FileReader();
-                  reader.onloadend = () => {
-                    this.cartasReveladas.push({
-                      ...carta,
-                      imageUrl: reader.result as string,
-                    });
-                  };
-                  reader.readAsDataURL(blob);
+                  const imageUrl = URL.createObjectURL(blob);
+                  this.cartasReveladas.push({ ...carta, imageUrl });
                 },
-                error: (error) =>
-                  console.error(
-                    `Error al obtener imagen de la carta ${carta.id}:`,
-                    error
-                  ),
+                error: () => {}
               });
-            }, index * 500);
+            }, index * 500); // Cada carta aparecerá con 500ms de diferencia
           });
 
-          // Mostrar el botón de "Abrir sobre" nuevamente después de que todas las cartas se hayan mostrado
-          const totalDelay = cartas.length * 500 + 1000; // Tiempo total de delay (500ms por carta + 1s adicional)
           setTimeout(() => {
             this.mostrarBotonAbrir = true;
-            this.sobreAbierto = false; // Restablecer el estado para permitir volver a abrir el sobre
-          }, totalDelay);
-        },
-        error: (err) => console.error('Error al obtener las cartas:', err),
-      });
-    }, 2000); // Retrasa la aparición de las cartas 2s para que el sobre termine
+          }, cartas.length * 500 + 1000);
+        }, 3000); // Esperamos 3 segundos para que termine la animación del sobre
+      },
+      error: () => {
+        this.mostrarMensajeError("No se pudo abrir el sobre.");
+      },
+    });
+  }
+
+  mostrarMensajeError(mensaje: string): void {
+    this.mensajeModal = mensaje;
+    this.mostrarModalError = true;
+  }
+
+  cerrarModal(): void {
+    this.mostrarModalError = false;
+    this.mostrarBotonAbrir = true;
   }
 
   verColeccion(idUsuario: number): void {

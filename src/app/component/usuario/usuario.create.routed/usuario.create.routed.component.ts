@@ -63,7 +63,8 @@ export class UsuarioCreateRoutedComponent implements OnInit {
       nombre: this.oUsuarioForm.get('nombre')?.value,
       correo: this.oUsuarioForm.get('email')?.value,
       password: hashedPassword,
-      emailVerified: false
+      emailVerified: false,
+      monedas: 10,
     };
 
     // Mostrar mensaje inmediatamente
@@ -101,12 +102,7 @@ export class UsuarioCreateRoutedComponent implements OnInit {
       next: (res) => {
         if (res && res.token) {
           this.oSessionService.login(res.token);
-
-          if (res.emailVerified) {
-            this.oRouter.navigate(['/home/registered']);
-          } else {
-            this.oRouter.navigate(['/verify-email'], { queryParams: { google: 'true' } });
-          }
+          this.oRouter.navigate(['/home/registered']); // 🔹 Redirigir directamente al home
 
           this.mensajeModal = "Inicio de sesión exitoso con Google.";
           this.mostrarModalExito = true;

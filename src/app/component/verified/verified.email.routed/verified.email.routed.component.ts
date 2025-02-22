@@ -18,15 +18,6 @@ export class VerifiedEmailRoutedComponent implements OnInit {
 
   ngOnInit(): void {
     const email = this.route.snapshot.queryParamMap.get('email');
-    const google = this.route.snapshot.queryParamMap.get('google');
-
-    if (google === 'true') {
-      this.mensaje = '✅ Has iniciado sesión con Google, tu correo ya está verificado.';
-      setTimeout(() => {
-        this.router.navigate(['/home/registered']);
-      }, 3000);
-      return;
-    }
 
     if (email) {
       this.http.get(`http://localhost:8085/api/auth/verify-email?email=${email}`, { responseType: 'text' }).subscribe({

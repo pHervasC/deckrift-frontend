@@ -46,6 +46,7 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
         Validators.minLength(6),
       ]),
       id_tipousuario: new FormControl('', [Validators.required]),
+      monedas: new FormControl(10, [Validators.required, Validators.min(0)]),
     });
   }
 
@@ -72,6 +73,7 @@ export class UsuarioAdminCreateRoutedComponent implements OnInit {
         id: this.oUsuarioForm.get('id_tipousuario')?.value,
         descripcion: '',
       },
+      monedas: this.oUsuarioForm.get('monedas')?.value,
     };
 
     this.oUsuarioService.createAdmin(usuario).subscribe({

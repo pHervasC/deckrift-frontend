@@ -44,7 +44,8 @@ export class UsuarioEditRoutedComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
       password: [''], // Campo de contraseña no obligatorio
-      emailVerified: [{ value: '', disabled: true }]
+      emailVerified: [{ value: '', disabled: true }],
+      monedas: [{ value: 0, disabled: true }]
     });
   }
 
@@ -59,7 +60,8 @@ export class UsuarioEditRoutedComponent implements OnInit {
         this.oUsuarioForm.patchValue({
           nombre: usuario.nombre,
           email: usuario.correo,
-          emailVerified: usuario.emailVerified
+          emailVerified: usuario.emailVerified,
+          monedas: usuario.monedas,
         });
       },
       error: (err) => {
@@ -83,6 +85,7 @@ export class UsuarioEditRoutedComponent implements OnInit {
       nombre: this.oUsuarioForm.value.nombre,
       correo: this.oUsuarioForm.value.email,
       emailVerified: this.oUsuarioForm.get('emailVerified')?.value,
+      monedas: this.oUsuarioForm.value.monedas,
       ...(this.oUsuarioForm.value.password
         ? { password: this.cryptoService.getHashSHA256(this.oUsuarioForm.value.password) }
         : {}),
@@ -100,6 +103,9 @@ export class UsuarioEditRoutedComponent implements OnInit {
     });
   }
 
+  irATienda(): void {
+    this.router.navigate(['/shop']);
+  }
 
   closeSuccessModal(): void {
     this.showSuccessModal = false;

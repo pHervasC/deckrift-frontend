@@ -23,6 +23,9 @@ import { SobreAbrirRoutedComponent } from './component/sobre/sobre.abrir.routed/
 import { UsuarioEditRoutedComponent } from './component/usuario/usuario.edit.routed/usuario.edit.routed.component';
 import { VerifiedEmailRoutedComponent } from './component/verified/verified.email.routed/verified.email.routed.component';
 import { PokedexComponent } from './component/pokedex/pokedex.component.routed/pokedex.component.routed.component';
+import { ShopRoutedComponent } from './component/shop/shop.routed/shop.routed.component';
+import { SuccessRoutedComponent } from './component/shop/success.routed/success.routed.component';
+import { CompraRoutedComponent } from './component/shop/compra.routed/compra.routed.component';
 export const routes: Routes = [
 
   //Shared
@@ -57,5 +60,9 @@ export const routes: Routes = [
   //Pokedex
   { path: 'pokedex', component: PokedexComponent, canActivate: [AuditorGuard]},
 
+  //Shop
+  { path: 'shop', component: ShopRoutedComponent, canActivate: [AuditorGuard]},
+  { path: 'success', component: SuccessRoutedComponent, canActivate: [AuditorGuard]},
+  { path: 'compra/plist', component:CompraRoutedComponent, canActivate: [AdminGuard]},
 
 ];

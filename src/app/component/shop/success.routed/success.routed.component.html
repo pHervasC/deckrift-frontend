@@ -1,0 +1,30 @@
+<div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex items-center justify-center px-4">
+  <div class="bg-gray-800 rounded-2xl p-8 max-w-md w-full shadow-2xl border border-green-500/20">
+    <!-- Icono de éxito animado -->
+    <div class="mb-6">
+      <div class="mx-auto w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center">
+        <svg class="w-12 h-12 text-green-500 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Mensaje -->
+    <h2 class="text-2xl font-bold text-white mb-4 bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent">
+      {{ mensaje }}
+    </h2>
+
+    <!-- Animación de carga -->
+    <div class="flex flex-col items-center gap-3">
+      <p class="text-gray-400">Redirigiendo a la tienda</p>
+      <div class="flex gap-2">
+        <div class="w-2 h-2 bg-green-500 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+        <div class="w-2 h-2 bg-green-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+        <div class="w-2 h-2 bg-green-500 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+      </div>
+    </div>
+
+    <!-- Línea decorativa -->
+    <div class="w-16 h-1 bg-gradient-to-r from-green-400 to-green-600 mx-auto mt-6 rounded-full"></div>
+  </div>
+</div>

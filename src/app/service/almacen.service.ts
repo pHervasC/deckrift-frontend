@@ -48,10 +48,16 @@ export class AlmacenService {
 
 
   // Añadir cartas aleatorias a un usuario
-  
-  addCartasAleatorias(usuarioId: number, cantidad: number): Observable<any[]> {
-    return this.oHttp.post<any[]>(`${this.serverURL}/addCartas/${usuarioId}`, { cantidad });
+
+  addCartasAleatorias(idUsuario: number, cantidad: number, usarMonedas: boolean) {
+    return this.oHttp.post(`${this.serverURL}/addCartas/${idUsuario}?usarMonedas=${usarMonedas}`,
+    { cantidad });
   }
+
+
+puedeAbrirSobre(usuarioId: number): Observable<boolean> {
+  return this.oHttp.get<boolean>(`${this.serverURL}/puedeAbrir/${usuarioId}`);
+}
 
   deleteCarta(usuarioId: number, cartaId: number) {
     return this.oHttp.delete(`${this.serverURL}/delete/${usuarioId}/${cartaId}`);
@@ -64,7 +70,7 @@ export class AlmacenService {
   vaciarColeccion(usuarioId: number): Observable<void> {
     return this.oHttp.delete<void>(`${this.serverURL}/usuario/${usuarioId}/vaciar`);
   }
-  
+
 
   addCarta(usuarioId: number, cartaId: number): Observable<any> {
     return this.oHttp.post(`${this.serverURL}/add/${usuarioId}/${cartaId}`, {});
