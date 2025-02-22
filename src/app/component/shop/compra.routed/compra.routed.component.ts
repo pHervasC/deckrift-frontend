@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { CompraService } from '../../../service/compra.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 
 @Component({
   selector: 'app-compra-routed',
@@ -23,6 +26,7 @@ export class CompraRoutedComponent implements OnInit {
     strDir: string = 'desc';
     strFiltro: string = '';
     estadoSeleccionado: string = 'todos';
+    compras: ICompra[] = [];
     arrBotonera: string[] = [];
     private debounceSubject = new Subject<string>();
 
@@ -30,7 +34,6 @@ export class CompraRoutedComponent implements OnInit {
       { valor: 'todos', etiqueta: 'Todos' },
       { valor: 'pendiente', etiqueta: 'Pendientes' },
       { valor: 'completado', etiqueta: 'Completados' },
-      { valor: 'cancelada', etiqueta: 'Cancelados' }
     ];
 
     constructor(
@@ -49,19 +52,14 @@ export class CompraRoutedComponent implements OnInit {
     }
 
     getPage() {
-      let filtroCompleto = this.strFiltro;
-
-      if (this.estadoSeleccionado !== 'todos') {
-        filtroCompleto = filtroCompleto ?
-          `${filtroCompleto} estado:${this.estadoSeleccionado}` :
-          `estado:${this.estadoSeleccionado}`;
-      }
+      const estado = this.estadoSeleccionado !== 'todos' ? this.estadoSeleccionado : undefined;
 
       this.oCompraService
-        .getPage(this.nPage, this.nRpp, this.strField, this.strDir, filtroCompleto)
+        .getPage(this.nPage, this.nRpp, this.strField, this.strDir, this.strFiltro, estado)
         .subscribe({
           next: (oPageFromServer: IPage<ICompra>) => {
             this.oPage = oPageFromServer;
+            this.compras = oPageFromServer.content;
             this.arrBotonera = this.oBotoneraService.getBotonera(
               this.nPage,
               oPageFromServer.totalPages
@@ -72,6 +70,27 @@ export class CompraRoutedComponent implements OnInit {
           },
         });
     }
+
+    generarPDF() {
+      const doc = new jsPDF();
+      doc.text('Historial de Compras', 14, 10);
+
+      autoTable(doc, {
+        head: [['ID', 'Usuario', 'Cantidad', 'Gasto (€)', 'Estado']],
+        body: this.compras.map((compra: ICompra) => [
+          compra.id,
+          compra.usuario.id,
+          compra.cantidadMonedas,
+          compra.gasto,
+          compra.estado
+        ]),
+        startY: 20,
+      });
+
+      doc.save('historial_compras.pdf');
+    }
+
+
 
     goToPage(p: number) {
       if (p) {
@@ -115,5 +134,6 @@ export class CompraRoutedComponent implements OnInit {
       this.estadoSeleccionado = select.value;
       this.nPage = 0;
       this.getPage();
+      this.goToPage(1);
     }
 }

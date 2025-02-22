@@ -1,150 +1,152 @@
-<div class="container mx-auto p-4">
-  <h2 class="text-2xl font-semibold text-center mb-6">Lista de Cartas</h2>
+<div class="min-h-screen bg-gray-900 text-white">
+  <div class="container mx-auto p-4">
+    <h2 class="text-3xl font-semibold text-center mb-6 text-white">Lista de Cartas</h2>
 
-  <!-- Botón Crear Carta -->
-  <div class="flex justify-center mb-6">
-    <a href="admin/carta/create">
-      <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-105 flex items-center gap-2">
-        <i class="bi bi-plus-square"></i>
-        Crear nueva carta
-      </button>
-    </a>
-  </div>
-
-  <!-- Barra de búsqueda -->
-  <div class="mb-4">
-    <input
-      type="text"
-      placeholder="Buscar cartas"
-      [(ngModel)]="strFiltro"
-      (keyup)="filter($event)"
-      class="w-full px-4 py-2 border rounded shadow focus:outline-none focus:ring focus:ring-blue-300"
-    />
-  </div>
-
-  <!-- Opciones de registros por página -->
-  <div class="flex justify-center gap-2 mb-4">
-    <button
-      class="px-3 py-1 border rounded hover:bg-blue-100"
-      [class.bg-blue-500]="nRpp === 10"
-      [class.text-white]="nRpp === 10"
-      (click)="goToRpp(10)"
-    >
-      10
-    </button>
-    <button
-      class="px-3 py-1 border rounded hover:bg-blue-100"
-      [class.bg-blue-500]="nRpp === 50"
-      [class.text-white]="nRpp === 50"
-      (click)="goToRpp(50)"
-    >
-      50
-    </button>
-    <button
-      class="px-3 py-1 border rounded hover:bg-blue-100"
-      [class.bg-blue-500]="nRpp === 100"
-      [class.text-white]="nRpp === 100"
-      (click)="goToRpp(100)"
-    >
-      100
-    </button>
-  </div>
-
-  <!-- Tabla de cartas -->
-  <div class="overflow-x-auto">
-    <table class="w-full border-collapse border">
-      <thead>
-        <tr class="bg-gray-200">
-          <th class="border px-4 py-2 cursor-pointer" (click)="sort('id')">ID</th>
-          <th class="border px-4 py-2 cursor-pointer" (click)="sort('nombre')">Nombre</th>
-          <th class="border px-4 py-2 cursor-pointer" (click)="sort('tipo')">Tipo</th>
-          <th class="border px-4 py-2 cursor-pointer" (click)="sort('rareza')">Rareza</th>
-          <th class="border px-4 py-2 text-center">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let carta of oPage?.content" class="hover:bg-gray-100">
-          <td class="border px-4 py-2">{{ carta.id }}</td>
-          <td class="border px-4 py-2">{{ carta.nombre }}</td>
-          <td class="border px-4 py-2">{{ carta.tipo }}</td>
-          <td class="border px-4 py-2">{{ carta.rareza }}</td>
-          <td class="border px-4 py-2 text-center flex justify-center gap-2">
-            <button
-              class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 flex items-center gap-1"
-              (click)="verImagen(carta.id)"
-            >
-              <i class="bi bi-eye"></i> Ver
-            </button>
-            <button
-              class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center gap-1"
-              [routerLink]="['/admin/carta/edit', carta.id]"
-              >
-              <i class="bi bi-pencil-square"></i> Editar
-            </button>
-            <button
-              class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 flex items-center gap-1"
-              [routerLink]="['/admin/carta/delete', carta.id]"
-            >
-              <i class="bi bi-trash"></i> Eliminar
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Paginación -->
-  <nav class="flex justify-center mt-6">
-    <ul class="flex gap-2">
-      <!-- Botón Anterior -->
-      <li>
-        <button
-          class="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50"
-          [disabled]="nPage === 0"
-          (click)="nPage > 0 && goToPrev()"
-        >
-          Anterior
+    <!-- Botón Crear Carta -->
+    <div class="flex justify-center mb-6">
+      <a href="admin/carta/create">
+        <button class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105 flex items-center gap-2 text-lg">
+          <i class="bi bi-plus-square"></i>
+          Crear nueva carta
         </button>
-      </li>
+      </a>
+    </div>
 
-      <!-- Botones de página -->
-      <li *ngFor="let pag of arrBotonera">
-        <button
-          class="px-3 py-1 border rounded hover:bg-blue-100"
-          [class.bg-blue-500]="nPage === +pag - 1"
-          [class.text-white]="nPage === +pag - 1"
-          (click)="goToPage(+pag)"
-        >
-          {{ pag }}
-        </button>
-      </li>
+    <!-- Barra de búsqueda -->
+    <div class="mb-4">
+      <input
+        type="text"
+        placeholder="Buscar cartas"
+        [(ngModel)]="strFiltro"
+        (keyup)="filter($event)"
+        class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg shadow text-white placeholder-gray-400 focus:outline-none focus:ring focus:ring-blue-500"
+      />
+    </div>
 
-      <!-- Botón Siguiente -->
-      <li>
-        <button
-          class="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50"
-          [disabled]="!oPage || nPage + 1 === oPage.totalPages"
-          (click)="oPage && nPage + 1 < oPage.totalPages && goToNext()"
-        >
-          Siguiente
-        </button>
-      </li>
-    </ul>
-  </nav>
-
-  <!-- Modal de imagen -->
-  <div
-    *ngIf="imagenActual"
-    class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
-  >
-    <div class="bg-white p-6 rounded shadow-lg relative">
+    <!-- Opciones de registros por página -->
+    <div class="flex justify-center gap-3 mb-4">
       <button
-        class="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-        (click)="cerrarImagen()"
+        class="px-4 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 text-lg"
+        [class.bg-yellow-600]="nRpp === 10"
+        [class.text-white]="nRpp === 10"
+        (click)="goToRpp(10)"
       >
-        &times;
+        10
       </button>
-      <img [src]="imagenActual" alt="Imagen de la carta" class="max-w-full max-h-96 mx-auto" />
+      <button
+        class="px-4 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 text-lg"
+        [class.bg-yellow-600]="nRpp === 50"
+        [class.text-white]="nRpp === 50"
+        (click)="goToRpp(50)"
+      >
+        50
+      </button>
+      <button
+        class="px-4 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 text-lg"
+        [class.bg-yellow-600]="nRpp === 100"
+        [class.text-white]="nRpp === 100"
+        (click)="goToRpp(100)"
+      >
+        100
+      </button>
+    </div>
+
+    <!-- Tabla de cartas -->
+    <div class="overflow-x-auto">
+      <table class="w-full border-collapse border border-gray-700">
+        <thead>
+          <tr class="bg-gray-800">
+            <th class="border border-gray-700 px-4 py-3 cursor-pointer text-gray-300" (click)="sort('id')">ID</th>
+            <th class="border border-gray-700 px-4 py-3 cursor-pointer text-gray-300" (click)="sort('nombre')">Nombre</th>
+            <th class="border border-gray-700 px-4 py-3 cursor-pointer text-gray-300" (click)="sort('tipo')">Tipo</th>
+            <th class="border border-gray-700 px-4 py-3 cursor-pointer text-gray-300" (click)="sort('rareza')">Rareza</th>
+            <th class="border border-gray-700 px-4 py-3 text-center text-gray-300">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let carta of oPage?.content" class="hover:bg-gray-800">
+            <td class="border border-gray-700 px-4 py-3">{{ carta.id }}</td>
+            <td class="border border-gray-700 px-4 py-3">{{ carta.nombre }}</td>
+            <td class="border border-gray-700 px-4 py-3">{{ carta.tipo }}</td>
+            <td class="border border-gray-700 px-4 py-3">{{ carta.rareza }}</td>
+            <td class="border border-gray-700 px-4 py-3 text-center flex justify-center gap-3">
+              <button
+                class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center text-base"
+                (click)="verImagen(carta.id)"
+              >
+                <i class="bi bi-eye"></i> Ver
+              </button>
+              <button
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center text-base"
+                [routerLink]="['/admin/carta/edit', carta.id]"
+              >
+                <i class="bi bi-pencil-square"></i> Editar
+              </button>
+              <button
+                class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center text-base"
+                [routerLink]="['/admin/carta/delete', carta.id]"
+              >
+                <i class="bi bi-trash"></i> Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginación -->
+    <nav class="flex justify-center mt-6">
+      <ul class="flex gap-3">
+        <!-- Botón Anterior -->
+        <li>
+          <button
+            class="px-4 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 disabled:opacity-50 text-base"
+            [disabled]="nPage === 0"
+            (click)="nPage > 0 && goToPrev()"
+          >
+            Anterior
+          </button>
+        </li>
+
+        <!-- Botones de página -->
+        <li *ngFor="let pag of arrBotonera">
+          <button
+            class="px-4 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 text-base"
+            [class.bg-yellow-600]="nPage === +pag - 1"
+            [class.text-white]="nPage === +pag - 1"
+            (click)="goToPage(+pag)"
+          >
+            {{ pag }}
+          </button>
+        </li>
+
+        <!-- Botón Siguiente -->
+        <li>
+          <button
+            class="px-4 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 disabled:opacity-50 text-base"
+            [disabled]="!oPage || nPage + 1 === oPage.totalPages"
+            (click)="oPage && nPage + 1 < oPage.totalPages && goToNext()"
+          >
+            Siguiente
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Modal de imagen - mantenido igual pero con colores adaptados -->
+    <div
+      *ngIf="imagenActual"
+      class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+    >
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg relative">
+        <button
+          class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl"
+          (click)="cerrarImagen()"
+        >
+          &times;
+        </button>
+        <img [src]="imagenActual" alt="Imagen de la carta" class="max-w-full max-h-96 mx-auto rounded-lg" />
+      </div>
     </div>
   </div>
 </div>

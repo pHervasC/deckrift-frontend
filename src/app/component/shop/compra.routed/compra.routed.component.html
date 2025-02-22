@@ -1,9 +1,9 @@
-<div class="min-h-screen bg-gradient-to-b from-gray-50 to-white py-8 px-4">
+<div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 py-8 px-4">
   <div class="max-w-7xl mx-auto">
     <!-- Encabezado -->
     <div class="text-center mb-8">
-      <h2 class="text-3xl font-bold text-gray-800 mb-2">Historial de Compras</h2>
-      <div class="w-24 h-1 bg-blue-500 mx-auto rounded-full"></div>
+      <h2 class="text-3xl font-bold text-white mb-2">Historial de Compras</h2>
+      <div class="w-24 h-1 bg-yellow-500 mx-auto rounded-full"></div>
     </div>
 
     <!-- Filtros -->
@@ -15,7 +15,7 @@
           placeholder="Buscar compras..."
           [(ngModel)]="strFiltro"
           (keyup)="filter($event)"
-          class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+          class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
         />
         <svg class="absolute right-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -26,7 +26,7 @@
       <select
         [(ngModel)]="estadoSeleccionado"
         (change)="cambiarEstado($event)"
-        class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
       >
         <option *ngFor="let estado of estados" [value]="estado.valor">
           {{ estado.etiqueta }}
@@ -34,30 +34,42 @@
       </select>
     </div>
 
+    <!-- Botón PDF mejorado -->
+    <button
+      (click)="generarPDF()"
+      class="flex items-center gap-2 px-6 py-3 bg-yellow-500 text-black font-medium rounded-lg shadow-lg hover:bg-yellow-600 transition-colors duration-200 mb-6"
+    >
+      <!-- Icono PDF -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      <span>Descargar PDF</span>
+    </button>
+
     <!-- Selector de registros por página -->
     <div class="flex justify-center gap-2 mb-6">
       <button
         *ngFor="let n of [10, 50, 100]"
         (click)="goToRpp(n)"
-        class="px-4 py-2 rounded-lg transition-all duration-200 shadow-sm"
-        [class.bg-blue-500]="nRpp === n"
-        [class.text-white]="nRpp === n"
-        [class.bg-white]="nRpp !== n"
-        [class.text-gray-700]="nRpp !== n"
+        class="px-4 py-2 rounded-lg transition-all duration-200"
+        [class.bg-yellow-500]="nRpp === n"
+        [class.text-black]="nRpp === n"
+        [class.bg-gray-800]="nRpp !== n"
+        [class.text-white]="nRpp !== n"
         [class.border]="nRpp !== n"
-        [class.border-gray-300]="nRpp !== n"
+        [class.border-gray-700]="nRpp !== n"
       >
         {{ n }}
       </button>
     </div>
 
     <!-- Tabla -->
-    <div class="overflow-x-auto bg-white rounded-xl shadow-lg border border-gray-200">
+    <div class="overflow-x-auto bg-gray-800 rounded-xl shadow-xl border border-gray-700">
       <table class="w-full">
         <thead>
-          <tr class="bg-gray-50">
+          <tr class="bg-gray-900">
             <th *ngFor="let header of ['ID', 'Usuario', 'Cantidad', 'Gasto (€)', 'Estado']"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:text-blue-600"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider cursor-pointer hover:text-yellow-500"
                 (click)="sort(header.toLowerCase())"
             >
               {{ header }}
@@ -67,18 +79,18 @@
             </th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-200">
-          <tr *ngFor="let compra of oPage?.content" class="hover:bg-gray-50 transition-colors">
-            <td class="px-6 py-4 text-sm text-gray-600">{{ compra.id }}</td>
-            <td class="px-6 py-4 text-sm text-gray-600">{{ compra.usuario.id }}</td>
-            <td class="px-6 py-4 text-sm text-gray-600">{{ compra.cantidadMonedas }}</td>
-            <td class="px-6 py-4 text-sm text-gray-600">{{ compra.gasto | currency:'EUR' }}</td>
+        <tbody class="divide-y divide-gray-700">
+          <tr *ngFor="let compra of oPage?.content" class="hover:bg-gray-700 transition-colors">
+            <td class="px-6 py-4 text-sm text-gray-300">{{ compra.id }}</td>
+            <td class="px-6 py-4 text-sm text-gray-300">{{ compra.usuario.id }}</td>
+            <td class="px-6 py-4 text-sm text-gray-300">{{ compra.cantidadMonedas }}</td>
+            <td class="px-6 py-4 text-sm text-gray-300">{{ compra.gasto | currency:'EUR' }}</td>
             <td class="px-6 py-4">
               <span class="px-3 py-1 text-xs font-medium rounded-full"
                     [ngClass]="{
-                      'bg-red-100 text-red-600': compra.estado === 'cancelada',
-                      'bg-yellow-100 text-yellow-600': compra.estado === 'pendiente',
-                      'bg-green-100 text-green-600': compra.estado === 'completado'
+                      'bg-red-500/20 text-red-400': compra.estado === 'cancelada',
+                      'bg-yellow-500/20 text-yellow-400': compra.estado === 'pendiente',
+                      'bg-green-500/20 text-green-400': compra.estado === 'completado'
                     }">
                 {{ compra.estado }}
               </span>
@@ -93,7 +105,7 @@
       <ul class="flex gap-2">
         <li>
           <button
-            class="px-4 py-2 rounded-lg bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+            class="px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
             [disabled]="nPage === 0"
             (click)="goToPrev()"
           >
@@ -103,13 +115,13 @@
 
         <li *ngFor="let pag of arrBotonera">
           <button
-            class="px-4 py-2 rounded-lg transition-all duration-200 shadow-sm"
-            [class.bg-blue-500]="nPage === +pag - 1"
-            [class.text-white]="nPage === +pag - 1"
-            [class.bg-white]="nPage !== +pag - 1"
-            [class.text-gray-700]="nPage !== +pag - 1"
+            class="px-4 py-2 rounded-lg transition-all duration-200"
+            [class.bg-yellow-500]="nPage === +pag - 1"
+            [class.text-black]="nPage === +pag - 1"
+            [class.bg-gray-800]="nPage !== +pag - 1"
+            [class.text-white]="nPage !== +pag - 1"
             [class.border]="nPage !== +pag - 1"
-            [class.border-gray-300]="nPage !== +pag - 1"
+            [class.border-gray-700]="nPage !== +pag - 1"
             (click)="goToPage(+pag)"
           >
             {{ pag }}
@@ -118,7 +130,7 @@
 
         <li>
           <button
-            class="px-4 py-2 rounded-lg bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+            class="px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
             [disabled]="!oPage || nPage + 1 === oPage.totalPages"
             (click)="goToNext()"
           >

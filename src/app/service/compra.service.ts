@@ -12,23 +12,14 @@ export class CompraService {
 
   constructor(private http: HttpClient) { }
 
-  getPage(
-    page: number,
-    size: number,
-    field: string = 'id',
-    dir: string = 'asc',
-    filtro: string = ''
-  ): Observable<IPage<ICompra>> {
-    const params: any = {
-      page,
-      size,
-      sort: `${field},${dir}`
-    };
+  getPage(page: number, size: number, field: string, dir: string, filtro?: string, estado?: string): Observable<IPage<ICompra>> {
+    let params = `page=${page}&size=${size}&sort=${field},${dir}`;
 
-    if (filtro && filtro.trim() !== '') {
-      params.filter = filtro;
-    }
+    if (filtro) params += `&correo=${filtro}`;
+    if (estado) params += `&estado=${estado}`;
 
-    return this.http.get<IPage<ICompra>>(`${this.apiUrl}/page`, { params });
+    return this.http.get<IPage<ICompra>>(`${this.apiUrl}/page?${params}`);
   }
+
+
 }

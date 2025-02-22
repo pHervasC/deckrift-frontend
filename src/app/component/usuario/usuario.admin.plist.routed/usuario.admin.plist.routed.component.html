@@ -1,145 +1,125 @@
-<div class="container mx-auto p-4">
-  <h2 class="text-2xl font-semibold text-center mb-4">Lista de Usuarios</h2>
+<div class="min-h-screen bg-gray-900 text-white">
+  <div class="container mx-auto p-4">
+    <h2 class="text-2xl font-semibold text-center mb-6 text-white">Lista de Usuarios</h2>
 
-  <!-- Botón Crear centrado y azul -->
-  <div class="flex justify-center mb-4">
-    <button
-      class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
-      (click)="create()"
-    >
-      Crear Usuario
-    </button>
-  </div>
-
-  <!-- Barra de búsqueda -->
-  <div class="mb-4">
-    <input
-      type="text"
-      placeholder="Buscar usuarios"
-      [(ngModel)]="strFiltro"
-      (keyup)="filter($event)"
-      class="w-full px-4 py-2 border rounded shadow focus:outline-none focus:ring focus:ring-blue-300"
-    />
-  </div>
-
-  <!-- Opciones de registros por página -->
-  <div class="flex justify-center gap-2 mb-4">
-    <li
-      class="list-none"
-      [class.bg-blue-500]="nRpp === 10"
-      [class.text-white]="nRpp === 10"
-    >
-      <a
-        class="px-3 py-1 border rounded cursor-pointer hover:bg-blue-100"
-        (click)="goToRpp(10)"
-        >10</a
+    <!-- Botón Crear centrado -->
+    <div class="flex justify-center mb-6">
+      <button
+        class="px-6 py-3 bg-yellow-500 text-black font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 transform hover:scale-105 text-lg"
+        (click)="create()"
       >
-    </li>
-    <li
-      class="list-none"
-      [class.bg-blue-500]="nRpp === 50"
-      [class.text-white]="nRpp === 50"
-    >
-      <a
-        class="px-3 py-1 border rounded cursor-pointer hover:bg-blue-100"
-        (click)="goToRpp(50)"
-        >50</a
+        Crear Usuario
+      </button>
+    </div>
+
+    <!-- Barra de búsqueda -->
+    <div class="mb-4">
+      <input
+        type="text"
+        placeholder="Buscar usuarios"
+        [(ngModel)]="strFiltro"
+        (keyup)="filter($event)"
+        class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg shadow text-white placeholder-gray-400 focus:outline-none focus:ring focus:ring-yellow-500"
+      />
+    </div>
+
+    <!-- Opciones de registros por página -->
+    <div class="flex justify-center gap-3 mb-4">
+      <button
+        *ngFor="let n of [10, 50, 100]"
+        (click)="goToRpp(n)"
+        class="px-4 py-2 rounded-lg transition-all duration-200 text-lg"
+        [class.bg-yellow-500]="nRpp === n"
+        [class.text-black]="nRpp === n"
+        [class.bg-gray-800]="nRpp !== n"
+        [class.text-white]="nRpp !== n"
+        [class.border]="nRpp !== n"
+        [class.border-gray-700]="nRpp !== n"
       >
-    </li>
-    <li
-      class="list-none"
-      [class.bg-blue-500]="nRpp === 100"
-      [class.text-white]="nRpp === 100"
-    >
-      <a
-        class="px-3 py-1 border rounded cursor-pointer hover:bg-blue-100"
-        (click)="goToRpp(100)"
-        >100</a
-      >
-    </li>
+        {{ n }}
+      </button>
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <div class="overflow-x-auto">
+      <table class="w-full border-collapse border border-gray-700">
+        <thead>
+          <tr class="bg-gray-800">
+            <th class="border border-gray-700 px-4 py-3 cursor-pointer text-gray-300" (click)="sort('id')">ID</th>
+            <th class="border border-gray-700 px-4 py-3 cursor-pointer text-gray-300" (click)="sort('nombre')">Nombre</th>
+            <th class="border border-gray-700 px-4 py-3 cursor-pointer text-gray-300" (click)="sort('correo')">Correo</th>
+            <th class="border border-gray-700 px-4 py-3 text-center text-gray-300">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of oPage?.content" class="hover:bg-gray-800">
+            <td class="border border-gray-700 px-4 py-3">{{ usuario.id }}</td>
+            <td class="border border-gray-700 px-4 py-3">{{ usuario.nombre }}</td>
+            <td class="border border-gray-700 px-4 py-3">{{ usuario.correo }}</td>
+            <td class="border border-gray-700 px-4 py-3 flex gap-2 justify-center">
+              <button
+                class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                (click)="edit(usuario)"
+              >
+                Editar
+              </button>
+              <button
+                class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                (click)="remove(usuario)"
+              >
+                Eliminar
+              </button>
+              <button
+                class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                (click)="verColeccion(usuario.id)"
+              >
+                Colección
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginación -->
+    <nav class="flex justify-center mt-6">
+      <ul class="flex gap-3">
+        <!-- Botón Anterior -->
+        <li>
+          <button
+            class="px-4 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 disabled:opacity-50 text-base"
+            [disabled]="nPage === 0"
+            (click)="nPage > 0 && goToPrev()"
+          >
+            Anterior
+          </button>
+        </li>
+
+        <!-- Botones de página -->
+        <li *ngFor="let pag of arrBotonera" [ngSwitch]="pag">
+          <span *ngSwitchCase="'...'" class="px-4 py-2 text-gray-500">...</span>
+          <button
+            *ngSwitchDefault
+            class="px-4 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 text-base"
+            [class.bg-yellow-500]="nPage === +pag"
+            [class.text-black]="nPage === +pag"
+            (click)="goToPage(+pag)"
+          >
+            {{ pag }}
+          </button>
+        </li>
+
+        <!-- Botón Siguiente -->
+        <li>
+          <button
+            class="px-4 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 disabled:opacity-50 text-base"
+            [disabled]="!oPage || nPage + 1 === oPage.totalPages"
+            (click)="oPage && nPage + 1 < oPage.totalPages && goToNext()"
+          >
+            Siguiente
+          </button>
+        </li>
+      </ul>
+    </nav>
   </div>
-
-  <!-- Tabla de usuarios -->
-  <table class="w-full border-collapse border">
-    <thead>
-      <tr class="bg-gray-200">
-        <th class="border px-4 py-2 cursor-pointer" (click)="sort('id')">ID</th>
-        <th class="border px-4 py-2 cursor-pointer" (click)="sort('nombre')">
-          Nombre
-        </th>
-        <th class="border px-4 py-2 cursor-pointer" (click)="sort('correo')">
-          Correo
-        </th>
-        <th class="border px-4 py-2">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let usuario of oPage?.content" class="hover:bg-gray-100">
-        <td class="border px-4 py-2">{{ usuario.id }}</td>
-        <td class="border px-4 py-2">{{ usuario.nombre }}</td>
-        <td class="border px-4 py-2">{{ usuario.correo }}</td>
-        <td class="border px-4 py-2 flex gap-2 justify-center">
-          <button
-            class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-            (click)="edit(usuario)"
-          >
-            Editar
-          </button>
-          <button
-            class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-            (click)="remove(usuario)"
-          >
-            Eliminar
-          </button>
-          <button
-            class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-            (click)="verColeccion(usuario.id)"
-          >
-            Colección
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- Paginación -->
-  <nav class="flex justify-center mt-4">
-    <ul class="flex gap-2">
-      <!-- Botón Anterior -->
-      <li>
-        <a
-          class="px-3 py-1 border rounded cursor-pointer hover:bg-gray-200 disabled:opacity-50"
-          [class.disabled]="nPage === 0"
-          (click)="nPage > 0 && goToPrev()"
-        >
-          Anterior
-        </a>
-      </li>
-
-      <!-- Botones de página -->
-      <li *ngFor="let pag of arrBotonera" [ngSwitch]="pag">
-        <span *ngSwitchCase="'...'" class="px-3 py-1 text-gray-500"> ... </span>
-        <a
-          *ngSwitchDefault
-          class="px-3 py-1 border rounded cursor-pointer hover:bg-blue-100"
-          [class.bg-blue-500]="nPage === +pag"
-          [class.text-white]="nPage === +pag"
-          (click)="goToPage(+pag)"
-        >
-          {{ pag }}
-        </a>
-      </li>
-
-      <!-- Botón Siguiente -->
-      <li>
-        <a
-          class="px-3 py-1 border rounded cursor-pointer hover:bg-gray-200 disabled:opacity-50"
-          [class.disabled]="!oPage || nPage + 1 === oPage.totalPages"
-          (click)="oPage && nPage + 1 < oPage.totalPages && goToNext()"
-        >
-          Siguiente
-        </a>
-      </li>
-    </ul>
-  </nav>
 </div>
