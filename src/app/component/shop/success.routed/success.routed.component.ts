@@ -29,12 +29,17 @@ export class SuccessRoutedComponent implements OnInit {
     this.http.get<boolean>(`http://localhost:8085/stripe/confirmar-pago?session_id=${sessionId}`).subscribe({
         next: (respuesta) => {
             console.log("✅ Respuesta del backend:", respuesta);
-            if (respuesta === true) { // Asegurar que la respuesta es true
+            if (respuesta === true) {
                 this.mensaje = "✅ Pago confirmado. Se han añadido tus monedas.";
             } else {
                 this.mensaje = "❌ No se pudo verificar el pago.";
             }
-            setTimeout(() => this.router.navigate(['/home/registered']), 3000);
+            setTimeout(() => {
+              this.router.navigate(['/home/registered']).then(() => {
+                window.location.reload();  // Se recarga después de navegar
+              });
+            }, 3000);
+
         },
         error: (error) => {
             console.error("❌ Error en la verificación:", error);

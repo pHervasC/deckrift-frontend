@@ -262,3 +262,48 @@ main {
     background-color: #F0B6BC;
     color: #1c1c1c;
 }
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.loader {
+    height: 60px;
+    aspect-ratio: 1;
+    position: relative;
+    animation: spin 1s infinite linear;
+}
+
+.loader::before,
+.loader::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    transform-origin: center;
+}
+
+.loader::after {
+    background: radial-gradient(at 75% 15%,#fffb,#0000 35%),
+      radial-gradient(at 80% 40%,#0000,#0008),
+      radial-gradient(circle  5px,#fff 94%,#0000),
+      radial-gradient(circle 10px,#000 94%,#0000),
+      linear-gradient(#F93318 0 0) top   /100% calc(50% - 5px),
+      linear-gradient(#fff    0 0) bottom/100% calc(50% - 5px)
+      #000;
+    background-repeat: no-repeat;
+}
+
+.loader::before {
+    background: #ddd;
+    filter: blur(8px);
+    transform: scaleY(0.4) translate(-13px, 0px);
+}
+
+/* Animación de giro completo */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

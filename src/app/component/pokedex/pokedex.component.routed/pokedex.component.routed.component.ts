@@ -24,6 +24,7 @@ export class PokedexComponent implements OnInit {
   private pokedex = new Pokedex(); // Instancia de la API de Pokedex
   pokemones: Pokemon[] = [];
   pokemonesFiltrados: Pokemon[] = [];
+  isLoading: boolean = false;
   tiposPokemon: string[] = [
     'normal', 'fire', 'water', 'grass', 'electric', 'ice', 'fighting',
     'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost',
@@ -35,6 +36,7 @@ export class PokedexComponent implements OnInit {
   }
 
   private async cargarPokemones(): Promise<void> {
+    this.isLoading = true;
     try {
       const ids = Array.from({ length: 151 }, (_, i) => i + 1); // Genera un array con IDs del 1 al 151
       const responses = await this.pokedex.getPokemonByName(ids);
@@ -51,12 +53,14 @@ export class PokedexComponent implements OnInit {
       this.pokemonesFiltrados = [...this.pokemones];
     } catch (error) {
       console.error('Error al cargar Pokémon:', error);
+    } finally {
+      this.isLoading = false;
     }
   }
 
   filtrarPorTipo(tipo: string): void {
-    this.pokemonesFiltrados = tipo === 'all' 
-      ? [...this.pokemones] 
+    this.pokemonesFiltrados = tipo === 'all'
+      ? [...this.pokemones]
       : this.pokemones.filter(poke => poke.tipos.includes(tipo));
   }
 }

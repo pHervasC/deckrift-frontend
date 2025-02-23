@@ -29,6 +29,11 @@
     </header>
 
     <main>
+
+       <!-- Loader mientras se cargan los Pokémon -->
+    <div *ngIf="isLoading" class="flex justify-center items-center w-full mt-4 mb-4">
+      <div class="loader"></div>
+  </div>
         <div id="todos">
             <div class="pokemon-todos">
                 <div *ngFor="let poke of pokemonesFiltrados" class="pokemon">
