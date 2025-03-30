@@ -4,13 +4,14 @@ import { httpOptions, serverURL } from '../environment/environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { IUsuario } from '../model/usuario.interface';
 import { IPage } from '../model/model.interface';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class UsuarioService {
-
+  subjectMonedas: Subject<void> = new Subject<void>();
   private serverURL: string = 'http://localhost:8085/usuario';
 
   constructor(private oHttp: HttpClient) { }
@@ -60,6 +61,10 @@ export class UsuarioService {
     URL += this.serverURL + '/byemail';
     URL += '/' + email;
     return this.oHttp.get<IUsuario>(URL);
+  }
+
+  onModifyMonedas(): Subject<void> {
+    return this.subjectMonedas;
   }
 
 }

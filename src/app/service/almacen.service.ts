@@ -7,8 +7,6 @@ import { IAlmacen } from '../model/almacen.interface';
 import { httpOptions } from '../environment/environment';
 import { IPage } from '../model/model.interface';
 
-
-
 @Injectable({
   providedIn: 'root',
 })
@@ -24,7 +22,6 @@ export class AlmacenService {
 
     return this.oHttp.get<IPage<IAlmacen>>(URL);
 }
-
 
     getPage(
       page: number,
@@ -46,14 +43,11 @@ export class AlmacenService {
       return this.oHttp.get<IPage<IAlmacen>>(URL, httpOptions);
     }
 
-
   // Añadir cartas aleatorias a un usuario
-
   addCartasAleatorias(idUsuario: number, cantidad: number, usarMonedas: boolean) {
     return this.oHttp.post(`${this.serverURL}/addCartas/${idUsuario}?usarMonedas=${usarMonedas}`,
     { cantidad });
   }
-
 
 puedeAbrirSobre(usuarioId: number): Observable<boolean> {
   return this.oHttp.get<boolean>(`${this.serverURL}/puedeAbrir/${usuarioId}`);
@@ -70,7 +64,6 @@ puedeAbrirSobre(usuarioId: number): Observable<boolean> {
   vaciarColeccion(usuarioId: number): Observable<void> {
     return this.oHttp.delete<void>(`${this.serverURL}/usuario/${usuarioId}/vaciar`);
   }
-
 
   addCarta(usuarioId: number, cartaId: number): Observable<any> {
     return this.oHttp.post(`${this.serverURL}/add/${usuarioId}/${cartaId}`, {});

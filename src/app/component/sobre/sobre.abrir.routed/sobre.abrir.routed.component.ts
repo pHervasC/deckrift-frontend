@@ -3,6 +3,7 @@ import { AlmacenService } from '../../../service/almacen.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CartaService } from '../../../service/carta.service';
+import { UsuarioService } from '../../../service/usuario.service';
 
 @Component({
   selector: 'app-sobre-abrir',
@@ -24,7 +25,8 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
     private almacenService: AlmacenService,
     private route: ActivatedRoute,
     private cartaService: CartaService,
-    private oRouter: Router
+    private oRouter: Router,
+    private UsuarioService: UsuarioService
   ) {}
 
   ngOnInit(): void {
@@ -66,6 +68,7 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
   confirmarUsoMonedas(): void {
     this.mostrarModalConfirmacion = false;
     this.procesarApertura(true);
+    this
   }
 
   procesarApertura(usarMonedas: boolean): void {
@@ -109,8 +112,8 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
   }
 
   cerrarModal(): void {
-    this.mostrarModalError = false;
     this.mostrarBotonAbrir = true;
+    
   }
 
   verColeccion(idUsuario: number): void {
