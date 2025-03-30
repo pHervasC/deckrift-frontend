@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CartaService } from '../../../service/carta.service';
 import { UsuarioService } from '../../../service/usuario.service';
+import { MonedaService } from '../../../service/moneda.service';
 
 @Component({
   selector: 'app-sobre-abrir',
@@ -26,7 +27,8 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private cartaService: CartaService,
     private oRouter: Router,
-    private UsuarioService: UsuarioService
+    private UsuarioService: UsuarioService,
+    private monedaService: MonedaService
   ) {}
 
   ngOnInit(): void {
@@ -81,6 +83,13 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
           return;
         }
 
+        if (usarMonedas) {
+          this.UsuarioService.getOne(this.usuarioId).subscribe({
+            next: (usuario) => {
+              this.monedaService.setMonedas(usuario.monedas);
+            }
+          });
+        }
         // Esperamos 3 segundos para que termine la animación del sobre
         setTimeout(() => {
           cartas.forEach((carta: any, index: number) => {
@@ -100,8 +109,9 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
           }, cartas.length * 500 + 1000);
         }, 3000); // Esperamos 3 segundos para que termine la animación del sobre
       },
-      error: () => {
-        this.mostrarMensajeError("No se pudo abrir el sobre.");
+      error: (error) => {
+        const mensaje = error.error?.error || "No se pudo abrir el sobre.";
+        this.mostrarMensajeError(mensaje);
       },
     });
   }
@@ -113,7 +123,8 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
 
   cerrarModal(): void {
     this.mostrarBotonAbrir = true;
-    
+    this.mostrarModalConfirmacion = false;
+    this.mostrarModalError = false;
   }
 
   verColeccion(idUsuario: number): void {

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SessionService } from '../../../service/session.service';
 import { IUsuario } from '../../../model/usuario.interface';
 import { UsuarioService } from '../../../service/usuario.service';
+import { MonedaService } from '../../../service/moneda.service';
 
 @Component({
   selector: 'app-shared-menu-unrouted',
@@ -25,8 +26,10 @@ export class SharedMenuUnroutedComponent implements OnInit {
   constructor(
     private oRouter: Router,
     private oSessionService: SessionService,
-    private oUsuarioService: UsuarioService
+    private oUsuarioService: UsuarioService,
+    private monedaService: MonedaService,
   ) {
+    this.monedaService.monedas$.subscribe(m => this.monedas = m);
     this.oRouter.events.subscribe((oEvent) => {
       if (oEvent instanceof NavigationEnd) {
         this.strRuta = oEvent.url;
@@ -41,6 +44,7 @@ export class SharedMenuUnroutedComponent implements OnInit {
           this.id = data.id;
           this.nombre = data.nombre;
           this.monedas = data.monedas;
+          this.monedaService.setMonedas(this.monedas);
         }
       })
     }
