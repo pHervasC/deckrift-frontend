@@ -26,7 +26,7 @@ export class SuccessRoutedComponent implements OnInit {
         return;
     }
 
-    this.http.get<boolean>(`http://localhost:8085/stripe/confirmar-pago?session_id=${sessionId}`).subscribe({
+    this.http.get<boolean>(`https://deckrift-backend.onrender.com/stripe/confirmar-pago?session_id=${sessionId}`).subscribe({
         next: (respuesta) => {
             console.log("✅ Respuesta del backend:", respuesta);
             if (respuesta === true) {

@@ -11,7 +11,7 @@ import { IPage } from '../model/model.interface';
   providedIn: 'root',
 })
 export class AlmacenService {
-  private serverURL: string = 'http://localhost:8085/almacen';
+  private serverURL: string = 'https://deckrift-backend.onrender.com/almacen';
 
   constructor(private oHttp: HttpClient) {}
 

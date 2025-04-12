@@ -96,7 +96,7 @@ export class UsuarioCreateRoutedComponent implements OnInit {
     const googleToken = response.credential;
 
     this.oHttp.post<{ token: string; name: string; id: number; correo: string; tipoUsuario: number; emailVerified: boolean }>(
-      'http://localhost:8085/api/auth/google',
+      'https://deckrift-backend.onrender.com/api/auth/google',
       { token: googleToken }
     ).subscribe({
       next: (res) => {
