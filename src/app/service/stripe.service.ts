@@ -8,7 +8,7 @@ import { loadStripe } from '@stripe/stripe-js';
 })
 export class StripeService {
 
-  private apiUrl = 'http://localhost:8085/stripe'; // URL de tu backend
+  private apiUrl = 'https://deckrift-backend.onrender.com/stripe';
 
   constructor(private http: HttpClient) { }
 

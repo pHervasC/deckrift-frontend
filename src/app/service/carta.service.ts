@@ -11,7 +11,7 @@ import { IPage } from '../model/model.interface';
 
 export class CartaService {
 
-  private serverURL: string = 'http://localhost:8085/carta';
+  private serverURL: string = 'https://deckrift-backend.onrender.com/carta';
 
   constructor(private oHttp: HttpClient) { }
 

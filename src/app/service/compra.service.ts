@@ -9,7 +9,7 @@ import { HttpParams } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CompraService {
-  private apiUrl = 'http://localhost:8085/compra';
+  private apiUrl = 'https://deckrift-backend.onrender.com/compra';
 
   constructor(private http: HttpClient) { }
 

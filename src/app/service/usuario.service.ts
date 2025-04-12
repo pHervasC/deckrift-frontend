@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 
 export class UsuarioService {
   subjectMonedas: Subject<void> = new Subject<void>();
-  private serverURL: string = 'http://localhost:8085/usuario';
+  private serverURL: string = 'https://deckrift-backend.onrender.com/usuario';
 
   constructor(private oHttp: HttpClient) { }
 

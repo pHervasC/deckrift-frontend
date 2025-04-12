@@ -15,7 +15,7 @@ export class LoginService {
 
   login(email: string, password: string): Observable<string> {
     const loginData = { correo: email, password: password };
-    return this.oHttp.post<string>('http://localhost:8085/api/auth/login', loginData, {
+    return this.oHttp.post<string>('https://deckrift-backend.onrender.com/api/auth/login', loginData, {
       headers: { 'Content-Type': 'application/json' },
     });
   }
