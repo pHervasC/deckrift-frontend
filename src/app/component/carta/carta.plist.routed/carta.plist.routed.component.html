@@ -1,5 +1,5 @@
-<div class="bg-cartaPlist bg-cover bg-center min-h-screen">
-  <div class="container mx-auto">
+<div class="min-h-screen bg-sky-300">
+  <div class="container mx-auto px-4 py-6">
     <!-- Título -->
     <h1 class="text-center text-black text-4xl font-bold mb-6">Cartas</h1>
 
@@ -10,7 +10,7 @@
         placeholder="Buscar cartas"
         [(ngModel)]="strFiltro"
         (keyup)="filter($event)"
-        class="w-3/4 md:w-1/2 px-4 py-2 border rounded-lg shadow focus:outline-none focus:ring focus:ring-blue-300"
+        class="w-3/4 md:w-1/2 px-4 py-3 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
       />
     </div>
 
@@ -19,10 +19,9 @@
       <div class="loader"></div>
     </div>
 
-    <!-- Grid de cartas -->
-    <div *ngIf="!isLoading" class="grid grid-cols-3 gap-4 bg-white bg-opacity-50 rounded-lg p-4 shadow-lg">
+    <!-- Grid de cartas (visible solo en pantallas grandes) -->
+    <div *ngIf="!isLoading && !isMobile" class="grid grid-cols-3 gap-4 bg-white/50 backdrop-blur-sm rounded-lg p-4 shadow-lg">
       <div *ngFor="let carta of oPage?.content" class="rounded-lg shadow-md p-4 flex flex-col items-center">
-        <!-- Mostrar imagen de la carta -->
         <img *ngIf="imagenes[carta.id]" [src]="imagenes[carta.id]" alt="Carta {{ carta.id }}" class="w-60 h-80 rounded-lg" />
         <div *ngIf="!imagenes[carta.id]" class="text-gray-500">Imagen no disponible</div>
         <div class="mt-4 text-center">
@@ -31,21 +30,83 @@
       </div>
     </div>
 
-    <!-- Paginación -->
-    <nav class="flex justify-center mt-6">
+    <!-- Vista móvil con fondo escénico -->
+    <div *ngIf="!isLoading && isMobile" class="relative min-h-[70vh] rounded-lg overflow-hidden">
+      <!-- Barra de navegación superior -->
+      <div class="bg-gray-800 text-white py-3 px-4 text-center rounded-t-lg">
+        Desliza para ver más cartas →
+      </div>
+
+      <!-- Contenedor con fondo escénico -->
+      <div class="relative bg-gradient-to-b from-sky-200 to-green-200 min-h-[60vh]">
+        <!-- Nubes decorativas -->
+        <div class="absolute inset-0 overflow-hidden">
+          <div class="cloud absolute top-10 left-1/4 w-20 h-8 bg-white rounded-full"></div>
+          <div class="cloud absolute top-20 right-1/3 w-24 h-10 bg-white rounded-full"></div>
+          <div class="cloud absolute top-5 right-1/4 w-16 h-6 bg-white rounded-full"></div>
+        </div>
+
+        <!-- Contenedor del scroller horizontal -->
+        <div
+          #scrollContainer
+          class="relative z-10 overflow-x-auto scrollbar-hide snap-x snap-mandatory h-full"
+          (scroll)="onContainerScroll($event)"
+        >
+          <div class="flex h-full items-center">
+            <div *ngFor="let carta of oPage?.content"
+                 class="flex-shrink-0 w-full min-w-full snap-center flex flex-col items-center justify-center p-4">
+              <img *ngIf="imagenes[carta.id]"
+                   [src]="imagenes[carta.id]"
+                   alt="Carta {{ carta.id }}"
+                   class="w-72 h-96 rounded-lg shadow-xl" />
+              <div *ngIf="!imagenes[carta.id]"
+                   class="w-72 h-96 bg-gray-200 rounded-lg flex items-center justify-center">
+                Imagen no disponible
+              </div>
+              <div class="mt-4 text-center bg-white/90 backdrop-blur-sm px-6 py-3 rounded-lg shadow-lg">
+                <p class="font-semibold text-lg">{{ carta.nombre }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hierba decorativa en la parte inferior -->
+        <div class="absolute bottom-0 left-0 right-0 h-16 bg-green-400 opacity-75"></div>
+      </div>
+
+      <!-- Indicadores de navegación -->
+      <div class="bg-gray-800 text-white py-3 px-4 rounded-b-lg flex justify-center">
+        <div class="flex space-x-2">
+          <div *ngFor="let carta of oPage?.content; let i = index"
+               class="w-2 h-2 rounded-full transition-colors duration-200"
+               [ngClass]="{'bg-white': i === currentCardIndex, 'bg-gray-500': i !== currentCardIndex}">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paginación (solo visible en pantallas grandes) -->
+    <nav *ngIf="!isMobile" class="flex justify-center mt-6">
       <ul class="flex gap-2">
         <li>
-          <button class="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50" [disabled]="nPage === 0" (click)="goToPrev()">
+          <button class="px-3 py-1 bg-gray-800 text-white rounded hover:bg-gray-700 disabled:opacity-50"
+                  [disabled]="nPage === 0"
+                  (click)="goToPrev()">
             Anterior
           </button>
         </li>
         <li *ngFor="let pag of arrBotonera">
-          <button class="px-3 py-1 border rounded hover:bg-blue-100" [class.bg-blue-500]="nPage === +pag - 1" [class.text-white]="nPage === +pag - 1" (click)="goToPage(+pag)">
+          <button class="px-3 py-1 border rounded"
+                  [class.bg-blue-500]="nPage === +pag - 1"
+                  [class.text-white]="nPage === +pag - 1"
+                  (click)="goToPage(+pag)">
             {{ pag }}
           </button>
         </li>
         <li>
-          <button class="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50" [disabled]="!oPage || nPage + 1 === oPage.totalPages" (click)="goToNext()">
+          <button class="px-3 py-1 bg-gray-800 text-white rounded hover:bg-gray-700 disabled:opacity-50"
+                  [disabled]="!oPage || nPage + 1 === oPage.totalPages"
+                  (click)="goToNext()">
             Siguiente
           </button>
         </li>

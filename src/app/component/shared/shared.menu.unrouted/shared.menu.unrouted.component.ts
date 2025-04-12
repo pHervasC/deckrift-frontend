@@ -5,13 +5,14 @@ import { SessionService } from '../../../service/session.service';
 import { IUsuario } from '../../../model/usuario.interface';
 import { UsuarioService } from '../../../service/usuario.service';
 import { MonedaService } from '../../../service/moneda.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-shared-menu-unrouted',
   templateUrl: './shared.menu.unrouted.component.html',
   styleUrls: ['./shared.menu.unrouted.component.css'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
 })
 export class SharedMenuUnroutedComponent implements OnInit {
 
@@ -22,6 +23,7 @@ export class SharedMenuUnroutedComponent implements OnInit {
   id: number = 0;
   nombre: string = '';
   monedas: number = 0;
+  isMobileMenuOpen: boolean = false;
 
   constructor(
     private oRouter: Router,
@@ -33,6 +35,7 @@ export class SharedMenuUnroutedComponent implements OnInit {
     this.oRouter.events.subscribe((oEvent) => {
       if (oEvent instanceof NavigationEnd) {
         this.strRuta = oEvent.url;
+        this.isMobileMenuOpen = false;
       }
     });
     this.activeSession = this.oSessionService.isSessionActive();
@@ -49,6 +52,7 @@ export class SharedMenuUnroutedComponent implements OnInit {
       })
     }
   }
+
   ngOnInit() {
     this.oSessionService.onLogin().subscribe({
       next: () => {
@@ -74,5 +78,9 @@ export class SharedMenuUnroutedComponent implements OnInit {
 
   verColeccion(idUsuario: number) {
     this.oRouter.navigate(['usuario/coleccion', idUsuario]);
-}
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
 }

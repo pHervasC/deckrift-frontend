@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ICarta } from '../../../model/carta.interface';
 import { debounceTime, Subject } from 'rxjs';
 import { IPage } from '../../../model/model.interface';
@@ -16,6 +16,8 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule, RouterModule],
 })
 export class CartaPlistRoutedComponent implements OnInit {
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+
   oPage: IPage<ICarta> | null = null;
   nPage: number = 0;
   nRpp: number = 6; // Ajuste para el grid 3x3
@@ -25,6 +27,8 @@ export class CartaPlistRoutedComponent implements OnInit {
   arrBotonera: string[] = [];
   imagenes: { [key: number]: string } = {}; // Diccionario para almacenar las imágenes
   isLoading: boolean = false;
+  isMobile: boolean = false;
+  currentCardIndex: number = 0;
 
   private debounceSubject = new Subject<string>();
 
@@ -37,6 +41,40 @@ export class CartaPlistRoutedComponent implements OnInit {
       this.getPage();
       this.goToPage(1);
     });
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  onContainerScroll(event: Event) {
+    if (this.isMobile && this.oPage?.content) {
+      const container = event.target as HTMLElement;
+      const scrollPosition = container.scrollLeft;
+      const cardWidth = container.offsetWidth;
+      const index = Math.round(scrollPosition / cardWidth);
+
+      if (index >= 0 && index < this.oPage.content.length) {
+        this.currentCardIndex = index;
+      }
+    }
+  }
+
+  checkScreenSize() {
+    const wasMobile = this.isMobile;
+    this.isMobile = window.innerWidth < 800;
+
+    // Only reload if the mode has changed
+    if (wasMobile !== this.isMobile) {
+      if (!this.isMobile) {
+        // Switching from mobile to desktop
+        this.nPage = 0; // Reset to first page
+        this.nRpp = 6;  // Reset to default items per page
+      }
+      this.getPage();
+    }
   }
 
   ngOnInit() {
@@ -45,23 +83,42 @@ export class CartaPlistRoutedComponent implements OnInit {
 
   getPage() {
     this.isLoading = true;
-    this.oCartaService
-      .getPage(this.nPage, this.nRpp, this.strField, this.strDir, this.strFiltro)
-      .subscribe({
-        next: (oPageFromServer: IPage<ICarta>) => {
-          this.oPage = oPageFromServer;
-          this.arrBotonera = this.oBotoneraService.getBotonera(
-            this.nPage,
-            oPageFromServer.totalPages
-          );
-          this.cargarImagenes(); 
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error(err);
-          this.isLoading = false;
-        },
-      });
+
+    if (this.isMobile) {
+      // For mobile, get all cards at once
+      this.oCartaService
+        .getAllCards(this.strField, this.strDir, this.strFiltro)
+        .subscribe({
+          next: (oPageFromServer: IPage<ICarta>) => {
+            this.oPage = oPageFromServer;
+            this.cargarImagenes();
+            this.isLoading = false;
+          },
+          error: (err) => {
+            console.error(err);
+            this.isLoading = false;
+          },
+        });
+    } else {
+      // For desktop, use pagination
+      this.oCartaService
+        .getPage(this.nPage, this.nRpp, this.strField, this.strDir, this.strFiltro)
+        .subscribe({
+          next: (oPageFromServer: IPage<ICarta>) => {
+            this.oPage = oPageFromServer;
+            this.arrBotonera = this.oBotoneraService.getBotonera(
+              this.nPage,
+              oPageFromServer.totalPages
+            );
+            this.cargarImagenes();
+            this.isLoading = false;
+          },
+          error: (err) => {
+            console.error(err);
+            this.isLoading = false;
+          },
+        });
+    }
   }
 
   cargarImagenes() {
@@ -116,7 +173,7 @@ export class CartaPlistRoutedComponent implements OnInit {
     return false;
   }
 
-  filter(event: KeyboardEvent) {
+  filter(event: any) {
     this.isLoading = true;
     this.debounceSubject.next(this.strFiltro);
   }

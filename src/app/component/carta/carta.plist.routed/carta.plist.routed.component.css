@@ -47,3 +47,57 @@ body {
       transform: rotate(-0.2deg)
     }
   }
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Add smooth scrolling */
+.overflow-x-auto {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Cloud animations */
+.cloud {
+  opacity: 0.8;
+  animation: float 20s linear infinite;
+}
+
+.cloud:nth-child(2) {
+  animation-delay: -5s;
+  animation-duration: 25s;
+}
+
+.cloud:nth-child(3) {
+  animation-delay: -10s;
+  animation-duration: 30s;
+}
+
+@keyframes float {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(400%);
+  }
+}
+
+/* Add snap scrolling */
+.snap-x {
+  scroll-snap-type: x mandatory;
+}
+
+.snap-mandatory {
+  scroll-snap-stop: always;
+}
+
+.snap-center {
+  scroll-snap-align: center;
+}

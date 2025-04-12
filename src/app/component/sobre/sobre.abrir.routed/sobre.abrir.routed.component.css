@@ -207,7 +207,7 @@ body {
   #pack-opened .cards-reveal ul li {
     width: 200px; /* Tamaño fijo */
     height: auto;
-    position: absolute; /* Cambiado de absolute a relative */
+    position: relative; /* Cambiado de absolute a relative */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -244,41 +244,28 @@ body {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
   }
   #pack-opened.open .cards-reveal ul li.card-01 {
-    animation: card-spread-01 5s ease forwards; /* Cambia de 0.5s a 1s */
-    animation-delay: 2.5s; /* Puedes aumentar este valor si deseas más tiempo antes de que aparezca */
-    z-index: 5;
+    animation: none; /* Remove animation */
   }
 
   #pack-opened.open .cards-reveal ul li.card-02 {
-    animation: card-spread-02 5s ease forwards; /* Cambia de 0.5s a 1s */
-    animation-delay: 3.5s; /* Retrasa la aparición de esta carta */
-    z-index: 4;
-  }
-
-  #pack-opened.open .cards-reveal ul li.card-05 {
-    animation: card-spread-05 5s ease forwards; /* Cambia de 0.5s a 1s */
-    animation-delay: 4.5s;
-    z-index: 3;
-  }
-
-  #pack-opened.open .cards-reveal ul li.card-04 {
-    animation: card-spread-04 5s ease forwards; /* Cambia de 0.5s a 1s */
-    animation-delay: 5.5s;
-    z-index: 2;
+    animation: none; /* Remove animation */
   }
 
   #pack-opened.open .cards-reveal ul li.card-03 {
-    animation: card-spread-03 5s ease forwards; /* Cambia de 0.5s a 1s */
-    animation-delay: 6.5s;
-    z-index: 1;
+    animation: none; /* Remove animation */
+  }
+
+  #pack-opened.open .cards-reveal ul li.card-04 {
+    animation: none; /* Remove animation */
+  }
+
+  #pack-opened.open .cards-reveal ul li.card-05 {
+    animation: none; /* Remove animation */
   }
 
   #pack-opened.open .cards-reveal ul li.gold {
     box-shadow: 0 0 100px #fede3c;
   }
-
-
-
 
   @keyframes pack-flash-pack {
     0% {
@@ -444,3 +431,101 @@ body {
     }
   }
 
+  /* For screens larger than 1100px, restore the original animations */
+  @media (min-width: 1101px) {
+    #pack-opened.open .cards-reveal ul li.card-01 {
+      animation: card-spread-01 0.5s ease forwards;
+    }
+
+    #pack-opened.open .cards-reveal ul li.card-02 {
+      animation: card-spread-02 0.5s ease forwards;
+    }
+
+    #pack-opened.open .cards-reveal ul li.card-03 {
+      animation: card-spread-03 0.5s ease forwards;
+    }
+
+    #pack-opened.open .cards-reveal ul li.card-04 {
+      animation: card-spread-04 0.5s ease forwards;
+    }
+
+    #pack-opened.open .cards-reveal ul li.card-05 {
+      animation: card-spread-05 0.5s ease forwards;
+    }
+  }
+
+  /* For screens 1100px or smaller, disable the animations */
+  @media (max-width: 1170px) {
+    #pack-opened.open .cards-reveal ul li.card-01,
+    #pack-opened.open .cards-reveal ul li.card-02,
+    #pack-opened.open .cards-reveal ul li.card-03,
+    #pack-opened.open .cards-reveal ul li.card-04,
+    #pack-opened.open .cards-reveal ul li.card-05 {
+      animation: none;
+      transform: translateX(0); /* Ensure cards stay centered */
+    }
+
+    /* Make sure cards are properly centered in mobile view */
+    #pack-opened .cards-reveal ul {
+      justify-content: center;
+    }
+  }
+
+  /* Button container styling */
+  .min-h-screen .absolute.top-4 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  /* Button styling for mobile (default) */
+  .btn-open,
+  button[class*="px-6 py-3"] {
+    width: 140px;
+    text-align: center;
+    position: relative;
+    margin-bottom: 30px; /* Space for the label below */
+  }
+
+  /* Label styling */
+  .btn-open::after,
+  button[class*="px-6 py-3"]::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+  }
+
+  /* For screens 391px and larger */
+  @media (min-width: 391px) {
+    .min-h-screen .absolute.top-4 {
+      padding: 0 20px;
+      max-width: 500px;
+      margin: 0 auto;
+      left: 0;
+      right: 0;
+    }
+
+    .btn-open,
+    button[class*="px-6 py-3"] {
+      width: 160px; /* Slightly wider buttons on larger screens */
+    }
+  }
+
+  /* For even larger screens */
+  @media (min-width: 640px) {
+    .min-h-screen .absolute.top-4 {
+      max-width: 600px;
+    }
+
+    .btn-open,
+    button[class*="px-6 py-3"] {
+      width: 180px; /* Even wider buttons on larger screens */
+    }
+  }

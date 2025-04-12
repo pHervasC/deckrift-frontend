@@ -35,6 +35,22 @@ export class CartaService {
     return this.oHttp.get<IPage<ICarta>>(URL, httpOptions);
   }
 
+  getAllCards(
+    field: string,
+    dir: string,
+    filtro: string
+  ): Observable<IPage<ICarta>> {
+    let URL: string = this.serverURL;
+    URL += '?page=0';
+    URL += '&size=151'; // Get all 151 cards at once
+    if (field) {
+      URL += '&sort=' + field;
+      URL += dir === 'asc' ? ',asc' : ',desc';
+    }
+    if (filtro) URL += '&filter=' + filtro;
+    return this.oHttp.get<IPage<ICarta>>(URL, httpOptions);
+  }
+
   getOne(id: number): Observable<ICarta> {
     return this.oHttp.get<ICarta>(`${this.serverURL}/${id}`, httpOptions);
   }

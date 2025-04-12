@@ -1,151 +1,206 @@
-<div class="container mx-auto p-4">
-  <h2 class="text-2xl font-semibold text-center mb-6">
-    Colección de {{ usuarioId }}
-  </h2>
+<div class="min-h-screen bg-gray-900 text-white">
+  <div class="container mx-auto p-4">
+    <h2 class="text-xl sm:text-2xl font-semibold text-center mb-6 text-white">
+      Colección de {{ usuarioId }}
+    </h2>
 
-  <div class="mb-4">
-    <input
-      type="text"
-      placeholder="Buscar cartas"
-      [(ngModel)]="strFiltro"
-      (keyup)="filter($event)"
-      class="w-full px-4 py-2 border rounded shadow focus:outline-none focus:ring focus:ring-blue-300"
-    />
-  </div>
-
- <!-- Contenedor para los botones -->
-<div class="mb-4 text-center flex justify-center gap-4">
-  <!-- Botón Añadir Carta -->
-  <button
-    class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-300"
-    (click)="openAddCartaModal()"
-  >
-    Añadir Carta
-  </button>
-
-  <!-- Botón Vaciar Colección -->
-  <button
-    class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-red-700 focus:outline-none focus:ring focus:ring-red-300"
-    (click)="openVaciarColeccionModal()"
-  >
-    Vaciar Colección
-  </button>
-</div>
-
-  <div *ngIf="cartas.length > 0" class="overflow-x-auto">
-    <table class="w-full border-collapse border text-left">
-      <thead>
-        <tr class="bg-gray-200">
-          <th class="border px-4 py-2">ID</th>
-          <th class="border px-4 py-2">Nombre</th>
-          <th class="border px-4 py-2">Tipo</th>
-          <th class="border px-4 py-2">Rareza</th>
-          <th class="border px-4 py-2">Cantidad</th>
-          <th class="border px-4 py-2 text-center">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let carta of cartas" class="hover:bg-gray-100">
-          <td class="border px-4 py-2">{{ carta.carta.id }}</td>
-          <td class="border px-4 py-2">{{ carta.carta.nombre }}</td>
-          <td class="border px-4 py-2">{{ carta.carta.tipo }}</td>
-          <td class="border px-4 py-2">{{ carta.carta.rareza }}</td>
-          <td class="border px-4 py-2">{{ carta.cantidad }}</td>
-          <td class="border px-4 py-2 text-center flex justify-center gap-2">
-            <button
-              class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-              (click)="verImagen(carta.carta.id)"
-            >
-              Ver
-            </button>
-            <button
-              class="px-3 py-1 bg-gray-500 text-white rounded hover:bg-red-600"
-              (click)="openEliminarModal(carta.carta.id)"
-            >
-              Eliminar
-            </button>
-            <button
-              class="px-3 py-1 bg-orange-500 text-white rounded hover:bg-red-600"
-              (click)="openEliminarModalPlus(carta.carta.id)"
-            >
-              Eliminar+
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Botonera de paginación -->
-  <nav class="flex justify-center mt-6">
-    <ul class="flex gap-2">
-      <!-- Botón Anterior -->
-      <li>
-        <button
-          class="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50"
-          [disabled]="nPage === 0"
-          (click)="goToPrev()"
-        >
-          Anterior
-        </button>
-      </li>
-
-      <!-- Botones de página -->
-      <li *ngFor="let pag of arrBotonera">
-        <button
-          class="px-3 py-1 border rounded hover:bg-blue-100"
-          [class.bg-blue-500]="nPage === +pag - 1"
-          [class.text-white]="nPage === +pag - 1"
-          (click)="goToPage(+pag)"
-        >
-          {{ pag }}
-        </button>
-      </li>
-
-      <!-- Botón Siguiente -->
-      <li>
-        <button
-          class="px-3 py-1 border rounded hover:bg-gray-200 disabled:opacity-50"
-          [disabled]="!oPage || nPage + 1 >= oPage.totalPages"
-          (click)="goToNext()"
-        >
-          Siguiente
-        </button>
-      </li>
-    </ul>
-  </nav>
-
-  <!-- Modal de imagen -->
-  <div
-    *ngIf="mostrarModal"
-    class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
-  >
-    <div class="bg-white p-6 rounded shadow-lg relative">
-      <button
-        class="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-        (click)="cerrarImagen()"
-      >
-        &times;
-      </button>
-      <img
-        *ngIf="imagenActual"
-        [src]="imagenActual"
-        alt="Imagen de la carta"
-        class="max-w-full max-h-96 mx-auto"
+    <!-- Barra de búsqueda -->
+    <div class="mb-4">
+      <input
+        type="text"
+        placeholder="Buscar cartas"
+        [(ngModel)]="strFiltro"
+        (keyup)="filter($event)"
+        class="w-full px-4 py-2 sm:py-3 bg-gray-800 border border-gray-700 rounded-lg shadow text-white placeholder-gray-400 focus:outline-none focus:ring focus:ring-yellow-500"
       />
+    </div>
+
+    <!-- Contenedor para los botones -->
+    <div class="mb-4 text-center flex flex-wrap justify-center gap-2 sm:gap-4">
+      <!-- Botón Añadir Carta -->
+      <button
+        class="px-4 sm:px-6 py-2 sm:py-3 bg-yellow-500 text-black font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 transform hover:scale-105 text-sm sm:text-base"
+        (click)="openAddCartaModal()"
+      >
+        Añadir Carta
+      </button>
+
+      <!-- Botón Vaciar Colección -->
+      <button
+        class="px-4 sm:px-6 py-2 sm:py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition duration-300 transform hover:scale-105 text-sm sm:text-base"
+        (click)="openVaciarColeccionModal()"
+      >
+        Vaciar Colección
+      </button>
+    </div>
+
+    <!-- Tabla de cartas - Versión escritorio -->
+    <div *ngIf="cartas.length > 0" class="hidden md:block overflow-x-auto">
+      <table class="w-full border-collapse border border-gray-700">
+        <thead>
+          <tr class="bg-gray-800">
+            <th class="border border-gray-700 px-4 py-3 text-gray-300">ID</th>
+            <th class="border border-gray-700 px-4 py-3 text-gray-300">Nombre</th>
+            <th class="border border-gray-700 px-4 py-3 text-gray-300">Tipo</th>
+            <th class="border border-gray-700 px-4 py-3 text-gray-300">Rareza</th>
+            <th class="border border-gray-700 px-4 py-3 text-gray-300">Cantidad</th>
+            <th class="border border-gray-700 px-4 py-3 text-center text-gray-300">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let carta of cartas" class="hover:bg-gray-800">
+            <td class="border border-gray-700 px-4 py-3">{{ carta.carta.id }}</td>
+            <td class="border border-gray-700 px-4 py-3">{{ carta.carta.nombre }}</td>
+            <td class="border border-gray-700 px-4 py-3">{{ carta.carta.tipo }}</td>
+            <td class="border border-gray-700 px-4 py-3">{{ carta.carta.rareza }}</td>
+            <td class="border border-gray-700 px-4 py-3">{{ carta.cantidad }}</td>
+            <td class="border border-gray-700 px-4 py-3 flex gap-2 justify-center">
+              <button
+                class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                (click)="verImagen(carta.carta.id)"
+              >
+                Ver
+              </button>
+              <button
+                class="px-3 py-1 bg-gray-500 text-white rounded hover:bg-red-600"
+                (click)="openEliminarModal(carta.carta.id)"
+              >
+                Eliminar
+              </button>
+              <button
+                class="px-3 py-1 bg-orange-500 text-white rounded hover:bg-red-600"
+                (click)="openEliminarModalPlus(carta.carta.id)"
+              >
+                Eliminar+
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Versión móvil - Tarjetas -->
+    <div *ngIf="cartas.length > 0" class="md:hidden space-y-4">
+      <div *ngFor="let carta of cartas" class="bg-gray-800 rounded-lg p-4 shadow-md">
+        <div class="grid grid-cols-2 gap-2 mb-3">
+          <div class="text-gray-400">ID:</div>
+          <div>{{ carta.carta.id }}</div>
+
+          <div class="text-gray-400">Nombre:</div>
+          <div class="break-words">{{ carta.carta.nombre }}</div>
+
+          <div class="text-gray-400">Tipo:</div>
+          <div class="break-words">{{ carta.carta.tipo }}</div>
+
+          <div class="text-gray-400">Rareza:</div>
+          <div class="break-words">{{ carta.carta.rareza }}</div>
+
+          <div class="text-gray-400">Cantidad:</div>
+          <div>{{ carta.cantidad }}</div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 justify-center mt-4">
+          <button
+            class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+            (click)="verImagen(carta.carta.id)"
+          >
+            Ver
+          </button>
+          <button
+            class="px-3 py-1 bg-gray-500 text-white rounded hover:bg-red-600"
+            (click)="openEliminarModal(carta.carta.id)"
+          >
+            Eliminar
+          </button>
+          <button
+            class="px-3 py-1 bg-orange-500 text-white rounded hover:bg-red-600"
+            (click)="openEliminarModalPlus(carta.carta.id)"
+          >
+            Eliminar+
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paginación -->
+    <nav class="flex justify-center mt-6">
+      <ul class="flex flex-wrap justify-center gap-2 sm:gap-3">
+        <!-- Botón Anterior -->
+        <li>
+          <button
+            class="px-3 sm:px-4 py-1 sm:py-2 border border-gray-700 rounded-lg hover:bg-gray-800 disabled:opacity-50 text-sm sm:text-base"
+            [disabled]="nPage === 0"
+            (click)="goToPrev()"
+          >
+            Anterior
+          </button>
+        </li>
+
+        <!-- Botones de página - Versión móvil simplificada -->
+        <li class="md:hidden">
+          <span class="px-3 py-1 border border-gray-700 rounded-lg bg-gray-800">
+            {{ nPage + 1 }} / {{ oPage?.totalPages || 1 }}
+          </span>
+        </li>
+
+        <!-- Botones de página - Versión escritorio completa -->
+        <li *ngFor="let pag of arrBotonera" class="hidden md:block">
+          <button
+            class="px-4 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 text-base"
+            [class.bg-yellow-500]="nPage === +pag - 1"
+            [class.text-black]="nPage === +pag - 1"
+            (click)="goToPage(+pag)"
+          >
+            {{ pag }}
+          </button>
+        </li>
+
+        <!-- Botón Siguiente -->
+        <li>
+          <button
+            class="px-3 sm:px-4 py-1 sm:py-2 border border-gray-700 rounded-lg hover:bg-gray-800 disabled:opacity-50 text-sm sm:text-base"
+            [disabled]="!oPage || nPage + 1 >= oPage.totalPages"
+            (click)="goToNext()"
+          >
+            Siguiente
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Modal de imagen -->
+    <div
+      *ngIf="mostrarModal"
+      class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50 p-4"
+    >
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg relative max-w-lg w-full">
+        <button
+          class="absolute top-2 right-2 text-gray-400 hover:text-white text-xl"
+          (click)="cerrarImagen()"
+        >
+          &times;
+        </button>
+        <img
+          *ngIf="imagenActual"
+          [src]="imagenActual"
+          alt="Imagen de la carta"
+          class="max-w-full max-h-96 mx-auto rounded-lg"
+        />
+      </div>
     </div>
   </div>
 </div>
+
 <!-- Modal de confirmación de eliminación -->
 <div
   *ngIf="mostrarEliminarModal"
-  class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
+  class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50 p-4"
 >
-  <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-    <h2 class="text-lg font-semibold text-gray-800">Confirmar eliminación</h2>
-    <p class="text-gray-700 mt-2">¿Estás seguro de que quieres eliminar esta carta?</p>
+  <div class="bg-gray-800 p-6 rounded-lg shadow-lg text-center max-w-md w-full">
+    <h2 class="text-lg font-semibold text-white">Confirmar eliminación</h2>
+    <p class="text-gray-300 mt-2">¿Estás seguro de que quieres eliminar esta carta?</p>
 
-    <div class="flex justify-center gap-4 mt-4">
+    <div class="flex flex-wrap justify-center gap-4 mt-4">
       <button
         (click)="confirmarEliminarCarta()"
         class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
@@ -154,7 +209,7 @@
       </button>
       <button
         (click)="cancelarEliminar()"
-        class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
+        class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
       >
         Cancelar
       </button>
@@ -165,17 +220,17 @@
 <!-- Modal de confirmación de eliminación completa -->
 <div
   *ngIf="mostrarEliminarModalPlus"
-  class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
+  class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50 p-4"
 >
-  <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-    <h2 class="text-lg font-semibold text-gray-800">
+  <div class="bg-gray-800 p-6 rounded-lg shadow-lg text-center max-w-md w-full">
+    <h2 class="text-lg font-semibold text-white">
       Confirmar eliminación completa
     </h2>
-    <p class="text-gray-700 mt-2">
+    <p class="text-gray-300 mt-2">
       ¿Estás seguro de que quieres eliminar todas las cartas de esta cantidad?
     </p>
 
-    <div class="flex justify-center gap-4 mt-4">
+    <div class="flex flex-wrap justify-center gap-4 mt-4">
       <button
         (click)="confirmarEliminarCartaPlus()"
         class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
@@ -184,7 +239,7 @@
       </button>
       <button
         (click)="cancelarEliminarPlus()"
-        class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
+        class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
       >
         Cancelar
       </button>
@@ -192,32 +247,32 @@
   </div>
 </div>
 
- <!-- Modal de confirmación para vaciar colección -->
-  <div
-    *ngIf="mostrarVaciarModal"
-    class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
-  >
-    <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-      <h2 class="text-lg font-semibold text-gray-800">
-        Confirmar vaciado de colección
-      </h2>
-      <p class="text-gray-700 mt-2">
-        ¿Estás seguro de que quieres eliminar todas las cartas de la colección?
-      </p>
+<!-- Modal de confirmación para vaciar colección -->
+<div
+  *ngIf="mostrarVaciarModal"
+  class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50 p-4"
+>
+  <div class="bg-gray-800 p-6 rounded-lg shadow-lg text-center max-w-md w-full">
+    <h2 class="text-lg font-semibold text-white">
+      Confirmar vaciado de colección
+    </h2>
+    <p class="text-gray-300 mt-2">
+      ¿Estás seguro de que quieres eliminar todas las cartas de la colección?
+    </p>
 
-      <div class="flex justify-center gap-4 mt-4">
-        <button
-          (click)="confirmarVaciarColeccion()"
-          class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
-        >
-          Vaciar Colección
-        </button>
-        <button
-          (click)="cancelarVaciarColeccion()"
-          class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
-        >
-          Cancelar
-        </button>
-      </div>
+    <div class="flex flex-wrap justify-center gap-4 mt-4">
+      <button
+        (click)="confirmarVaciarColeccion()"
+        class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
+      >
+        Vaciar Colección
+      </button>
+      <button
+        (click)="cancelarVaciarColeccion()"
+        class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300"
+      >
+        Cancelar
+      </button>
     </div>
   </div>
+</div>

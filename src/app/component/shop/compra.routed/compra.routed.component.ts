@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
-
 @Component({
   selector: 'app-compra-routed',
   templateUrl: './compra.routed.component.html',
@@ -29,6 +28,7 @@ export class CompraRoutedComponent implements OnInit {
     compras: ICompra[] = [];
     arrBotonera: string[] = [];
     private debounceSubject = new Subject<string>();
+    isLoading: boolean = false;
 
     estados = [
       { valor: 'todos', etiqueta: 'Todos' },
@@ -90,7 +90,37 @@ export class CompraRoutedComponent implements OnInit {
       doc.save('historial_compras.pdf');
     }
 
+    generarPDFCompleto() {
+      this.isLoading = true;
 
+      this.oCompraService
+        .getPage(0, 999999, this.strField, this.strDir, this.strFiltro, this.estadoSeleccionado !== 'todos' ? this.estadoSeleccionado : undefined)
+        .subscribe({
+          next: (oPageFromServer: IPage<ICompra>) => {
+            const doc = new jsPDF();
+            doc.text('Historial Completo de Compras', 14, 10);
+
+            autoTable(doc, {
+              head: [['ID', 'Usuario', 'Cantidad', 'Gasto (€)', 'Estado']],
+              body: oPageFromServer.content.map((compra: ICompra) => [
+                compra.id,
+                compra.usuario.id,
+                compra.cantidadMonedas,
+                compra.gasto,
+                compra.estado
+              ]),
+              startY: 20,
+            });
+
+            doc.save('historial_completo_compras.pdf');
+            this.isLoading = false;
+          },
+          error: (err) => {
+            console.error('Error al cargar todas las compras:', err);
+            this.isLoading = false;
+          },
+        });
+    }
 
     goToPage(p: number) {
       if (p) {

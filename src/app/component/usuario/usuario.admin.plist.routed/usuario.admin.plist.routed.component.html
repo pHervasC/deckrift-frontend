@@ -1,11 +1,11 @@
 <div class="min-h-screen bg-gray-900 text-white">
   <div class="container mx-auto p-4">
-    <h2 class="text-2xl font-semibold text-center mb-6 text-white">Lista de Usuarios</h2>
+    <h2 class="text-xl sm:text-2xl font-semibold text-center mb-6 text-white">Lista de Usuarios</h2>
 
     <!-- Botón Crear centrado -->
     <div class="flex justify-center mb-6">
       <button
-        class="px-6 py-3 bg-yellow-500 text-black font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 transform hover:scale-105 text-lg"
+        class="px-4 sm:px-6 py-2 sm:py-3 bg-yellow-500 text-black font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 transform hover:scale-105 text-base sm:text-lg"
         (click)="create()"
       >
         Crear Usuario
@@ -19,16 +19,16 @@
         placeholder="Buscar usuarios"
         [(ngModel)]="strFiltro"
         (keyup)="filter($event)"
-        class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg shadow text-white placeholder-gray-400 focus:outline-none focus:ring focus:ring-yellow-500"
+        class="w-full px-4 py-2 sm:py-3 bg-gray-800 border border-gray-700 rounded-lg shadow text-white placeholder-gray-400 focus:outline-none focus:ring focus:ring-yellow-500"
       />
     </div>
 
     <!-- Opciones de registros por página -->
-    <div class="flex justify-center gap-3 mb-4">
+    <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-4">
       <button
         *ngFor="let n of [10, 50, 100]"
         (click)="goToRpp(n)"
-        class="px-4 py-2 rounded-lg transition-all duration-200 text-lg"
+        class="px-3 sm:px-4 py-1 sm:py-2 rounded-lg transition-all duration-200 text-base sm:text-lg"
         [class.bg-yellow-500]="nRpp === n"
         [class.text-black]="nRpp === n"
         [class.bg-gray-800]="nRpp !== n"
@@ -40,8 +40,8 @@
       </button>
     </div>
 
-    <!-- Tabla de usuarios -->
-    <div class="overflow-x-auto">
+    <!-- Tabla de usuarios - Versión escritorio -->
+    <div class="hidden md:block overflow-x-auto">
       <table class="w-full border-collapse border border-gray-700">
         <thead>
           <tr class="bg-gray-800">
@@ -81,13 +81,50 @@
       </table>
     </div>
 
+    <!-- Versión móvil - Tarjetas -->
+    <div class="md:hidden space-y-4">
+      <div *ngFor="let usuario of oPage?.content" class="bg-gray-800 rounded-lg p-4 shadow-md">
+        <div class="grid grid-cols-2 gap-2 mb-3">
+          <div class="text-gray-400">ID:</div>
+          <div>{{ usuario.id }}</div>
+
+          <div class="text-gray-400">Nombre:</div>
+          <div class="break-words">{{ usuario.nombre }}</div>
+
+          <div class="text-gray-400">Correo:</div>
+          <div class="break-words">{{ usuario.correo }}</div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 justify-center mt-4">
+          <button
+            class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+            (click)="edit(usuario)"
+          >
+            Editar
+          </button>
+          <button
+            class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+            (click)="remove(usuario)"
+          >
+            Eliminar
+          </button>
+          <button
+            class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+            (click)="verColeccion(usuario.id)"
+          >
+            Colección
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Paginación -->
     <nav class="flex justify-center mt-6">
-      <ul class="flex gap-3">
+      <ul class="flex flex-wrap justify-center gap-2 sm:gap-3">
         <!-- Botón Anterior -->
         <li>
           <button
-            class="px-4 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 disabled:opacity-50 text-base"
+            class="px-3 sm:px-4 py-1 sm:py-2 border border-gray-700 rounded-lg hover:bg-gray-800 disabled:opacity-50 text-sm sm:text-base"
             [disabled]="nPage === 0"
             (click)="nPage > 0 && goToPrev()"
           >
@@ -95,8 +132,15 @@
           </button>
         </li>
 
-        <!-- Botones de página -->
-        <li *ngFor="let pag of arrBotonera" [ngSwitch]="pag">
+        <!-- Botones de página - Versión móvil simplificada -->
+        <li class="md:hidden">
+          <span class="px-3 py-1 border border-gray-700 rounded-lg bg-gray-800">
+            {{ nPage + 1 }} / {{ oPage?.totalPages || 1 }}
+          </span>
+        </li>
+
+        <!-- Botones de página - Versión escritorio completa -->
+        <li *ngFor="let pag of arrBotonera" [ngSwitch]="pag" class="hidden md:block">
           <span *ngSwitchCase="'...'" class="px-4 py-2 text-gray-500">...</span>
           <button
             *ngSwitchDefault
@@ -112,7 +156,7 @@
         <!-- Botón Siguiente -->
         <li>
           <button
-            class="px-4 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 disabled:opacity-50 text-base"
+            class="px-3 sm:px-4 py-1 sm:py-2 border border-gray-700 rounded-lg hover:bg-gray-800 disabled:opacity-50 text-sm sm:text-base"
             [disabled]="!oPage || nPage + 1 === oPage.totalPages"
             (click)="oPage && nPage + 1 < oPage.totalPages && goToNext()"
           >

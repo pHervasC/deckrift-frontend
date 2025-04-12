@@ -1,13 +1,13 @@
-<div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 py-8 px-4">
+<div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 py-4 sm:py-8 px-3 sm:px-4">
   <div class="max-w-7xl mx-auto">
     <!-- Encabezado -->
-    <div class="text-center mb-8">
-      <h2 class="text-3xl font-bold text-white mb-2">Historial de Compras</h2>
-      <div class="w-24 h-1 bg-yellow-500 mx-auto rounded-full"></div>
+    <div class="text-center mb-6 sm:mb-8">
+      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2">Historial de Compras</h2>
+      <div class="w-20 sm:w-24 h-1 bg-yellow-500 mx-auto rounded-full"></div>
     </div>
 
     <!-- Filtros -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
       <!-- Buscador -->
       <div class="relative">
         <input
@@ -34,37 +34,53 @@
       </select>
     </div>
 
-    <!-- Botón PDF mejorado -->
-    <button
-      (click)="generarPDF()"
-      class="flex items-center gap-2 px-6 py-3 bg-yellow-500 text-black font-medium rounded-lg shadow-lg hover:bg-yellow-600 transition-colors duration-200 mb-6"
-    >
-      <!-- Icono PDF -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-      </svg>
-      <span>Descargar PDF</span>
-    </button>
+    <!-- Botón PDF y Selector de registros por página -->
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+      <!-- Contenedor de botones PDF -->
+      <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+        <!-- Botón PDF página actual -->
+        <button
+          (click)="generarPDF()"
+          class="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-yellow-500 text-black font-medium rounded-lg shadow-lg hover:bg-yellow-600 transition-colors duration-200 w-full justify-center"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span>PDF Actual</span>
+        </button>
 
-    <!-- Selector de registros por página -->
-    <div class="flex justify-center gap-2 mb-6">
-      <button
-        *ngFor="let n of [10, 50, 100]"
-        (click)="goToRpp(n)"
-        class="px-4 py-2 rounded-lg transition-all duration-200"
-        [class.bg-yellow-500]="nRpp === n"
-        [class.text-black]="nRpp === n"
-        [class.bg-gray-800]="nRpp !== n"
-        [class.text-white]="nRpp !== n"
-        [class.border]="nRpp !== n"
-        [class.border-gray-700]="nRpp !== n"
-      >
-        {{ n }}
-      </button>
+        <!-- Botón PDF historial completo -->
+        <button
+          (click)="generarPDFCompleto()"
+          class="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-green-600 text-white font-medium rounded-lg shadow-lg hover:bg-green-700 transition-colors duration-200 w-full justify-center"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span>PDF Completo</span>
+        </button>
+      </div>
+
+      <!-- Selector de registros por página -->
+      <div class="flex justify-center gap-2">
+        <button
+          *ngFor="let n of [10, 50, 100]"
+          (click)="goToRpp(n)"
+          class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-sm sm:text-base"
+          [class.bg-yellow-500]="nRpp === n"
+          [class.text-black]="nRpp === n"
+          [class.bg-gray-800]="nRpp !== n"
+          [class.text-white]="nRpp !== n"
+          [class.border]="nRpp !== n"
+          [class.border-gray-700]="nRpp !== n"
+        >
+          {{ n }}
+        </button>
+      </div>
     </div>
 
-    <!-- Tabla -->
-    <div class="overflow-x-auto bg-gray-800 rounded-xl shadow-xl border border-gray-700">
+    <!-- Tabla (visible solo en pantallas medianas y grandes) -->
+    <div class="hidden md:block overflow-x-auto bg-gray-800 rounded-xl shadow-xl border border-gray-700">
       <table class="w-full">
         <thead>
           <tr class="bg-gray-900">
@@ -100,12 +116,44 @@
       </table>
     </div>
 
+    <!-- Vista de tarjetas para móvil -->
+    <div class="md:hidden space-y-4">
+      <div *ngFor="let compra of oPage?.content"
+           class="bg-gray-800 rounded-lg p-4 shadow-md border border-gray-700">
+        <div class="grid grid-cols-2 gap-2">
+          <div class="text-gray-400 text-sm">ID:</div>
+          <div class="text-gray-300 text-sm">{{ compra.id }}</div>
+
+          <div class="text-gray-400 text-sm">Usuario:</div>
+          <div class="text-gray-300 text-sm">{{ compra.usuario.id }}</div>
+
+          <div class="text-gray-400 text-sm">Cantidad:</div>
+          <div class="text-gray-300 text-sm">{{ compra.cantidadMonedas }}</div>
+
+          <div class="text-gray-400 text-sm">Gasto:</div>
+          <div class="text-gray-300 text-sm">{{ compra.gasto | currency:'EUR' }}</div>
+
+          <div class="text-gray-400 text-sm">Estado:</div>
+          <div>
+            <span class="px-3 py-1 text-xs font-medium rounded-full"
+                  [ngClass]="{
+                    'bg-red-500/20 text-red-400': compra.estado === 'cancelada',
+                    'bg-yellow-500/20 text-yellow-400': compra.estado === 'pendiente',
+                    'bg-green-500/20 text-green-400': compra.estado === 'completado'
+                  }">
+              {{ compra.estado }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Paginación -->
     <nav class="flex justify-center mt-6">
-      <ul class="flex gap-2">
+      <ul class="flex flex-wrap justify-center gap-2">
         <li>
           <button
-            class="px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-gray-800 text-white border border-gray-700 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
             [disabled]="nPage === 0"
             (click)="goToPrev()"
           >
@@ -113,9 +161,17 @@
           </button>
         </li>
 
-        <li *ngFor="let pag of arrBotonera">
+        <!-- Paginación simplificada para móvil -->
+        <li class="md:hidden">
+          <span class="px-3 py-1.5 rounded-lg bg-gray-800 text-white border border-gray-700">
+            {{ nPage + 1 }} / {{ oPage?.totalPages || 1 }}
+          </span>
+        </li>
+
+        <!-- Paginación completa para desktop -->
+        <li *ngFor="let pag of arrBotonera" class="hidden md:block">
           <button
-            class="px-4 py-2 rounded-lg transition-all duration-200"
+            class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-all duration-200 text-sm sm:text-base"
             [class.bg-yellow-500]="nPage === +pag - 1"
             [class.text-black]="nPage === +pag - 1"
             [class.bg-gray-800]="nPage !== +pag - 1"
@@ -130,7 +186,7 @@
 
         <li>
           <button
-            class="px-4 py-2 rounded-lg bg-gray-800 text-white border border-gray-700 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-gray-800 text-white border border-gray-700 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
             [disabled]="!oPage || nPage + 1 === oPage.totalPages"
             (click)="goToNext()"
           >
