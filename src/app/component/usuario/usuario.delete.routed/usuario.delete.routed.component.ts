@@ -78,7 +78,7 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
   }
 
   cancel(): void {
-    this.oRouter.navigate(['/admin/usuario/plist']);
+    this.oRouter.navigate(['/home/registered']);
   }
 
   cancelDelete(): void {
@@ -87,7 +87,7 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
 
   closeSuccessModal(): void {
     this.showSuccessModal = false;
-    this.oRouter.navigate(['/admin/usuario/plist']);
+    this.oRouter.navigate(['/home/registered']);
   }
 
   closeErrorModal(): void {
