@@ -90,7 +90,7 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
             }
           });
         }
-        // Esperamos 3 segundos para que termine la animación del sobre
+
         setTimeout(() => {
           cartas.forEach((carta: any, index: number) => {
             setTimeout(() => {
@@ -101,13 +101,13 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
                 },
                 error: () => {}
               });
-            }, index * 500); // Cada carta aparecerá con 500ms de diferencia
+            }, index * 250);
           });
 
           setTimeout(() => {
             this.mostrarBotonAbrir = true;
-          }, cartas.length * 500 + 1000);
-        }, 3000); // Esperamos 3 segundos para que termine la animación del sobre
+          }, cartas.length * 250 + 500);
+        }, 1500);
       },
       error: (error) => {
         const mensaje = error.error?.error || "No se pudo abrir el sobre.";
