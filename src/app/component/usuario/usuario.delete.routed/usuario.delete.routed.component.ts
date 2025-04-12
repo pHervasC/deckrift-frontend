@@ -87,7 +87,13 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
 
   closeSuccessModal(): void {
     this.showSuccessModal = false;
-    this.oRouter.navigate(['/home']);
+
+    // Verificar si el usuario es administrador
+    if (this.permisos === 'Administrador') {
+      this.oRouter.navigate(['/admin/usuario/plist']);
+    } else {
+      this.oRouter.navigate(['/home']);
+    }
   }
 
   closeErrorModal(): void {
