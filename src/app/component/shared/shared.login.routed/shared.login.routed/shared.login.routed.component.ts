@@ -105,7 +105,7 @@ export class SharedLoginRoutedComponent implements OnInit {
     const googleToken = response.credential;
 
     this.oHttp.post<{ token: string; name: string; id: number; correo: string; tipoUsuario: number }>(
-      'http://localhost:8085/api/auth/google',
+      'https://deckrift-backend.onrender.com/api/auth/google',
       { token: googleToken }
     ).subscribe({
       next: (res) => {
