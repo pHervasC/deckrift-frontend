@@ -87,7 +87,7 @@ export class UsuarioDeleteRoutedComponent implements OnInit {
 
   closeSuccessModal(): void {
     this.showSuccessModal = false;
-    this.oRouter.navigate(['/home/registered']);
+    this.oRouter.navigate(['/home']);
   }
 
   closeErrorModal(): void {
