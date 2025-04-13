@@ -25,72 +25,91 @@
     </a>
   </div>
 
-  <!-- Loader de Pokéball (se muestra mientras se cargan las cartas) -->
-<div *ngIf="isLoading" class="flex justify-center items-center w-full mt-4 mb-4">
-  <div class="loader"></div>
-</div>
-
-<!-- Grid de cartas (se oculta cuando isLoading es true) -->
-<div *ngIf="!isLoading" class="scale-90 origin-top w-full">
-  <div *ngIf="cartas.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full bg-gray-200 bg-opacity-50 p-6 rounded-lg">
-    <div *ngFor="let carta of cartas" class="rounded-lg shadow-lg p-4 flex justify-center items-center">
-      <!-- Imagen de la carta -->
-      <img
-        *ngIf="imagenes[carta.carta.id]"
-        [src]="imagenes[carta.carta.id]"
-        alt="Carta {{ carta.carta.nombre }}"
-        class="w-80 h-auto cursor-pointer transition-transform transform hover:scale-105"
-        (click)="mostrarPopUp(carta)"
-      />
-      <div *ngIf="!imagenes[carta.carta.id]" class="text-gray-500">
-        Imagen no disponible
+  <!-- Vista de escritorio (grid) -->
+  <div *ngIf="!isLoading && !isMobile" class="scale-90 origin-top w-full">
+    <div *ngIf="cartas.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full bg-gray-200 bg-opacity-50 p-6 rounded-lg">
+      <div *ngFor="let carta of cartas" class="rounded-lg shadow-lg p-4 flex justify-center items-center">
+        <!-- Imagen de la carta -->
+        <img
+          *ngIf="imagenes[carta.carta.id]"
+          [src]="imagenes[carta.carta.id]"
+          alt="Carta {{ carta.carta.nombre }}"
+          class="w-80 h-auto cursor-pointer transition-transform transform hover:scale-105"
+        />
+        <div *ngIf="!imagenes[carta.carta.id]" class="text-gray-500">
+          Imagen no disponible
+        </div>
       </div>
     </div>
   </div>
-</div>
-  <!-- Pop-up para mostrar detalles -->
-  <div
-    *ngIf="cartaSeleccionada"
-    class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50"
-  >
-    <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl relative flex items-center p-6">
-      <!-- Botón para cerrar -->
-      <button
-        class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
-        (click)="cerrarPopUp()"
-      >
-        &times;
-      </button>
 
-      <!-- Imagen de la carta -->
-      <div class="w-1/2 flex items-center justify-center">
-        <img
-          *ngIf="imagenes[cartaSeleccionada.carta.id]"
-          [src]="imagenes[cartaSeleccionada.carta.id]"
-          alt="Carta {{ cartaSeleccionada.carta.nombre }}"
-          class="w-80 h-auto rounded-lg"
-        />
+  <!-- Vista móvil con carrusel horizontal -->
+  <div *ngIf="!isLoading && isMobile" class="relative min-h-[70vh] rounded-lg overflow-hidden w-full">
+    <!-- Barra de navegación superior -->
+    <div class="bg-gray-800 text-white py-3 px-4 text-center rounded-t-lg">
+      Desliza para ver más cartas →
+    </div>
+
+    <!-- Contenedor con fondo escénico -->
+    <div class="relative min-h-[60vh] card-container">
+      <!-- Contenedor del scroller horizontal -->
+      <div
+        #scrollContainer
+        class="relative z-10 overflow-x-auto scrollbar-hide snap-x snap-mandatory h-full"
+        (scroll)="onContainerScroll($event)"
+      >
+        <div class="flex h-full items-center">
+          <!-- Loop a través de las cartas móviles -->
+          <div *ngFor="let carta of cartas; let i = index"
+               class="flex-shrink-0 w-full min-w-full snap-center flex flex-col items-center justify-center p-4 relative"
+               [ngClass]="getTypeClass(carta.carta.tipo)">
+
+            <!-- Overlay para mejorar contraste -->
+            <div class="type-overlay"></div>
+
+            <!-- Imagen de la carta -->
+            <img *ngIf="imagenes[carta.carta.id]"
+                 [src]="imagenes[carta.carta.id]"
+                 alt="Carta {{ carta.carta.nombre }}"
+                 class="w-72 h-96 rounded-lg shadow-xl relative z-10 cursor-pointer"
+               />
+            <div *ngIf="!imagenes[carta.carta.id]"
+                 class="w-72 h-96 bg-gray-200 rounded-lg flex items-center justify-center relative z-10">
+              <div class="flex flex-col items-center justify-center">
+                <p class="mt-2 text-gray-600">Sin imagen</p>
+              </div>
+            </div>
+
+            <!-- Información de la carta -->
+            <div class="mt-4 text-center bg-white/90 backdrop-blur-sm px-6 py-3 rounded-lg shadow-lg relative z-10 card-info">
+              <p class="font-semibold text-lg">{{ carta.carta.nombre }}</p>
+              <p class="text-sm">Tipo: {{ carta.carta.tipo }}</p>
+              <p class="text-xs">Cantidad: {{ carta.cantidad }}</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Información de la carta -->
-      <div class="w-1/2 text-center flex flex-col justify-center">
-        <h2 class="text-3xl font-bold text-gray-800 mb-4">
-          {{ cartaSeleccionada.carta.nombre }}
-        </h2>
-        <p class="text-lg text-gray-700"><strong>Tipo:</strong> {{ cartaSeleccionada.carta.tipo }}</p>
-        <p class="text-lg text-gray-700"><strong>Rareza:</strong> {{ cartaSeleccionada.carta.rareza }}</p>
-        <p class="text-lg text-gray-900 font-medium"><strong>Cantidad:</strong> {{ cartaSeleccionada.cantidad }}</p>
+      <!-- Indicadores de navegación -->
+      <div class="bg-gray-800 text-white py-3 px-4 rounded-b-lg flex justify-center">
+        <div class="flex space-x-3 overflow-x-auto max-w-full py-2 px-2">
+          <div *ngFor="let carta of cartas; let i = index"
+               class="w-3 h-3 rounded-full transition-all duration-200 cursor-pointer flex-shrink-0 hover:scale-125"
+               [ngClass]="{'bg-white': i === currentCardIndex, 'bg-gray-500': i !== currentCardIndex}"
+               (click)="scrollToCard(i)">
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Mensaje si no hay cartas -->
-  <div *ngIf="cartas.length === 0" class="text-center text-gray-300 mt-8">
+  <div *ngIf="!isLoading && cartas.length === 0" class="text-center text-gray-300 mt-8">
     No hay cartas en la colección.
   </div>
 
-  <!-- Paginación -->
-  <nav class="flex justify-center items-center mt-0 p-4 bg-gray-900 rounded-lg shadow-lg">
+  <!-- Paginación (solo visible en escritorio) -->
+  <nav *ngIf="!isLoading && !isMobile" class="flex justify-center items-center mt-6 p-4 bg-gray-900 rounded-lg shadow-lg">
     <ul class="flex gap-4 items-center">
       <!-- Botón Anterior -->
       <li>
@@ -130,4 +149,40 @@
       </li>
     </ul>
   </nav>
+
+  <!-- Pop-up para mostrar detalles -->
+  <div
+    *ngIf="cartaSeleccionada"
+    class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50"
+  >
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-4xl relative flex flex-col md:flex-row items-center p-6">
+      <!-- Botón para cerrar -->
+      <button
+        class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
+        (click)="cerrarPopUp()"
+      >
+        &times;
+      </button>
+
+      <!-- Imagen de la carta -->
+      <div class="w-full md:w-1/2 flex items-center justify-center mb-4 md:mb-0">
+        <img
+          *ngIf="imagenes[cartaSeleccionada.carta.id]"
+          [src]="imagenes[cartaSeleccionada.carta.id]"
+          alt="Carta {{ cartaSeleccionada.carta.nombre }}"
+          class="w-80 h-auto rounded-lg"
+        />
+      </div>
+
+      <!-- Información de la carta -->
+      <div class="w-full md:w-1/2 text-center flex flex-col justify-center">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">
+          {{ cartaSeleccionada.carta.nombre }}
+        </h2>
+        <p class="text-lg text-gray-700"><strong>Tipo:</strong> {{ cartaSeleccionada.carta.tipo }}</p>
+        <p class="text-lg text-gray-700"><strong>Rareza:</strong> {{ cartaSeleccionada.carta.rareza }}</p>
+        <p class="text-lg text-gray-900 font-medium"><strong>Cantidad:</strong> {{ cartaSeleccionada.cantidad }}</p>
+      </div>
+    </div>
+  </div>
 </div>

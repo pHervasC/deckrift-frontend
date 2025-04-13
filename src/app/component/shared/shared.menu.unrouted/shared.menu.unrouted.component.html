@@ -119,9 +119,24 @@
         </button>
       </div>
 
-      <!-- Mobile navigation links -->
+      <!-- Mobile navigation links - reorganized structure -->
       <div class="flex flex-col space-y-4 mt-5">
         @if (activeSession) {
+          <!-- 1. User info first -->
+          <a href="/byemail/{{userEmail}}"
+            class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200 block">
+            {{ nombre }}
+          </a>
+          <a href="/shop"
+            class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200 flex items-center gap-2">
+            <img src="assets/img/Pokecoin.webp" alt="moneda" class="w-5 h-5">
+            <span>{{monedas}}</span>
+          </a>
+
+          <!-- 2. First separator -->
+          <div class="border-t border-gray-700 my-2"></div>
+
+          <!-- 3. Navigation options based on permissions -->
           @if (permisos === "Administrador"){
             <a href="/admin/usuario/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
               [ngClass]="{ 'bg-blue-600': strRuta == '/admin/usuario/plist' }">
@@ -162,24 +177,15 @@
             </a>
           }
 
-          <!-- User info -->
-          <div class="border-t border-gray-700 pt-4 mt-2">
-            <a href="/byemail/{{userEmail}}"
-              class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200 block mb-2">
-              {{ nombre }}
-            </a>
-            <a href="/shop"
-              class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200 flex items-center gap-2 mb-2">
-              <img src="assets/img/Pokecoin.webp" alt="moneda" class="w-5 h-5">
-              <span>{{monedas}}</span>
-            </a>
-            <!-- Logout button -->
-            <a href="/logout"
+          <!-- 4. Second separator -->
+          <div class="border-t border-gray-700 my-2"></div>
+
+          <!-- 5. Logout button -->
+          <a href="/logout"
             class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors duration-200 block text-center"
             (click)="toggleMobileMenu()">
-             Cerrar Sesión
-            </a>
-          </div>
+            Cerrar Sesión
+          </a>
         } @else {
           <a href="/login"
             class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200"

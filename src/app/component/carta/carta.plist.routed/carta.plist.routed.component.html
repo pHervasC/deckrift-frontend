@@ -30,6 +30,34 @@
       </div>
     </div>
 
+    <!-- Paginación (solo visible en pantallas grandes) -->
+    <nav *ngIf="!isLoading && !isMobile" class="flex justify-center mt-6">
+      <ul class="flex gap-2">
+        <li>
+          <button class="px-3 py-1 bg-gray-800 text-white rounded hover:bg-gray-700 disabled:opacity-50"
+                  [disabled]="nPage === 0"
+                  (click)="goToPrev()">
+            Anterior
+          </button>
+        </li>
+        <li *ngFor="let pag of arrBotonera">
+          <button class="px-3 py-1 border rounded"
+                  [class.bg-blue-500]="nPage === +pag - 1"
+                  [class.text-white]="nPage === +pag - 1"
+                  (click)="goToPage(+pag)">
+            {{ pag }}
+          </button>
+        </li>
+        <li>
+          <button class="px-3 py-1 bg-gray-800 text-white rounded hover:bg-gray-700 disabled:opacity-50"
+                  [disabled]="!oPage || nPage + 1 === oPage.totalPages"
+                  (click)="goToNext()">
+            Siguiente
+          </button>
+        </li>
+      </ul>
+    </nav>
+
     <!-- Vista móvil con fondo escénico -->
     <div *ngIf="!isLoading && isMobile" class="relative min-h-[70vh] rounded-lg overflow-hidden">
       <!-- Barra de navegación superior -->
@@ -97,33 +125,6 @@
         </div>
       </div>
 
-      <!-- Paginación (solo visible en pantallas grandes) -->
-      <nav *ngIf="!isMobile" class="flex justify-center mt-6">
-        <ul class="flex gap-2">
-          <li>
-            <button class="px-3 py-1 bg-gray-800 text-white rounded hover:bg-gray-700 disabled:opacity-50"
-                    [disabled]="nPage === 0"
-                    (click)="goToPrev()">
-              Anterior
-            </button>
-          </li>
-          <li *ngFor="let pag of arrBotonera">
-            <button class="px-3 py-1 border rounded"
-                    [class.bg-blue-500]="nPage === +pag - 1"
-                    [class.text-white]="nPage === +pag - 1"
-                    (click)="goToPage(+pag)">
-              {{ pag }}
-            </button>
-          </li>
-          <li>
-            <button class="px-3 py-1 bg-gray-800 text-white rounded hover:bg-gray-700 disabled:opacity-50"
-                    [disabled]="!oPage || nPage + 1 === oPage.totalPages"
-                    (click)="goToNext()">
-              Siguiente
-            </button>
-          </li>
-        </ul>
-      </nav>
     </div>
   </div>
 </div>

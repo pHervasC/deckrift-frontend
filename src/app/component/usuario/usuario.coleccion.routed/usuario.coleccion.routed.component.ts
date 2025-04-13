@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild, inject } from '@angular/core';
 import { IAlmacen } from '../../../model/almacen.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -21,6 +21,7 @@ import { IUsuario } from '../../../model/usuario.interface';
   imports: [CommonModule, FormsModule, RouterModule],
 })
 export class UsuarioColeccionRoutedComponent implements OnInit {
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
   cartaSeleccionada: any = null;
   oPage: IPage<IAlmacen> | null = null;
@@ -34,6 +35,12 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
   cartas: IAlmacen[] = [];
   nombre: string = '';
   isLoading: boolean = false;
+  isMobile: boolean = false;
+  currentCardIndex: number = 0;
+  loadingMore: boolean = false;
+  allCardsLoaded: boolean = false;
+  currentPage: number = 0;
+  pageSize: number = 6;
 
   private debounceSubject = new Subject<string>();
   readonly dialog = inject(MatDialog);
@@ -49,6 +56,128 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
     this.debounceSubject.pipe(debounceTime(1000)).subscribe(() => {
       this.goToPage(0);
     });
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    this.isMobile = window.innerWidth < 800;
+  }
+
+  onContainerScroll(event: Event) {
+    if (this.isMobile) {
+      const container = event.target as HTMLElement;
+      const scrollPosition = container.scrollLeft;
+      const containerWidth = container.clientWidth;
+      const cardWidth = containerWidth; // cada tarjeta ocupa el ancho completo
+      const index = Math.round(scrollPosition / cardWidth);
+
+      if (index >= 0 && this.cartas && index < this.cartas.length) {
+        this.currentCardIndex = index;
+        
+        // Cargar más cartas cuando estamos cerca del final
+        if (index >= this.cartas.length - 2 && !this.loadingMore && !this.allCardsLoaded) {
+          this.loadMoreCards();
+        }
+      }
+    }
+  }
+
+  loadMoreCards() {
+    if (this.loadingMore || this.allCardsLoaded) return;
+    
+    this.loadingMore = true;
+    const nextPage = this.nPage + 1;
+    
+    this.almacenService
+      .getCartasPorUsuario(this.usuarioId, nextPage, this.nRpp, this.strFiltro)
+      .subscribe({
+        next: (oPageFromServer: IPage<IAlmacen>) => {
+          if (oPageFromServer.content.length === 0) {
+            this.allCardsLoaded = true;
+          } else {
+            // Actualizar el número de página
+            this.nPage = nextPage;
+            
+            // Añadir las nuevas cartas al array existente
+            this.cartas = [...this.cartas, ...oPageFromServer.content];
+            
+            // Actualizar los botones de paginación
+            this.arrBotonera = this.oBotoneraService.getBotonera(
+              this.nPage,
+              oPageFromServer.totalPages
+            );
+            
+            // Cargar imágenes para las nuevas cartas
+            oPageFromServer.content.forEach((carta) => {
+              this.cargarImagen(carta.carta.id);
+            });
+          }
+          this.loadingMore = false;
+        },
+        error: (err) => {
+          console.error('Error al cargar más cartas:', err);
+          this.loadingMore = false;
+        }
+      });
+  }
+
+  scrollToCard(index: number): void {
+    if (this.scrollContainer && this.cartas.length > index) {
+      this.currentCardIndex = index;
+      const containerWidth = this.scrollContainer.nativeElement.clientWidth;
+      const scrollPosition = index * containerWidth;
+
+      this.scrollContainer.nativeElement.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      });
+    }
+  }
+
+  getTypeClass(tipo: string): string {
+    const tipoNormalizado = this.normalizarTipo(tipo);
+    return `type-${tipoNormalizado}`;
+  }
+
+  normalizarTipo(tipo: string): string {
+    if (!tipo) return 'normal';
+
+    let primerTipo = tipo
+      .toLowerCase()
+      .split(/[,\/]/)[0]  // Separar por coma o barra
+      .trim();
+
+    primerTipo = primerTipo
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+
+    const tiposMap: { [key: string]: string } = {
+      'agua': 'water',
+      'fuego': 'fire',
+      'planta': 'grass',
+      'electrico': 'electric',
+      'normal': 'normal',
+      'hielo': 'ice',
+      'lucha': 'fighting',
+      'veneno': 'poison',
+      'tierra': 'ground',
+      'volador': 'flying',
+      'psiquico': 'psychic',
+      'bicho': 'bug',
+      'roca': 'rock',
+      'fantasma': 'ghost',
+      'dragon': 'dragon',
+      'siniestro': 'dark',
+      'acero': 'steel',
+      'hada': 'fairy'
+    };
+
+    return tiposMap[primerTipo] || primerTipo;
   }
 
   ngOnInit(): void {
@@ -58,6 +187,7 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
   }
 
   getPage(): void {
+    this.isLoading = true;
     this.almacenService
       .getCartasPorUsuario(this.usuarioId, this.nPage, this.nRpp, this.strFiltro)
       .subscribe({

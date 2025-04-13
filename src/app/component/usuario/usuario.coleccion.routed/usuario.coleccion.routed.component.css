@@ -42,3 +42,261 @@
     transform: rotate(-0.2deg)
   }
 }
+
+/* Nuevos estilos para la vista móvil */
+.card-container {
+  min-height: 450px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+/* Mejora de los indicadores de navegación */
+.bg-gray-800 {
+  background-color: rgba(31, 41, 55, 0.9);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Animación mejorada para los indicadores */
+.w-3.h-3.rounded-full.transition-all.duration-200.cursor-pointer:hover {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.6);
+  transform: scale(1.4) !important;
+}
+
+/* Estilos para el scroll horizontal */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Overlay para mejorar contraste */
+.type-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(0,0,0,0.05), rgba(0,0,0,0.2));
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Ajustes para la capa de interfaz */
+.card-info {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  transform: translateY(-5px);
+  padding: 12px 16px !important;
+  z-index: 10;
+}
+
+/* Mejoras para las imágenes de cartas */
+.w-72.h-96.rounded-lg.shadow-xl {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+  z-index: 10;
+}
+
+/* Estilos de tipos de Pokémon */
+/* Tipo NORMAL - Patrones circulares */
+.type-normal {
+  background: linear-gradient(135deg, #A8A878 0%, #8A8A59 50%, #A8A878 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo FUEGO - Llamas y chispas */
+.type-fire {
+  background: linear-gradient(135deg, #F5AC78 0%, #F08030 50%, #DD6610 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo AGUA - Olas y burbujas */
+.type-water {
+  background: linear-gradient(135deg, #98D8D8 0%, #6890F0 50%, #386CEB 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo PLANTA - Hojas y vegetación */
+.type-grass {
+  background: linear-gradient(135deg, #A7DB8D 0%, #78C850 50%, #5CA935 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo ELÉCTRICO - Rayos y destellos */
+.type-electric {
+  background: linear-gradient(135deg, #FAE078 0%, #F8D030 50%, #F0C808 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo PSÍQUICO - Espirales hipnóticos */
+.type-psychic {
+  background: linear-gradient(135deg, #FA92B2 0%, #F85888 50%, #F61C5D 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo DRAGÓN - Escamas y energía */
+.type-dragon {
+  background: linear-gradient(135deg, #B29EF0 0%, #7038F8 50%, #4C08EF 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo HIELO - Cristales y copos */
+.type-ice {
+  background: linear-gradient(135deg, #BCE6E6 0%, #98D8D8 50%, #69C6C6 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo FANTASMA - Espirales y neblina */
+.type-ghost {
+  background: linear-gradient(135deg, #A292BC 0%, #705898 50%, #554374 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo LUCHA - Puños y patrones de golpe */
+.type-fighting {
+  background: linear-gradient(135deg, #D67873 0%, #C03028 50%, #9D2721 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo BICHO - Patrones hexagonales */
+.type-bug {
+  background: linear-gradient(135deg, #C6D16E 0%, #A8B820 50%, #8A9A00 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo VENENO - Gotas y burbujas tóxicas */
+.type-poison {
+  background: linear-gradient(135deg, #C183C1 0%, #A040A0 50%, #803380 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo TIERRA - Patrones de grietas */
+.type-ground {
+  background: linear-gradient(135deg, #EBD69D 0%, #E0C068 50%, #D4A82F 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo ROCA - Patrones poligonales */
+.type-rock {
+  background: linear-gradient(135deg, #D1C17D 0%, #B8A038 50%, #A89A38 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tipo HADA - Estrellas y brillos */
+.type-fairy {
+  background: linear-gradient(135deg, #F4BDC9 0%, #EE99AC 50%, #DD8899 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Elementos decorativos */
+.elements-water {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M30,50 Q50,30 70,50 T110,50' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='2'/%3E%3Cpath d='M30,60 Q50,40 70,60 T110,60' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='2'/%3E%3Cpath d='M30,70 Q50,50 70,70 T110,70' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='2'/%3E%3C/svg%3E");
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.elements-fire {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M40,100 C25,80 35,60 45,58 C40,40 42,25 50,15 C58,30 60,45 57,58 C68,60 80,80 60,100 L40,100 Z' fill='rgba(255,255,255,0.15)'/%3E%3C/svg%3E");
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.elements-grass {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M20,80 L50,20 L80,80 Z' fill='rgba(255,255,255,0.15)'/%3E%3C/svg%3E");
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.elements-electric {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M50,0 L30,50 L10,50 L40,100 L60,40 L80,40 Z' fill='rgba(255,255,255,0.15)'/%3E%3C/svg%3E");
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.elements-ghost {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M30,90 C30,70 30,50 50,50 C70,50 70,70 70,90 L60,80 L50,90 L40,80 Z' fill='rgba(255,255,255,0.15)'/%3E%3C/svg%3E");
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.elements-rock {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M20,20 L80,20 L80,80 L20,80 Z' fill='rgba(0,0,0,0.1)'/%3E%3Cpath d='M30,30 L70,30 L70,70 L30,70 Z' fill='rgba(0,0,0,0.1)'/%3E%3C/svg%3E");
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.elements-flying {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M20,40 Q50,20 80,40 T140,40' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='2'/%3E%3Cpath d='M20,60 Q50,40 80,60 T140,60' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='2'/%3E%3C/svg%3E");
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.elements-dragon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath d='M0,50 Q25,0 50,50 T100,50' fill='none' stroke='rgba(255,255,255,0.2)' stroke-width='3'/%3E%3C/svg%3E");
+  opacity: 0.3;
+  z-index: 0;
+}
