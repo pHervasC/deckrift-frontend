@@ -29,6 +29,11 @@ export class CartaPlistRoutedComponent implements OnInit {
   isLoading: boolean = false;
   isMobile: boolean = false;
   currentCardIndex: number = 0;
+  mobileCards: ICarta[] = []; // Array para almacenar todas las cartas en vista móvil
+  loadingMore: boolean = false;
+  allCardsLoaded: boolean = false;
+  currentPage: number = 0;
+  pageSize: number = 6;
 
   private debounceSubject = new Subject<string>();
 
@@ -38,8 +43,8 @@ export class CartaPlistRoutedComponent implements OnInit {
     private oRouter: Router
   ) {
     this.debounceSubject.pipe(debounceTime(1000)).subscribe(() => {
+      this.resetPagination();
       this.getPage();
-      this.goToPage(1);
     });
     this.checkScreenSize();
   }
@@ -50,29 +55,98 @@ export class CartaPlistRoutedComponent implements OnInit {
   }
 
   onContainerScroll(event: Event) {
-    if (this.isMobile && this.oPage?.content) {
+    if (this.isMobile) {
       const container = event.target as HTMLElement;
       const scrollPosition = container.scrollLeft;
-      const cardWidth = container.offsetWidth;
+      const containerWidth = container.clientWidth;
+      const cardWidth = containerWidth; // cada tarjeta ocupa el ancho completo
       const index = Math.round(scrollPosition / cardWidth);
-
-      if (index >= 0 && index < this.oPage.content.length) {
+      
+      if (index >= 0 && this.mobileCards && index < this.mobileCards.length) {
         this.currentCardIndex = index;
+
+        // Check if we're near the end of the current loaded cards
+        if (index >= this.mobileCards.length - 2 && !this.loadingMore && !this.allCardsLoaded) {
+          this.loadMoreCards();
+        }
       }
     }
+  }
+
+  // Método para cargar más cartas en la vista móvil
+  loadMoreCards() {
+    if (this.loadingMore || this.allCardsLoaded) return;
+    
+    this.loadingMore = true;
+    this.currentPage++;
+    
+    this.oCartaService
+      .getPage(this.currentPage, this.pageSize, this.strField, this.strDir, this.strFiltro)
+      .subscribe({
+        next: (oPageFromServer: IPage<ICarta>) => {
+          if (oPageFromServer.content.length === 0) {
+            this.allCardsLoaded = true;
+          } else {
+            // Agregar nuevas cartas al array de cartas móviles
+            const newCards = [...oPageFromServer.content];
+            this.mobileCards = [...this.mobileCards, ...newCards];
+            
+            // Cargar imágenes para las nuevas cartas
+            newCards.forEach((carta) => {
+              this.cargarImagenCarta(carta);
+            });
+
+            // Asegurar que el renderizado se complete antes de quitar el indicador de carga
+            setTimeout(() => {
+              this.loadingMore = false;
+            }, 500);
+          }
+        },
+        error: (err) => {
+          console.error('Error al cargar más cartas:', err);
+          this.loadingMore = false;
+        }
+      });
+  }
+
+  // Método para cargar la imagen de una carta específica
+  cargarImagenCarta(carta: ICarta) {
+    // Verificar si ya se ha intentado cargar la imagen anteriormente
+    if (this.imagenes[carta.id] === undefined) {
+      this.oCartaService.getImage(carta.id).subscribe({
+        next: (blob: Blob) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            this.imagenes[carta.id] = reader.result as string;
+          };
+          reader.onerror = () => {
+            console.error(`Error al procesar la imagen de la carta ${carta.id}`);
+            this.imagenes[carta.id] = ''; // Marcar como intentada pero fallida
+          };
+          reader.readAsDataURL(blob);
+        },
+        error: (err) => {
+          console.error(`Error al cargar la imagen de la carta ${carta.id}:`, err);
+          this.imagenes[carta.id] = ''; // Marcar como intentada pero fallida
+        }
+      });
+    }
+  }
+
+  resetPagination() {
+    this.nPage = 0;
+    this.currentPage = 0;
+    this.mobileCards = [];
+    this.allCardsLoaded = false;
   }
 
   checkScreenSize() {
     const wasMobile = this.isMobile;
     this.isMobile = window.innerWidth < 800;
 
-    // Only reload if the mode has changed
+    // Solo recargar si el modo ha cambiado
     if (wasMobile !== this.isMobile) {
-      if (!this.isMobile) {
-        // Switching from mobile to desktop
-        this.nPage = 0; // Reset to first page
-        this.nRpp = 6;  // Reset to default items per page
-      }
+      this.resetPagination();
       this.getPage();
     }
   }
@@ -85,14 +159,15 @@ export class CartaPlistRoutedComponent implements OnInit {
     this.isLoading = true;
 
     if (this.isMobile) {
-      // For mobile, get all cards at once
+      // Para móvil, cargar la primera página de cartas
       this.oCartaService
-        .getAllCards(this.strField, this.strDir, this.strFiltro)
+        .getPage(this.currentPage, this.pageSize, this.strField, this.strDir, this.strFiltro)
         .subscribe({
           next: (oPageFromServer: IPage<ICarta>) => {
-            this.oPage = oPageFromServer;
-            this.cargarImagenes();
+            this.mobileCards = oPageFromServer.content;
+            this.cargarImagenes(oPageFromServer.content);
             this.isLoading = false;
+            this.allCardsLoaded = oPageFromServer.content.length < this.pageSize;
           },
           error: (err) => {
             console.error(err);
@@ -100,7 +175,7 @@ export class CartaPlistRoutedComponent implements OnInit {
           },
         });
     } else {
-      // For desktop, use pagination
+      // Para escritorio, usar paginación
       this.oCartaService
         .getPage(this.nPage, this.nRpp, this.strField, this.strDir, this.strFiltro)
         .subscribe({
@@ -110,7 +185,7 @@ export class CartaPlistRoutedComponent implements OnInit {
               this.nPage,
               oPageFromServer.totalPages
             );
-            this.cargarImagenes();
+            this.cargarImagenes(oPageFromServer.content);
             this.isLoading = false;
           },
           error: (err) => {
@@ -121,22 +196,76 @@ export class CartaPlistRoutedComponent implements OnInit {
     }
   }
 
-  cargarImagenes() {
-    if (this.oPage?.content) {
-      this.oPage.content.forEach((carta) => {
-        this.oCartaService.getImage(carta.id).subscribe({
-          next: (blob: Blob) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-              this.imagenes[carta.id] = reader.result as string; // Asignar la imagen al diccionario
-            };
-            reader.readAsDataURL(blob);
-          },
-          error: (err) => {
-            console.error(`Error al cargar la imagen de la carta ${carta.id}:`, err);
-          },
-        });
+  cargarImagenes(cartas: ICarta[]) {
+    if (cartas) {
+      cartas.forEach((carta) => {
+        this.cargarImagenCarta(carta);
       });
+    }
+  }
+
+  // Método para obtener la clase CSS basada en el tipo de Pokémon
+  getTypeClass(tipo: string): string {
+    // Normalizar el tipo a minúsculas y sin acentos
+    const tipoNormalizado = this.normalizarTipo(tipo);
+    return `type-${tipoNormalizado}`;
+  }
+
+  // Método para normalizar el tipo (minúsculas, sin espacios, sin acentos)
+  normalizarTipo(tipo: string): string {
+    if (!tipo) return 'normal';
+    
+    // Si hay tipos compuestos separados por coma o barra, tomar solo el primero
+    let primerTipo = tipo
+      .toLowerCase()
+      .split(/[,\/]/)[0]  // Separar por coma o barra
+      .trim();
+    
+    // Eliminar acentos
+    primerTipo = primerTipo
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+    
+    // Mapear a los tipos estándar en inglés para CSS
+    const tiposMap: { [key: string]: string } = {
+      'agua': 'water',
+      'fuego': 'fire',
+      'planta': 'grass',
+      'electrico': 'electric',
+      'normal': 'normal',
+      'hielo': 'ice',
+      'lucha': 'fighting',
+      'veneno': 'poison',
+      'tierra': 'ground',
+      'volador': 'flying',
+      'psiquico': 'psychic',
+      'bicho': 'bug',
+      'roca': 'rock',
+      'fantasma': 'ghost',
+      'dragon': 'dragon',
+      'siniestro': 'dark',
+      'acero': 'steel',
+      'hada': 'fairy'
+    };
+
+    return tiposMap[primerTipo] || primerTipo;
+  }
+
+  // Método para obtener elemento decorativo según el tipo
+  getTypeElements(tipo: string): string {
+    const tipoNormalizado = this.normalizarTipo(tipo);
+    
+    switch(tipoNormalizado) {
+      case 'water': return 'elements-water';
+      case 'fire': return 'elements-fire';
+      case 'grass': return 'elements-grass';
+      case 'rock': return 'elements-rock';
+      case 'ground': return 'elements-rock';
+      case 'ghost': return 'elements-ghost';
+      case 'electric': return 'elements-electric';
+      case 'flying': return 'elements-flying';
+      case 'dragon': return 'elements-dragon';
+      default: return '';
     }
   }
 
@@ -176,5 +305,19 @@ export class CartaPlistRoutedComponent implements OnInit {
   filter(event: any) {
     this.isLoading = true;
     this.debounceSubject.next(this.strFiltro);
+  }
+
+  // Método para navegar a una carta específica al hacer clic en un indicador
+  scrollToCard(index: number): void {
+    if (this.scrollContainer && this.mobileCards.length > index) {
+      this.currentCardIndex = index;
+      const containerWidth = this.scrollContainer.nativeElement.clientWidth;
+      const scrollPosition = index * containerWidth;
+      
+      this.scrollContainer.nativeElement.scrollTo({
+        left: scrollPosition,
+        behavior: 'smooth'
+      });
+    }
   }
 }
