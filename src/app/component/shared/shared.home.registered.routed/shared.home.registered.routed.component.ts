@@ -1,98 +1,72 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { IUsuario } from '../../../model/usuario.interface';
-import { UsuarioService } from '../../../service/usuario.service';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { SessionService } from '../../../service/session.service';
+import { UsuarioService } from '../../../service/usuario.service';
+import { IUsuario } from '../../../model/usuario.interface';
 
 @Component({
-  selector: 'app-shared.home.registered.routed',
-  templateUrl: './shared.home.registered.routed.component.html',
-  styleUrls: ['./shared.home.registered.routed.component.css'],
+  selector: 'app-shared-home-registered-routed',
   standalone: true,
-  imports: [RouterModule],
+  imports: [
+    CommonModule,
+    RouterModule
+  ],
+  templateUrl: './shared.home.registered.routed.component.html',
+  styleUrls: ['./shared.home.registered.routed.component.css']
 })
-export class SharedHomeRegisteredRoutedComponent implements OnInit {
-  fotoDni: string | undefined;
-  modalImage: string = '';
-  strRuta: string = '';
-  activeSession: boolean = false;
-  userEmail: string = '';
-  id: number = 0;
+export class SharedHomeRegisteredRoutedComponent implements OnInit, OnDestroy {
 
-  // Lógica para los sprites
-  sprites: string[] = [];
-  currentSpriteIndex: number = 0;
-  showSprite: boolean = false;
+  id: number = 0;
+  user: IUsuario | null = null;
+  status: HttpErrorResponse | null = null;
 
   constructor(
-    private oRouter: Router,
     private oSessionService: SessionService,
-    private oUsuarioService: UsuarioService
-  ) {
-    this.oRouter.events.subscribe((oEvent) => {
-      if (oEvent instanceof NavigationEnd) {
-        this.strRuta = oEvent.url;
-      }
-    });
+    private oUsuarioService: UsuarioService,
+    private oRouter: Router
+  ) { }
 
-    this.activeSession = this.oSessionService.isSessionActive();
-    if (this.activeSession) {
-      this.userEmail = this.oSessionService.getSessionEmail();
-      this.oUsuarioService.getUsuarioByEmail(this.userEmail).subscribe({
-        next: (data: IUsuario) => {
-          this.id = data.id;
-        },
-      });
+  ngOnInit() {
+    this.getUser();
+  }
+
+  ngOnDestroy() {
+    // No es necesario limpiar intervalos porque usamos un sprite estático
+  }
+
+  getUser(): void {
+    const email = this.oSessionService.getSessionEmail();
+    if (email) {
+      this.oUsuarioService.getUsuarioByEmail(email)
+        .subscribe({
+          next: (data: IUsuario) => {
+            this.user = data;
+            if (this.user) {
+              this.id = this.user.id;
+            }
+          },
+          error: (error: HttpErrorResponse) => {
+            this.status = error;
+            this.oRouter.navigate(['/login']);
+          }
+        });
+    } else {
+      this.oRouter.navigate(['/login']);
     }
   }
 
-  ngOnInit(): void {
-    this.oSessionService.onLogin().subscribe({
-      next: () => {
-        this.activeSession = true;
-        this.userEmail = this.oSessionService.getSessionEmail();
-      },
-    });
-    this.oSessionService.onLogout().subscribe({
-      next: () => {
-        this.activeSession = false;
-        this.userEmail = '';
-      },
-    });
-
-    // Inicialización de la animación
-    this.sprites = [
-      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/rayquaza.png',
-      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/rayquaza-mega.png',
-      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/garchomp.png',
-      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/garchomp-mega.png',
-      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/charizard.png',
-      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/charizard-mega-x.png',
-      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/charizard-mega-y.png',
-      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/snorlax-gmax.png',
-      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/lugia-shadow.png',
-      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/bulbasaur.png',
-      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/ivysaur.png',
-      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/venusaur.png',
-      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/arceus.png',
-    ];
-    this.animateSprites();
+  logout() {
+    this.oSessionService.logout();
+    this.oRouter.navigate(['/login']);
   }
 
-  animateSprites(): void {
-    this.showSprite = true;
-    setInterval(() => {
-      this.showSprite = false; // Ocultar el sprite actual para efecto de transición
-      setTimeout(() => {
-        this.currentSpriteIndex =
-          (this.currentSpriteIndex + 1) % this.sprites.length; // Cambiar al siguiente sprite
-        this.showSprite = true;
-      }, 300);
-    }, 2000); // Cambiar cada 2 segundos
+  goToCollection() {
+    this.oRouter.navigate(['/usuario/coleccion', this.id]);
   }
 
-  verColeccion(idUsuario: number): void {
-    this.oRouter.navigate(['usuario/coleccion', idUsuario]);
+  goToPokedex() {
+    this.oRouter.navigate(['/pokedex']);
   }
 }

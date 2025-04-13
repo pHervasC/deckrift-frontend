@@ -1,38 +1,150 @@
-<div
-  class="header-container flex flex-col justify-center items-center bg-logged bg-cover bg-center h-screen opacity-85"
->
-  <!-- Cuadrado blanco ligeramente más ancho -->
-  <div class="bg-white rounded-lg shadow-lg p-8 relative w-10/12 md:w-2/3 lg:w-1/2">
-    <!-- Contenedor para el sprite animado -->
-    <div
-      class="sprite-container mx-auto mb-4"
-      [class.hidden]="!showSprite"
-      [style.backgroundImage]="'url(' + sprites[currentSpriteIndex] + ')'"
-    ></div>
+<div class="pokemon-home flex items-center justify-center min-h-screen relative overflow-hidden">
+  <!-- SVG Landscape Background -->
+  <div class="landscape-background">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="xMidYMax slice" class="landscape-svg">
+      <!-- Sky -->
+      <rect width="100%" height="100%" fill="#87CEFA" />
 
-    <h1 class="header-title text-black text-4xl font-bold text-center mb-4">
-      Deckrift
-    </h1>
+      <!-- Sun -->
+      <circle cx="1100" cy="80" r="60" fill="#FFD700" />
+      <circle cx="1100" cy="80" r="40" fill="#FFEC8B" />
 
-    <!-- Botones -->
-    <div class="button-container flex justify-center gap-4 mb-4">
-      <button
-        class="header-button bg-blue-600 hover:bg-blue-700 text-black text-right font-medium py-2 px-4 rounded-lg transition duration-200"
-        (click)="verColeccion(this.id)"
-      >
-        Ver Colección
-      </button>
-      <a
-        class="header-button bg-red-600 hover:bg-red-700 text-black font-medium py-2 px-4 rounded-lg transition duration-200"
-        href="/logout"
-      >
-        Cerrar Sesión
-      </a>
+      <!-- Clouds -->
+      <g class="cloud" transform="translate(200, 40) scale(0.8)">
+        <ellipse cx="0" cy="0" rx="30" ry="20" fill="white" />
+        <ellipse cx="20" cy="-10" rx="25" ry="15" fill="white" />
+        <ellipse cx="-25" cy="0" rx="25" ry="15" fill="white" />
+        <ellipse cx="-10" cy="10" rx="20" ry="12" fill="white" />
+        <ellipse cx="15" cy="10" rx="20" ry="12" fill="white" />
+      </g>
+
+      <g class="cloud" transform="translate(500, 70) scale(1.2)">
+        <ellipse cx="0" cy="0" rx="30" ry="20" fill="white" />
+        <ellipse cx="20" cy="-10" rx="25" ry="15" fill="white" />
+        <ellipse cx="-25" cy="0" rx="25" ry="15" fill="white" />
+        <ellipse cx="-10" cy="10" rx="20" ry="12" fill="white" />
+        <ellipse cx="15" cy="10" rx="20" ry="12" fill="white" />
+      </g>
+
+      <g class="cloud" transform="translate(900, 50) scale(0.9)">
+        <ellipse cx="0" cy="0" rx="30" ry="20" fill="white" />
+        <ellipse cx="20" cy="-10" rx="25" ry="15" fill="white" />
+        <ellipse cx="-25" cy="0" rx="25" ry="15" fill="white" />
+        <ellipse cx="-10" cy="10" rx="20" ry="12" fill="white" />
+        <ellipse cx="15" cy="10" rx="20" ry="12" fill="white" />
+      </g>
+
+      <!-- Distant Mountains -->
+      <path d="M0,320 L0,200 Q100,150 200,180 Q300,210 400,170 Q500,130 600,160 Q700,190 800,150 Q900,110 1000,140 Q1100,170 1200,130 Q1300,90 1400,120 L1440,120 L1440,320 Z" fill="#8A9BA8" opacity="0.7" />
+
+      <!-- Middle Mountains -->
+      <path d="M0,320 L0,220 Q120,180 240,210 Q360,240 480,200 Q600,160 720,190 Q840,220 960,180 Q1080,140 1200,170 Q1320,200 1440,160 L1440,320 Z" fill="#6A7D89" opacity="0.8" />
+
+      <!-- Foreground Hills -->
+      <path d="M0,320 L0,250 Q180,220 360,250 Q540,280 720,240 Q900,200 1080,230 Q1260,260 1440,220 L1440,320 Z" fill="#4A5D69" />
+
+      <!-- Grass -->
+      <path d="M0,320 L0,280 Q180,260 360,280 Q540,300 720,270 Q900,240 1080,260 Q1260,280 1440,250 L1440,320 Z" fill="#2E8B57" />
+    </svg>
+  </div>
+
+  <!-- Small Pokemon sprites distributed across the screen -->
+  <div class="scattered-pokemon">
+    <!-- Horizontal rows -->
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu" class="mini-pokemon row1">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="Bulbasaur" class="mini-pokemon row1" style="animation-delay: 8s; left: 20%;">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" alt="Charmander" class="mini-pokemon row1" style="animation-delay: 16s; left: 40%;">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png" alt="Squirtle" class="mini-pokemon row1" style="animation-delay: 24s; left: 60%;">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png" alt="Jigglypuff" class="mini-pokemon row1" style="animation-delay: 32s; left: 80%;">
+
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png" alt="Eevee" class="mini-pokemon row2">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png" alt="Snorlax" class="mini-pokemon row2" style="animation-delay: 7s; left: 25%;">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png" alt="Gengar" class="mini-pokemon row2" style="animation-delay: 14s; left: 50%;">
+
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png" alt="Charizard" class="mini-pokemon row3">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png" alt="Blastoise" class="mini-pokemon row3" style="animation-delay: 9s; left: 33%;">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png" alt="Venusaur" class="mini-pokemon row3" style="animation-delay: 18s; left: 66%;">
+
+    <!-- Diagonal sprites -->
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png" alt="Mewtwo" class="mini-pokemon diagonal1">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/149.png" alt="Dragonite" class="mini-pokemon diagonal1" style="animation-delay: 10s; top: 30%; left: 30%;">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/151.png" alt="Mew" class="mini-pokemon diagonal1" style="animation-delay: 20s; top: 60%; left: 60%;">
+
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/144.png" alt="Articuno" class="mini-pokemon diagonal2">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/145.png" alt="Zapdos" class="mini-pokemon diagonal2" style="animation-delay: 15s; top: 30%; right: 30%;">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/146.png" alt="Moltres" class="mini-pokemon diagonal2" style="animation-delay: 30s; top: 60%; right: 60%;">
+
+    <!-- Flying pokemon with special animation -->
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/12.png" alt="Butterfree" class="mini-pokemon flying" style="top: 15%; left: 15%;">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/18.png" alt="Pidgeot" class="mini-pokemon flying" style="animation-delay: 4s; top: 25%; left: 75%;">
+    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/142.png" alt="Aerodactyl" class="mini-pokemon flying" style="animation-delay: 8s; top: 65%; left: 35%;">
+  </div>
+
+  <!-- Main card container with enlarged size -->
+  <div class="card-container bg-white rounded-lg shadow-2xl border-4 border-yellow-400 w-11/12 max-w-md relative z-10">
+    <!-- Sprite area with blue background (sin sprites) -->
+    <div class="sprite-area">
+      <!-- Featured sprite with shadow (solo dejamos el Rayquaza) -->
+      <div class="sprite-wrapper">
+        <div class="sprite-shadow"></div>
+        <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/rayquaza.png"
+             class="featured-sprite active"
+             alt="Rayquaza">
+      </div>
     </div>
 
-    <!-- Descripción -->
-    <p class="header-description text-black text-center text-lg mt-2">
-      El mejor servicio para apertura de sobres.
-    </p>
+    <!-- Card content -->
+    <div class="card-content p-6">
+      <!-- Logo -->
+      <h1 class="text-center text-5xl font-bold text-yellow-400 mb-2 deckrift-title">
+        DECKRIFT
+      </h1>
+      <p class="text-center text-gray-600 mb-6">Tu aventura Pokémon comienza aquí</p>
+
+      <!-- Welcome message -->
+      <div class="welcome-box bg-pink-100 rounded-lg p-4 mb-6">
+        <h2 class="text-lg font-bold text-gray-800 mb-1">¡Bienvenido, Entrenador!</h2>
+        <p class="text-gray-700 text-sm">
+          Explora tu colección, abre nuevos sobres y conviértete en el mejor entrenador Pokémon. En
+          Deckrift, puedes descubrir cartas raras y completar tu pokédex.
+        </p>
+      </div>
+
+      <!-- Info sections -->
+      <div class="grid grid-cols-2 gap-3 mb-6">
+        <div class="info-box bg-blue-100 p-3 rounded-lg">
+          <div class="flex items-center justify-center mb-1">
+            <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/ball/poke.png" alt="Pokeball" class="w-8 h-8 mr-2">
+            <span class="font-bold text-blue-800 ml-1">Colección</span>
+          </div>
+          <p class="text-xs text-center text-blue-700">Explora tus cartas y ve tu progreso</p>
+        </div>
+        <div class="info-box bg-red-100 p-3 rounded-lg">
+          <div class="flex items-center justify-center mb-1">
+            <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/adventure-guide.png" alt="Pokédex" class="w-8 h-8 mr-2">
+            <span class="font-bold text-red-800 ml-1">Pokédex</span>
+          </div>
+          <p class="text-xs text-center text-red-700">Consulta todas tus especies capturadas</p>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <button (click)="goToCollection()" class="action-button bg-blue-500 text-white p-3 rounded-lg flex items-center justify-center">
+          <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/ball/poke.png" alt="Colección" class="w-5 h-5 mr-2">
+          Ver Colección
+        </button>
+        <button (click)="goToPokedex()" class="action-button bg-red-500 text-white p-3 rounded-lg flex items-center justify-center">
+          <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/adventure-guide.png" alt="Pokédex" class="w-5 h-5 mr-2">
+          Pokédex
+        </button>
+      </div>
+
+      <!-- Logout button -->
+      <button (click)="logout()" class="logout-button text-white w-full p-3 rounded-lg flex items-center justify-center">
+        <span class="mr-2">🚪</span>
+        Cerrar Sesión
+      </button>
+    </div>
   </div>
 </div>

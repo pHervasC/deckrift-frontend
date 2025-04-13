@@ -1,15 +1,465 @@
-.sprite-container {
-  width: 96px;
-  height: 96px;
-  background-size: cover;
-  background-position: center;
-  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+/* Estilos para el home de Pokémon */
+
+/* Contenedor principal */
+.pokemon-home {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* SVG Landscape Background */
+.landscape-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.landscape-svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Animate clouds */
+.cloud {
+  animation: floatCloud 60s linear infinite;
+}
+
+.cloud:nth-child(2) {
+  animation-duration: 75s;
+  animation-delay: -20s;
+}
+
+.cloud:nth-child(3) {
+  animation-duration: 90s;
+  animation-delay: -45s;
+}
+
+@keyframes floatCloud {
+  0% {
+    transform: translateX(-300px) scale(0.8);
+  }
+  100% {
+    transform: translateX(1740px) scale(0.8);
+  }
+}
+
+/* Pokemon background with animated sprites */
+.pokemon-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5% 0;
+}
+
+/* Background Pokemon sprites - adjusted for vertical sequence */
+.bg-pokemon {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  opacity: 0.8;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+  z-index: 2;
+}
+
+/* Vertical sequence animations */
+.sequence1 {
+  animation: moveVerticalSequence1 12s linear infinite;
+}
+
+.sequence2 {
+  animation: moveVerticalSequence2 12s linear infinite;
+  animation-delay: 6s;
+}
+
+/* Remove old row animations and replace with these */
+@keyframes moveVerticalSequence1 {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  10% {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+  45% {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+}
+
+@keyframes moveVerticalSequence2 {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  10% {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+  45% {
+    opacity: 0.8;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+}
+
+/* Position classes for vertical sequence */
+.pos-1 { top: 10%; }
+.pos-2 { top: 25%; }
+.pos-3 { top: 40%; }
+.pos-4 { top: 55%; }
+.pos-5 { top: 70%; }
+
+/* Sprite area inside the card - adjust to match image exactly */
+.sprite-area {
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  
+}
+
+/* Sprite wrapper - center the sprite in the blue area */
+.sprite-wrapper {
+  position: absolute;
+  width: 80px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-.sprite-container.hidden {
+
+.sprite-shadow {
+  position: absolute;
+  width: 50px;
+  height: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+  filter: blur(2px);
+}
+
+/* Featured sprite styling - adjust size to match image */
+.featured-sprite {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  transition: all 0.5s ease;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.3));
+}
+
+.featured-sprite.active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  animation: floatSprite 3s ease-in-out infinite;
+}
+
+.featured-sprite.hidden {
   opacity: 0;
-  transform: scale(0.9);
+  transform: scale(0.8) translateY(20px);
+}
+
+/* Floating animation for the featured sprite */
+@keyframes floatSprite {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Card content area */
+.card-content {
+  background-color: white;
+  padding: 20px;
+}
+
+/* Deckrift title */
+.deckrift-title {
+  color: #ffcc00;
+  text-shadow: 2px 2px 0 #3b5ba8, -1px -1px 0 #3b5ba8, 1px -1px 0 #3b5ba8, -1px 1px 0 #3b5ba8;
+  letter-spacing: 1px;
+  transform: perspective(500px) rotateX(5deg);
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  font-size: 2.5rem;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+/* Subtitle */
+.subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+/* Info boxes */
+.info-box {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.info-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Welcome box */
+.welcome-box {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  background-color: #ffebf0;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.welcome-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.welcome-text {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Action buttons */
+.action-button {
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  padding: 12px 15px;
+}
+
+.action-button:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Logout button */
+.logout-button {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  background-color: #1f2937;
+  padding: 12px 15px;
+}
+
+.logout-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Ajustes para los iconos en los botones */
+.action-button img {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* Scattered small Pokemon sprites */
+.scattered-pokemon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.mini-pokemon {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  opacity: 0.7;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.mini-pokemon:hover {
+  transform: scale(1.2);
+  opacity: 1;
+}
+
+/* Row animations */
+.row1 {
+  top: 10%;
+  animation: floatLeftToRight 30s linear infinite;
+}
+
+.row2 {
+  top: 40%;
+  animation: floatRightToLeft 35s linear infinite;
+}
+
+.row3 {
+  top: 70%;
+  animation: floatLeftToRight 40s linear infinite;
+}
+
+/* Diagonal animations */
+.diagonal1 {
+  top: 10%;
+  left: 10%;
+  animation: floatDiagonal1 45s linear infinite;
+}
+
+.diagonal2 {
+  top: 10%;
+  right: 10%;
+  animation: floatDiagonal2 45s linear infinite;
+}
+
+/* Flying animation */
+.flying {
+  animation: floatFlyingPokemon 20s ease-in-out infinite alternate;
+}
+
+/* Animation keyframes */
+@keyframes floatLeftToRight {
+  0% {
+    left: -50px;
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    left: calc(100% + 50px);
+    transform: translateY(0);
+    opacity: 0;
+  }
+}
+
+@keyframes floatRightToLeft {
+  0% {
+    right: -50px;
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(15px);
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    right: calc(100% + 50px);
+    transform: translateY(0);
+    opacity: 0;
+  }
+}
+
+@keyframes floatDiagonal1 {
+  0% {
+    top: -50px;
+    left: -50px;
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    top: calc(100% + 50px);
+    left: calc(100% + 50px);
+    opacity: 0;
+  }
+}
+
+@keyframes floatDiagonal2 {
+  0% {
+    top: -50px;
+    right: -50px;
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    top: calc(100% + 50px);
+    right: calc(100% + 50px);
+    opacity: 0;
+  }
+}
+
+@keyframes floatFlyingPokemon {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(20px) translateX(20px) rotate(5deg);
+  }
+  50% {
+    transform: translateY(0) translateX(40px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-20px) translateX(20px) rotate(-5deg);
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
 }
