@@ -5,6 +5,7 @@ import { IPage } from '../../../model/model.interface';
 import { BotoneraService } from '../../../service/botonera.service';
 import { Router } from '@angular/router';
 import { CompraService } from '../../../service/compra.service';
+import { UsuarioService } from '../../../service/usuario.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { jsPDF } from 'jspdf';
@@ -26,6 +27,7 @@ export class CompraRoutedComponent implements OnInit {
     strFiltro: string = '';
     estadoSeleccionado: string = 'todos';
     compras: ICompra[] = [];
+    usuariosCache: Map<number, string> = new Map(); // Caché para nombres de usuario
     arrBotonera: string[] = [];
     private debounceSubject = new Subject<string>();
     isLoading: boolean = false;
@@ -38,6 +40,7 @@ export class CompraRoutedComponent implements OnInit {
 
     constructor(
       private oCompraService: CompraService,
+      private oUsuarioService: UsuarioService,
       private oBotoneraService: BotoneraService,
       private oRouter: Router
     ) {
@@ -64,11 +67,30 @@ export class CompraRoutedComponent implements OnInit {
               this.nPage,
               oPageFromServer.totalPages
             );
+            
+            // Obtener información detallada de los usuarios
+            this.compras.forEach(compra => {
+              if (compra.usuario && compra.usuario.id && !this.usuariosCache.has(compra.usuario.id)) {
+                this.oUsuarioService.getOne(compra.usuario.id).subscribe({
+                  next: (usuario) => {
+                    this.usuariosCache.set(compra.usuario!.id, usuario.nombre);
+                  },
+                  error: (err) => {
+                    console.error(`Error al obtener usuario con ID ${compra.usuario?.id}:`, err);
+                  }
+                });
+              }
+            });
           },
           error: (err) => {
             console.error('Error al cargar las compras:', err);
           },
         });
+    }
+
+    // Método auxiliar para obtener el nombre del usuario
+    getNombreUsuario(id: number): string {
+      return this.usuariosCache.get(id) || 'Cargando...';
     }
 
     generarPDF() {
@@ -79,7 +101,7 @@ export class CompraRoutedComponent implements OnInit {
         head: [['ID', 'Usuario', 'Cantidad', 'Gasto (€)', 'Estado']],
         body: this.compras.map((compra: ICompra) => [
           compra.id,
-          compra.usuario ? compra.usuario.id : 'Usuario eliminado',
+          compra.usuario ? this.getNombreUsuario(compra.usuario.id) : 'Usuario eliminado',
           compra.cantidadMonedas,
           compra.gasto,
           compra.estado
@@ -104,7 +126,7 @@ export class CompraRoutedComponent implements OnInit {
               head: [['ID', 'Usuario', 'Cantidad', 'Gasto (€)', 'Estado']],
               body: oPageFromServer.content.map((compra: ICompra) => [
                 compra.id,
-                compra.usuario ? compra.usuario.id : 'Usuario eliminado',
+                compra.usuario ? this.getNombreUsuario(compra.usuario.id) : 'Usuario eliminado',
                 compra.cantidadMonedas,
                 compra.gasto,
                 compra.estado

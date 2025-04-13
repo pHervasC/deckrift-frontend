@@ -16,12 +16,12 @@ import { firstValueFrom } from 'rxjs';
 export class ShopRoutedComponent implements OnInit {
   usuarioId!: number;
   cantidadSeleccionada = 100;
-  precio = 5.00;
+  precio = 7.00;
 
   private preciosPorCantidad = {
-    100: 5.00,
+    100: 7.00,
     500: 20.00,
-    1000: 35.00
+    1010: 38.00
   };
 
   constructor(
