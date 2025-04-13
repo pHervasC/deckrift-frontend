@@ -8,6 +8,7 @@ import { CryptoService } from '../../../service/crypto.service';
 import { HttpClient } from '@angular/common/http';
 import { GoogleLoginService } from '../../../service/google-login.service';
 import { SessionService } from '../../../service/session.service';
+import { environment } from '../../../environment/environment';
 
 @Component({
   selector: 'app-usuario-create-routed',
@@ -18,7 +19,7 @@ import { SessionService } from '../../../service/session.service';
 })
 export class UsuarioCreateRoutedComponent implements OnInit {
 
-  private clientId = '642946707903-742gna6lhbktomd5mmk70nj5h4rg02fv.apps.googleusercontent.com';
+  private clientId = environment.googleClientId;
   id: any;
   oUsuarioForm: FormGroup;
   mostrarModalExito: boolean = false;
