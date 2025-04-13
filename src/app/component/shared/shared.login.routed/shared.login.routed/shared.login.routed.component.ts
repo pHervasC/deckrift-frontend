@@ -7,6 +7,7 @@ import { GoogleLoginService } from '../../../../service/google-login.service';
 import { LoginService } from '../../../../service/login.service';
 import { SessionService } from '../../../../service/session.service';
 import { CryptoService } from './../../../../service/crypto.service';
+import { environment } from '../../../../environment/environment';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ import { CryptoService } from './../../../../service/crypto.service';
   ]
 })
 export class SharedLoginRoutedComponent implements OnInit {
-  private clientId = '642946707903-742gna6lhbktomd5mmk70nj5h4rg02fv.apps.googleusercontent.com';
+  private clientId = environment.googleClientId;
   errorMessage: string | null = null;
   mostrarModalExito: boolean = false;
   mostrarModalError: boolean = false;

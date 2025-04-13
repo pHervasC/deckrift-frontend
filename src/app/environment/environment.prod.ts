@@ -1,11 +1,10 @@
 import { HttpHeaders } from "@angular/common/http";
 
 export const environment = {
-  production: false,
+  production: true,
   StripePublickey: 'pk_test_51QtYPzRVeVmpDkxqd9DfRfNblKCUzcpu1L7K5qvvaBj1L4bdbs3tSftWAyPGbIwhtF29PRTkxhe5CvxoVuVA0Jfe00UKmYi2B8',
-  googleClientId: 'TU_CLIENT_ID_DE_GOOGLE_DEV_AQUI'
+  googleClientId: '642946707903-742gna6lhbktomd5mmk70nj5h4rg02fv.apps.googleusercontent.com'
 };
-
 
 export const serverURL: string = 'https://deckrift-backend.onrender.com';
 
