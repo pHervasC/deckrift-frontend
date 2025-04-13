@@ -150,7 +150,7 @@
   align-items: center;
   position: relative;
   overflow: hidden;
-  
+  background: linear-gradient(135deg, #3da6ff 0%, #a8d7ff 50%, #c6e6ff 100%);
 }
 
 /* Sprite wrapper - center the sprite in the blue area */

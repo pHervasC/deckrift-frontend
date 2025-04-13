@@ -84,12 +84,14 @@
   <div class="card-container bg-white rounded-lg shadow-2xl border-4 border-yellow-400 w-11/12 max-w-md relative z-10">
     <!-- Sprite area with blue background (sin sprites) -->
     <div class="sprite-area">
-      <!-- Featured sprite with shadow (solo dejamos el Rayquaza) -->
-      <div class="sprite-wrapper">
+      <!-- Featured sprite with shadow -->
+      <div class="sprite-wrapper" *ngFor="let sprite of sprites; let i = index">
         <div class="sprite-shadow"></div>
-        <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/rayquaza.png"
-             class="featured-sprite active"
-             alt="Rayquaza">
+        <img [src]="sprite"
+             [class.active]="i === currentSpriteIndex && showSprite"
+             [class.hidden]="i !== currentSpriteIndex || !showSprite"
+             class="featured-sprite"
+             alt="Pokemon sprite">
       </div>
     </div>
 

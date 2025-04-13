@@ -21,6 +21,12 @@ export class SharedHomeRegisteredRoutedComponent implements OnInit, OnDestroy {
   id: number = 0;
   user: IUsuario | null = null;
   status: HttpErrorResponse | null = null;
+  
+  // Sprite animation logic
+  sprites: string[] = [];
+  currentSpriteIndex: number = 0;
+  showSprite: boolean = false;
+  spriteInterval: any;
 
   constructor(
     private oSessionService: SessionService,
@@ -30,10 +36,31 @@ export class SharedHomeRegisteredRoutedComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getUser();
+    
+    // Initialize sprite animation
+    this.sprites = [
+      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/rayquaza.png',
+      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/rayquaza-mega.png',
+      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/garchomp.png',
+      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/garchomp-mega.png',
+      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/charizard.png',
+      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/charizard-mega-x.png',
+      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/charizard-mega-y.png',
+      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/snorlax-gmax.png',
+      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/lugia-shadow.png',
+      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/bulbasaur.png',
+      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/ivysaur.png',
+      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/venusaur.png',
+      'https://raw.githubusercontent.com/msikma/pokesprite/master/pokemon-gen8/regular/arceus.png',
+    ];
+    this.animateSprites();
   }
 
   ngOnDestroy() {
-    // No es necesario limpiar intervalos porque usamos un sprite estático
+    // Clean up interval when component is destroyed
+    if (this.spriteInterval) {
+      clearInterval(this.spriteInterval);
+    }
   }
 
   getUser(): void {
@@ -55,6 +82,17 @@ export class SharedHomeRegisteredRoutedComponent implements OnInit, OnDestroy {
     } else {
       this.oRouter.navigate(['/login']);
     }
+  }
+  
+  animateSprites(): void {
+    this.showSprite = true;
+    this.spriteInterval = setInterval(() => {
+      this.showSprite = false; // Hide current sprite for transition effect
+      setTimeout(() => {
+        this.currentSpriteIndex = (this.currentSpriteIndex + 1) % this.sprites.length; // Change to next sprite
+        this.showSprite = true;
+      }, 300);
+    }, 2000); // Change every 2 seconds
   }
 
   logout() {
