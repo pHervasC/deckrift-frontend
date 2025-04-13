@@ -98,7 +98,7 @@
         <tbody class="divide-y divide-gray-700">
           <tr *ngFor="let compra of oPage?.content" class="hover:bg-gray-700 transition-colors">
             <td class="px-6 py-4 text-sm text-gray-300">{{ compra.id }}</td>
-            <td class="px-6 py-4 text-sm text-gray-300">{{ compra.usuario.id }}</td>
+            <td class="px-6 py-4 text-sm text-gray-300">{{ compra.usuario ? compra.usuario.id : 'Usuario eliminado' }}</td>
             <td class="px-6 py-4 text-sm text-gray-300">{{ compra.cantidadMonedas }}</td>
             <td class="px-6 py-4 text-sm text-gray-300">{{ compra.gasto | currency:'EUR' }}</td>
             <td class="px-6 py-4">
@@ -125,7 +125,7 @@
           <div class="text-gray-300 text-sm">{{ compra.id }}</div>
 
           <div class="text-gray-400 text-sm">Usuario:</div>
-          <div class="text-gray-300 text-sm">{{ compra.usuario.id }}</div>
+          <div class="text-gray-300 text-sm">{{ compra.usuario ? compra.usuario.id : 'Usuario eliminado' }}</div>
 
           <div class="text-gray-400 text-sm">Cantidad:</div>
           <div class="text-gray-300 text-sm">{{ compra.cantidadMonedas }}</div>

@@ -1,6 +1,6 @@
 export interface ICompra {
   id: number;
-  usuario: {
+  usuario?: {
     id: number;
     email: string;
   };

@@ -79,7 +79,7 @@ export class CompraRoutedComponent implements OnInit {
         head: [['ID', 'Usuario', 'Cantidad', 'Gasto (€)', 'Estado']],
         body: this.compras.map((compra: ICompra) => [
           compra.id,
-          compra.usuario.id,
+          compra.usuario ? compra.usuario.id : 'Usuario eliminado',
           compra.cantidadMonedas,
           compra.gasto,
           compra.estado
@@ -104,7 +104,7 @@ export class CompraRoutedComponent implements OnInit {
               head: [['ID', 'Usuario', 'Cantidad', 'Gasto (€)', 'Estado']],
               body: oPageFromServer.content.map((compra: ICompra) => [
                 compra.id,
-                compra.usuario.id,
+                compra.usuario ? compra.usuario.id : 'Usuario eliminado',
                 compra.cantidadMonedas,
                 compra.gasto,
                 compra.estado

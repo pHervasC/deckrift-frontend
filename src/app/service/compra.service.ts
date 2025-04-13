@@ -16,7 +16,7 @@ export class CompraService {
   getPage(page: number, size: number = 10, field: string, dir: string, filtro?: string, estado?: string): Observable<IPage<ICompra>> {
     let params = `page=${page}&size=${size}&sort=${field},${dir}`;
 
-    if (filtro) params += `&correo=${filtro}`;
+    if (filtro) params += `&filter=${filtro}`;
     if (estado) params += `&estado=${estado}`;
 
     return this.http.get<IPage<ICompra>>(`${this.apiUrl}/page?${params}`);
