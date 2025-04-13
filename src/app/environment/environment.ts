@@ -3,7 +3,7 @@ import { HttpHeaders } from "@angular/common/http";
 export const environment = {
   production: false,
   StripePublickey: 'pk_test_51QtYPzRVeVmpDkxqd9DfRfNblKCUzcpu1L7K5qvvaBj1L4bdbs3tSftWAyPGbIwhtF29PRTkxhe5CvxoVuVA0Jfe00UKmYi2B8',
-  googleClientId: 'TU_CLIENT_ID_DE_GOOGLE_DEV_AQUI'
+  googleClientId: '941844746843-3pucjd42q35mvia1e55i3da0udkv13i6.apps.googleusercontent.com'
 };
 
 
