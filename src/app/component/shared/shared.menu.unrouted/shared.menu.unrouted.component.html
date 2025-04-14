@@ -1,11 +1,15 @@
 <nav class="bg-gray-800 text-white p-2 shadow-lg">
   <!-- Contenedor principal -->
   <div class="container mx-auto flex items-center justify-between">
-    <!-- Brand -->
+    <!-- Brand with Pokemon-style logo -->
     @if (activeSession){
-    <a class="text-x font-bold" href="/home/registered">DECKRIFT</a>
+    <a class="text-x font-bold flex items-center" href="/home/registered">
+      <img src="https://fontmeme.com/permalink/250414/46dad81855a813afde689cac446b7447.png" alt="DECKRIFT" style="height: 30px;">
+    </a>
     } @else{
-    <a class="text-x font-bold" href="#">DECKRIFT</a>
+    <a class="text-x font-bold flex items-center" href="#">
+      <img src="https://fontmeme.com/permalink/250414/46dad81855a813afde689cac446b7447.png" alt="DECKRIFT" style="height: 30px;">
+    </a>
     }
 
     <!-- Hamburger button - visible only on mobile -->
