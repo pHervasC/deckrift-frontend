@@ -51,7 +51,6 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
       next: (puedeAbrir) => {
         if (puedeAbrir) {
           // Si puede abrir, ahora sí mostramos la animación
-          this.mostrarAnimacionSobre();
           this.procesarApertura(false);
         } else {
           // Si no puede abrir, mostrar el modal de confirmación (sin animación aún)
@@ -93,12 +92,13 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
     this.mostrarModalConfirmacion = false;
     
     // Ahora sí mostramos la animación del sobre al confirmar el uso de monedas
-    this.mostrarAnimacionSobre();
-    
     this.procesarApertura(true);
   }
 
   procesarApertura(usarMonedas: boolean): void {
+    // Mostrar la animación del sobre siempre que procesemos una apertura
+    this.mostrarAnimacionSobre();
+    
     this.almacenService.addCartasAleatorias(this.usuarioId, 5, usarMonedas).subscribe({
       next: (respuesta) => {
         const cartas = Array.isArray(respuesta) ? respuesta as any[] : (respuesta as any)?.cartas as any[];
