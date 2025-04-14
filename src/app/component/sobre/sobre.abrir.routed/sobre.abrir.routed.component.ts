@@ -20,6 +20,7 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
   mostrarBotonAbrir: boolean = true;
   mostrarModalConfirmacion: boolean = false;
   mostrarModalError: boolean = false;
+  mostrarBotonTienda: boolean = false;
   mensajeModal: string = '';
 
   constructor(
@@ -70,7 +71,6 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
   confirmarUsoMonedas(): void {
     this.mostrarModalConfirmacion = false;
     this.procesarApertura(true);
-    this
   }
 
   procesarApertura(usarMonedas: boolean): void {
@@ -119,6 +119,10 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
   mostrarMensajeError(mensaje: string): void {
     this.mensajeModal = mensaje;
     this.mostrarModalError = true;
+    // Determinar si el error es por falta de monedas
+    this.mostrarBotonTienda = mensaje.toLowerCase().includes('monedas') || 
+                             mensaje.toLowerCase().includes('saldo') ||
+                             mensaje.toLowerCase().includes('insuficiente');
   }
 
   cerrarModal(): void {
@@ -129,6 +133,10 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
 
   verColeccion(idUsuario: number): void {
     this.oRouter.navigate(['usuario/coleccion', idUsuario]);
+  }
+  
+  irATienda(): void {
+    this.oRouter.navigate(['tienda/monedas']);
   }
 
   flip(event: any): void {
