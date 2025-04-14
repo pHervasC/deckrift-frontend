@@ -90,24 +90,22 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
             }
           });
         }
-        // Esperamos 3 segundos para que termine la animación del sobre
-        setTimeout(() => {
-          cartas.forEach((carta: any, index: number) => {
-            setTimeout(() => {
-              this.cartaService.getImage(carta.id).subscribe({
-                next: (blob: Blob) => {
-                  const imageUrl = URL.createObjectURL(blob);
-                  this.cartasReveladas.push({ ...carta, imageUrl });
-                },
-                error: () => {}
-              });
-            }, index * 500); // Cada carta aparecerá con 500ms de diferencia
-          });
-
+        // Procesamos las cartas inmediatamente sin esperar la animación del sobre
+        cartas.forEach((carta: any, index: number) => {
           setTimeout(() => {
-            this.mostrarBotonAbrir = true;
-          }, cartas.length * 500 + 1000);
-        }); // Esperamos 3 segundos para que termine la animación del sobre
+            this.cartaService.getImage(carta.id).subscribe({
+              next: (blob: Blob) => {
+                const imageUrl = URL.createObjectURL(blob);
+                this.cartasReveladas.push({ ...carta, imageUrl });
+              },
+              error: () => {}
+            });
+          }, index * 500); // Cada carta aparecerá con 500ms de diferencia
+        });
+
+        setTimeout(() => {
+          this.mostrarBotonAbrir = true;
+        }, cartas.length * 500);
       },
       error: (error) => {
         const mensaje = error.error?.error || "No se pudo abrir el sobre.";
