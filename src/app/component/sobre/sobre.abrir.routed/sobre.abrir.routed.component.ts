@@ -120,7 +120,7 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
     this.mensajeModal = mensaje;
     this.mostrarModalError = true;
     // Determinar si el error es por falta de monedas
-    this.mostrarBotonTienda = mensaje.toLowerCase().includes('monedas') || 
+    this.mostrarBotonTienda = mensaje.toLowerCase().includes('monedas') ||
                              mensaje.toLowerCase().includes('saldo') ||
                              mensaje.toLowerCase().includes('insuficiente');
   }
@@ -134,9 +134,9 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
   verColeccion(idUsuario: number): void {
     this.oRouter.navigate(['usuario/coleccion', idUsuario]);
   }
-  
+
   irATienda(): void {
-    this.oRouter.navigate(['tienda/monedas']);
+    this.oRouter.navigate(['shop']);
   }
 
   flip(event: any): void {
