@@ -30,15 +30,17 @@ export class SuccessRoutedComponent implements OnInit {
         next: (respuesta) => {
             console.log("✅ Respuesta del backend:", respuesta);
             if (respuesta === true) {
-                this.mensaje = "✅ Pago confirmado. Se han añadido tus monedas.";
+              this.mensaje = "✅ Pago confirmado. Se han añadido tus monedas.";
+
+              setTimeout(() => {
+                this.router.navigate(['/home/registered']).then(() => {
+                  window.location.reload();
+                });
+              }, 3000);
+
             } else {
-                this.mensaje = "❌ No se pudo verificar el pago.";
+              this.mensaje = "❌ No se pudo verificar el pago.";
             }
-            setTimeout(() => {
-              this.router.navigate(['/home/registered']).then(() => {
-                window.location.reload();  // Se recarga después de navegar
-              });
-            }, 3000);
 
         },
         error: (error) => {
