@@ -114,14 +114,14 @@
 
       <!-- Info sections -->
       <div class="grid grid-cols-2 gap-3 mb-6">
-        <div class="info-box bg-blue-100 p-3 rounded-lg">
+        <div (click)="goToCollection()" class="info-box bg-blue-100 p-3 rounded-lg cursor-pointer hover:bg-blue-200 transition-colors">
           <div class="flex items-center justify-center mb-1">
             <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/ball/poke.png" alt="Pokeball" class="w-8 h-8 mr-2">
             <span class="font-bold text-blue-800 ml-1">Colección</span>
           </div>
           <p class="text-xs text-center text-blue-700">Explora tus cartas y ve tu progreso</p>
         </div>
-        <div class="info-box bg-red-100 p-3 rounded-lg">
+        <div (click)="goToPokedex()" class="info-box bg-red-100 p-3 rounded-lg cursor-pointer hover:bg-red-200 transition-colors">
           <div class="flex items-center justify-center mb-1">
             <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/adventure-guide.png" alt="Pokédex" class="w-8 h-8 mr-2">
             <span class="font-bold text-red-800 ml-1">Pokédex</span>
@@ -131,6 +131,18 @@
       </div>
 
       <!-- Action buttons -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <button (click)="goToCards()" class="action-button bg-purple-500 text-white p-3 rounded-lg flex items-center justify-center">
+          <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/elevator-key.png" alt="Cartas" class="w-5 h-5 mr-2">
+          Cartas
+        </button>
+        <button (click)="goToOpenPacks()" class="action-button bg-yellow-500 text-white p-3 rounded-lg flex items-center justify-center">
+          <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/endorsement.png" alt="Abrir Sobre" class="w-5 h-5 mr-2">
+          Abrir Sobre
+        </button>
+      </div>
+
+      <!-- Original Action buttons -->
       <div class="grid grid-cols-2 gap-4 mb-6">
         <button (click)="goToCollection()" class="action-button bg-blue-500 text-white p-3 rounded-lg flex items-center justify-center">
           <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/ball/poke.png" alt="Colección" class="w-5 h-5 mr-2">

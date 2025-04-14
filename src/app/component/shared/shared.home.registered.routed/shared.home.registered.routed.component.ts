@@ -107,4 +107,12 @@ export class SharedHomeRegisteredRoutedComponent implements OnInit, OnDestroy {
   goToPokedex() {
     this.oRouter.navigate(['/pokedex']);
   }
+
+  goToCards() {
+    this.oRouter.navigate(['/carta']);
+  }
+
+  goToOpenPacks() {
+    this.oRouter.navigate(['/sobre/abrir', this.id]);
+  }
 }
