@@ -44,9 +44,30 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
     // Limpiar las cartas anteriores
     this.cartasReveladas = [];
     
-    // Reiniciar la animación del sobre
-    this.sobreAbierto = true;
+    // Primero verificar si puede abrir el sobre sin mostrar la animación todavía
     this.mostrarBotonAbrir = false;
+    
+    this.almacenService.puedeAbrirSobre(this.usuarioId).subscribe({
+      next: (puedeAbrir) => {
+        if (puedeAbrir) {
+          // Si puede abrir, ahora sí mostramos la animación
+          this.mostrarAnimacionSobre();
+          this.procesarApertura(false);
+        } else {
+          // Si no puede abrir, mostrar el modal de confirmación (sin animación aún)
+          this.mostrarModalConfirmacion = true;
+        }
+      },
+      error: () => {
+        this.mostrarMensajeError("Error al verificar si puedes abrir el sobre.");
+        this.mostrarBotonAbrir = true; // Restaurar el botón en caso de error
+      },
+    });
+  }
+
+  // Método separado para mostrar la animación del sobre
+  mostrarAnimacionSobre(): void {
+    this.sobreAbierto = true;
     
     // Agregar la clase 'open' directamente al elemento para asegurar que la animación se ejecute
     setTimeout(() => {
@@ -61,19 +82,6 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
         }, 10);
       }
     }, 0);
-
-    this.almacenService.puedeAbrirSobre(this.usuarioId).subscribe({
-      next: (puedeAbrir) => {
-        if (puedeAbrir) {
-          this.procesarApertura(false);
-        } else {
-          this.mostrarModalConfirmacion = true;
-        }
-      },
-      error: () => {
-        this.mostrarMensajeError("Error al verificar si puedes abrir el sobre.");
-      },
-    });
   }
 
   mostrarConfirmacionGastarMonedas(): void {
@@ -84,22 +92,8 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
   confirmarUsoMonedas(): void {
     this.mostrarModalConfirmacion = false;
     
-    // Mostrar la animación del sobre cuando se confirma gastar monedas
-    this.sobreAbierto = true;
-    
-    // Agregar la clase 'open' directamente al elemento para asegurar que la animación se ejecute
-    setTimeout(() => {
-      const packElement = document.getElementById('pack-opened');
-      if (packElement) {
-        // Asegurarse de que la clase 'open' se quite y luego se agregue de nuevo
-        packElement.classList.remove('open');
-        
-        // Pequeña pausa y luego agregar la clase 'open' de nuevo
-        setTimeout(() => {
-          packElement.classList.add('open');
-        }, 10);
-      }
-    }, 0);
+    // Ahora sí mostramos la animación del sobre al confirmar el uso de monedas
+    this.mostrarAnimacionSobre();
     
     this.procesarApertura(true);
   }
