@@ -83,6 +83,24 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
 
   confirmarUsoMonedas(): void {
     this.mostrarModalConfirmacion = false;
+    
+    // Mostrar la animación del sobre cuando se confirma gastar monedas
+    this.sobreAbierto = true;
+    
+    // Agregar la clase 'open' directamente al elemento para asegurar que la animación se ejecute
+    setTimeout(() => {
+      const packElement = document.getElementById('pack-opened');
+      if (packElement) {
+        // Asegurarse de que la clase 'open' se quite y luego se agregue de nuevo
+        packElement.classList.remove('open');
+        
+        // Pequeña pausa y luego agregar la clase 'open' de nuevo
+        setTimeout(() => {
+          packElement.classList.add('open');
+        }, 10);
+      }
+    }, 0);
+    
     this.procesarApertura(true);
   }
 
