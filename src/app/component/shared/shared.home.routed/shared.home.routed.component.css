@@ -1,0 +1,39 @@
+/* Existing styles */
+
+/* Pokemon-style title */
+.pokemon-title {
+  font-family: 'Arial Rounded MT Bold', 'Arial Rounded', 'Arial', sans-serif;
+  font-weight: bold;
+  color: #fcc203 !important; /* Pokemon yellow */
+  font-size: 2.5rem;
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  padding: 10px 0;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+/* Create the Pokemon-style blue border effect */
+.pokemon-title::before {
+  content: attr(data-text);
+  position: absolute;
+  left: -5px;
+  top: -5px;
+  right: -5px;
+  bottom: -5px;
+  background: none;
+  z-index: -1;
+  color: #fcc203;
+  -webkit-text-stroke: 8px #2a6db5; /* Thick blue border */
+}
+
+/* Animation for the title */
+@keyframes bounce {
+  0%, 100% {transform: translateY(0);}
+  50% {transform: translateY(-5px);}
+}
+
+.pokemon-title:hover {
+  animation: bounce 0.5s ease infinite;
+}

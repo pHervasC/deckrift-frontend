@@ -1,88 +1,78 @@
 <nav class="bg-gray-800 text-white p-2 shadow-lg">
   <!-- Contenedor principal -->
   <div class="container mx-auto flex items-center justify-between">
-    <!-- Brand with Pokemon-style logo -->
+    <!-- Brand with Pokemon-style logo - always visible -->
     @if (activeSession){
-    <a class="text-x font-bold flex items-center" href="/home/registered">
+    <a class="text-x font-bold flex items-center flex-grow-0 flex-shrink-0" href="/home/registered">
       <img src="https://fontmeme.com/permalink/250414/46dad81855a813afde689cac446b7447.png" alt="DECKRIFT" style="height: 30px;">
     </a>
     } @else{
-    <a class="text-x font-bold flex items-center" href="#">
+    <a class="text-x font-bold flex items-center flex-grow-0 flex-shrink-0" href="#">
       <img src="https://fontmeme.com/permalink/250414/46dad81855a813afde689cac446b7447.png" alt="DECKRIFT" style="height: 30px;">
     </a>
     }
 
-    <!-- Hamburger button - visible only on mobile -->
-    <button
-      class="md:hidden p-2 rounded-md hover:bg-gray-700 focus:outline-none"
-      (click)="toggleMobileMenu()"
-      aria-label="Toggle menu"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    </button>
-
+    <!-- Middle section - Navigation links that collapse earlier -->
     @if (activeSession) {
     @if (permisos === "Administrador"){
-    <!-- Menú de navegación (versión desktop) -->
-    <div class="hidden md:flex items-center space-x-4">
-      <a href="/admin/usuario/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+    <!-- Menú de navegación (versión desktop) - more aggressive hiding at smaller screens -->
+    <div class="hidden lg:flex items-center space-x-2 overflow-x-auto flex-grow-0 flex-shrink mx-2">
+      <a href="/admin/usuario/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == '/admin/usuario/plist' }">
         A.Usuarios
       </a>
-      <a href="/admin/carta/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+      <a href="/admin/carta/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == '/admin/carta/plist' }">
         A.Cartas
       </a>
 
-      <a href="/compra/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+      <a href="/compra/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == '/compra/plist' }">
         A.Compra
       </a>
 
-      <a href="cartas/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+      <a href="cartas/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == '/cartas/plist' }">
         Cartas
       </a>
-      <button (click)="verColeccion(this.id)" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+      <button (click)="verColeccion(this.id)" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == '/usuario/coleccion/:id' }">
         Coleccion
     </button>
-    <a href="pokedex" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+    <a href="pokedex" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == 'pokedex' }">
         Pokedex
       </a>
     </div>
     } @else {
-    <div class="hidden md:flex items-center space-x-4">
-      <a href="cartas/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+    <div class="hidden lg:flex items-center space-x-2 overflow-x-auto flex-grow-0 flex-shrink mx-2">
+      <a href="cartas/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == '/cartas/plist' }">
         Cartas
       </a>
-      <button (click)="verColeccion(this.id)" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+      <button (click)="verColeccion(this.id)" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == '/usuario/coleccion/:id' }">
         Coleccion
     </button>
 
-    <a href="pokedex" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+    <a href="pokedex" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == 'pokedex' }">
         Pokedex
       </a>
     </div>
     }
   }
-    <!-- Controles de sesión (versión desktop) -->
-    <div class="hidden md:flex items-center space-x-4">
+    <!-- Controles de sesión (versión desktop) - more aggressive hiding at smaller screens -->
+    <div class="hidden lg:flex items-center space-x-2 flex-grow-0 flex-shrink-0">
       <!-- Si no hay sesión activa: muestra Iniciar Sesión y Registrarse -->
       <ng-container *ngIf="!activeSession; else loggedInDesktop">
         <a href="/login"
-          class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200"
+          class="px-3 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200"
           [ngClass]="{ 'bg-blue-600': strRuta == '/login' }">
           Iniciar Sesión
         </a>
         <a href="/usuario/create"
-          class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200"
+          class="px-3 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200"
           [ngClass]="{ 'bg-blue-600': strRuta == '/usuario/create' }">
           Registrarse
         </a>
@@ -90,16 +80,26 @@
       <!-- Si hay sesión activa: muestra el email y monedas -->
       <ng-template #loggedInDesktop>
         <a href="/byemail/{{userEmail}}"
-          class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200">
+          class="px-3 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200">
           {{ nombre }}
         </a>
         <a href="/shop"
-          class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200 flex items-center gap-2">
+          class="px-3 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200 flex items-center gap-2">
           <img src="assets/img/Pokecoin.webp" alt="moneda" class="w-5 h-5">
           <span>{{monedas}}</span>
         </a>
       </ng-template>
     </div>
+    <!-- Hamburger button - visible when nav elements are hidden -->
+    <button
+      class="lg:hidden p-2 rounded-md hover:bg-gray-700 focus:outline-none flex-grow-0 flex-shrink-0 ml-auto"
+      (click)="toggleMobileMenu()"
+      aria-label="Toggle menu"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
   </div>
 
   <!-- Mobile menu - slide-in sidebar -->
