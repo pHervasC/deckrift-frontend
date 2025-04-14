@@ -109,7 +109,7 @@ export class SharedHomeRegisteredRoutedComponent implements OnInit, OnDestroy {
   }
 
   goToCards() {
-    this.oRouter.navigate(['/carta']);
+    window.location.href = 'https://www.deckrift.com/cartas/plist';
   }
 
   goToOpenPacks() {
