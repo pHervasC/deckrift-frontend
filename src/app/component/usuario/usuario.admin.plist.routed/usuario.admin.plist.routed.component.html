@@ -145,8 +145,8 @@
           <button
             *ngSwitchDefault
             class="px-4 py-2 border border-gray-700 rounded-lg hover:bg-gray-800 text-base"
-            [class.bg-yellow-500]="nPage === +pag"
-            [class.text-black]="nPage === +pag"
+            [class.bg-yellow-500]="nPage + 1 === +pag"
+            [class.text-black]="nPage + 1 === +pag"
             (click)="goToPage(+pag)"
           >
             {{ pag }}
