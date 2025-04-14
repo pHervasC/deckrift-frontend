@@ -107,7 +107,7 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
           setTimeout(() => {
             this.mostrarBotonAbrir = true;
           }, cartas.length * 500 + 1000);
-        }, 3000); // Esperamos 3 segundos para que termine la animación del sobre
+        }); // Esperamos 3 segundos para que termine la animación del sobre
       },
       error: (error) => {
         const mensaje = error.error?.error || "No se pudo abrir el sobre.";
