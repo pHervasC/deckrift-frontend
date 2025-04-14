@@ -46,21 +46,27 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
     // Limpiar las cartas anteriores
     this.cartasReveladas = [];
 
-    this.sobreAbierto = true;
-    this.mostrarBotonAbrir = false;
+    // Asegurar que el sobre está cerrado antes de abrirlo nuevamente (para reiniciar la animación)
+    this.sobreAbierto = false;
+    
+    // Pequeña pausa para asegurar que la animación se reinicie
+    setTimeout(() => {
+      this.sobreAbierto = true;
+      this.mostrarBotonAbrir = false;
 
-    this.almacenService.puedeAbrirSobre(this.usuarioId).subscribe({
-      next: (puedeAbrir) => {
-        if (puedeAbrir) {
-          this.procesarApertura(false);
-        } else {
-          this.mostrarModalConfirmacion = true;
-        }
-      },
-      error: () => {
-        this.mostrarMensajeError("Error al verificar si puedes abrir el sobre.");
-      },
-    });
+      this.almacenService.puedeAbrirSobre(this.usuarioId).subscribe({
+        next: (puedeAbrir) => {
+          if (puedeAbrir) {
+            this.procesarApertura(false);
+          } else {
+            this.mostrarModalConfirmacion = true;
+          }
+        },
+        error: () => {
+          this.mostrarMensajeError("Error al verificar si puedes abrir el sobre.");
+        },
+      });
+    }, 50); // Pequeña pausa para asegurar que se reinicie la animación
   }
 
   mostrarConfirmacionGastarMonedas(): void {
