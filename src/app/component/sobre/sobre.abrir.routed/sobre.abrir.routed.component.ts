@@ -37,36 +37,43 @@ export class SobreAbrirRoutedComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    document.querySelector('.btn-open')?.addEventListener('click', () => {
-      document.getElementById('pack-opened')?.classList.toggle('open');
-    });
+    // No need for additional event listeners
   }
 
   abrirSobre(): void {
     // Limpiar las cartas anteriores
     this.cartasReveladas = [];
-
-    // Asegurar que el sobre está cerrado antes de abrirlo nuevamente (para reiniciar la animación)
-    this.sobreAbierto = false;
     
-    // Pequeña pausa para asegurar que la animación se reinicie
+    // Reiniciar la animación del sobre
+    this.sobreAbierto = true;
+    this.mostrarBotonAbrir = false;
+    
+    // Agregar la clase 'open' directamente al elemento para asegurar que la animación se ejecute
     setTimeout(() => {
-      this.sobreAbierto = true;
-      this.mostrarBotonAbrir = false;
+      const packElement = document.getElementById('pack-opened');
+      if (packElement) {
+        // Asegurarse de que la clase 'open' se quite y luego se agregue de nuevo
+        packElement.classList.remove('open');
+        
+        // Pequeña pausa y luego agregar la clase 'open' de nuevo
+        setTimeout(() => {
+          packElement.classList.add('open');
+        }, 10);
+      }
+    }, 0);
 
-      this.almacenService.puedeAbrirSobre(this.usuarioId).subscribe({
-        next: (puedeAbrir) => {
-          if (puedeAbrir) {
-            this.procesarApertura(false);
-          } else {
-            this.mostrarModalConfirmacion = true;
-          }
-        },
-        error: () => {
-          this.mostrarMensajeError("Error al verificar si puedes abrir el sobre.");
-        },
-      });
-    }, 50); // Pequeña pausa para asegurar que se reinicie la animación
+    this.almacenService.puedeAbrirSobre(this.usuarioId).subscribe({
+      next: (puedeAbrir) => {
+        if (puedeAbrir) {
+          this.procesarApertura(false);
+        } else {
+          this.mostrarModalConfirmacion = true;
+        }
+      },
+      error: () => {
+        this.mostrarMensajeError("Error al verificar si puedes abrir el sobre.");
+      },
+    });
   }
 
   mostrarConfirmacionGastarMonedas(): void {
