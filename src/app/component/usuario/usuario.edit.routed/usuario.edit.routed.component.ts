@@ -6,15 +6,19 @@ import { IUsuario } from '../../../model/usuario.interface';
 import { CommonModule } from '@angular/common';
 import { CryptoService } from '../../../service/crypto.service';
 import { SessionService } from '../../../service/session.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-usuario-edit-routed',
   templateUrl: './usuario.edit.routed.component.html',
   styleUrls: ['./usuario.edit.routed.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule],
 })
 export class UsuarioEditRoutedComponent implements OnInit {
+  datosUsuario: any;
+  loaded = false;
+
   oUsuarioForm!: FormGroup;
   usuarioId!: number;
   usuario!: IUsuario;
@@ -37,6 +41,7 @@ export class UsuarioEditRoutedComponent implements OnInit {
     this.usuarioId = Number(this.route.snapshot.paramMap.get('id'));
     this.initializeForm();
     this.loadUsuarioData();
+
   }
 
   initializeForm(): void {
@@ -63,15 +68,14 @@ export class UsuarioEditRoutedComponent implements OnInit {
           emailVerified: usuario.emailVerified,
           monedas: usuario.monedas,
         });
+        this.loaded = true; // <-- Aquí
       },
       error: (err) => {
-        console.error('Error al cargar datos del usuario:', err);
-        this.errorMessage = 'No se pudo cargar la información del usuario.';
-        this.showErrorModal = true;
-      },
+        // Maneja el error si quieres mostrar mensaje
+        this.loaded = true; // <-- También aquí, para ocultar el loader aunque haya error
+      }
     });
   }
-
 
   onSubmit(): void {
     if (this.oUsuarioForm.invalid) {
@@ -116,5 +120,6 @@ export class UsuarioEditRoutedComponent implements OnInit {
   closeErrorModal(): void {
     this.showErrorModal = false;
   }
+
 
 }

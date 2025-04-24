@@ -168,3 +168,10 @@
     </button>
   </div>
 </div>
+
+<div *ngIf="loaded; else loading">
+  <!-- Todo el contenido del formulario y la página aquí -->
+</div>
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>
