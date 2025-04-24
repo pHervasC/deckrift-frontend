@@ -13,7 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './usuario.edit.routed.component.html',
   styleUrls: ['./usuario.edit.routed.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule],
+  imports: [CommonModule, ReactiveFormsModule],
 })
 export class UsuarioEditRoutedComponent implements OnInit {
   datosUsuario: any;
