@@ -20,16 +20,16 @@ export class CartaPlistRoutedComponent implements OnInit {
 
   oPage: IPage<ICarta> | null = null;
   nPage: number = 0;
-  nRpp: number = 6; // Ajuste para el grid 3x3
+  nRpp: number = 6;
   strField: string = '';
   strDir: string = 'desc';
   strFiltro: string = '';
   arrBotonera: string[] = [];
-  imagenes: { [key: number]: string } = {}; // Diccionario para almacenar las imágenes
+  imagenes: { [key: number]: string } = {};
   isLoading: boolean = false;
   isMobile: boolean = false;
   currentCardIndex: number = 0;
-  mobileCards: ICarta[] = []; // Array para almacenar todas las cartas en vista móvil
+  mobileCards: ICarta[] = [];
   loadingMore: boolean = false;
   allCardsLoaded: boolean = false;
   currentPage: number = 0;
@@ -59,9 +59,9 @@ export class CartaPlistRoutedComponent implements OnInit {
       const container = event.target as HTMLElement;
       const scrollPosition = container.scrollLeft;
       const containerWidth = container.clientWidth;
-      const cardWidth = containerWidth; // cada tarjeta ocupa el ancho completo
+      const cardWidth = containerWidth;
       const index = Math.round(scrollPosition / cardWidth);
-      
+
       if (index >= 0 && this.mobileCards && index < this.mobileCards.length) {
         this.currentCardIndex = index;
 
@@ -76,10 +76,10 @@ export class CartaPlistRoutedComponent implements OnInit {
   // Método para cargar más cartas en la vista móvil
   loadMoreCards() {
     if (this.loadingMore || this.allCardsLoaded) return;
-    
+
     this.loadingMore = true;
     this.currentPage++;
-    
+
     this.oCartaService
       .getPage(this.currentPage, this.pageSize, this.strField, this.strDir, this.strFiltro)
       .subscribe({
@@ -90,7 +90,7 @@ export class CartaPlistRoutedComponent implements OnInit {
             // Agregar nuevas cartas al array de cartas móviles
             const newCards = [...oPageFromServer.content];
             this.mobileCards = [...this.mobileCards, ...newCards];
-            
+
             // Cargar imágenes para las nuevas cartas
             newCards.forEach((carta) => {
               this.cargarImagenCarta(carta);
@@ -204,29 +204,24 @@ export class CartaPlistRoutedComponent implements OnInit {
     }
   }
 
-  // Método para obtener la clase CSS basada en el tipo de Pokémon
   getTypeClass(tipo: string): string {
-    // Normalizar el tipo a minúsculas y sin acentos
+
     const tipoNormalizado = this.normalizarTipo(tipo);
     return `type-${tipoNormalizado}`;
   }
 
-  // Método para normalizar el tipo (minúsculas, sin espacios, sin acentos)
   normalizarTipo(tipo: string): string {
     if (!tipo) return 'normal';
-    
-    // Si hay tipos compuestos separados por coma o barra, tomar solo el primero
+
     let primerTipo = tipo
       .toLowerCase()
-      .split(/[,\/]/)[0]  // Separar por coma o barra
+      .split(/[,\/]/)[0]
       .trim();
-    
-    // Eliminar acentos
+
     primerTipo = primerTipo
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '');
-    
-    // Mapear a los tipos estándar en inglés para CSS
+
     const tiposMap: { [key: string]: string } = {
       'agua': 'water',
       'fuego': 'fire',
@@ -251,10 +246,9 @@ export class CartaPlistRoutedComponent implements OnInit {
     return tiposMap[primerTipo] || primerTipo;
   }
 
-  // Método para obtener elemento decorativo según el tipo
   getTypeElements(tipo: string): string {
     const tipoNormalizado = this.normalizarTipo(tipo);
-    
+
     switch(tipoNormalizado) {
       case 'water': return 'elements-water';
       case 'fire': return 'elements-fire';
@@ -307,13 +301,12 @@ export class CartaPlistRoutedComponent implements OnInit {
     this.debounceSubject.next(this.strFiltro);
   }
 
-  // Método para navegar a una carta específica al hacer clic en un indicador
   scrollToCard(index: number): void {
     if (this.scrollContainer && this.mobileCards.length > index) {
       this.currentCardIndex = index;
       const containerWidth = this.scrollContainer.nativeElement.clientWidth;
       const scrollPosition = index * containerWidth;
-      
+
       this.scrollContainer.nativeElement.scrollTo({
         left: scrollPosition,
         behavior: 'smooth'

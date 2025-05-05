@@ -78,13 +78,13 @@
             <div *ngFor="let carta of mobileCards; let i = index"
                  class="flex-shrink-0 w-full min-w-full snap-center flex flex-col items-center justify-center p-4 relative"
                  [ngClass]="getTypeClass(carta.tipo)">
-              
+
               <!-- Overlay para mejorar contraste -->
               <div class="type-overlay"></div>
-              
+
               <!-- Elementos decorativos según el tipo -->
               <div [ngClass]="getTypeElements(carta.tipo)"></div>
-              
+
               <!-- Imagen de la carta -->
               <img *ngIf="imagenes[carta.id] && imagenes[carta.id] !== ''"
                    [src]="imagenes[carta.id]"
@@ -97,7 +97,7 @@
                   <p class="mt-2 text-gray-600">Cargando imagen...</p>
                 </div>
               </div>
-              
+
               <!-- Información de la carta -->
               <div class="mt-4 text-center bg-white/90 backdrop-blur-sm px-6 py-3 rounded-lg shadow-lg relative z-10 card-info">
                 <p class="font-semibold text-lg">{{ carta.nombre }}</p>
@@ -107,11 +107,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Eliminamos completamente el indicador de carga -->
-        <!-- <div *ngIf="loadingMore" class="loading-more">
-          <div class="loader mx-auto scale-75"></div>
-        </div> -->
 
         <!-- Indicadores de navegación -->
         <div class="bg-gray-800 text-white py-3 px-4 rounded-b-lg flex justify-center">

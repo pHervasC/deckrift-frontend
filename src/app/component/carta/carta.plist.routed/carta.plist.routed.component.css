@@ -213,7 +213,6 @@
   100% { background-position: center center, 20px 20px; transform: scale(1); }
 }
 
-/* Tipo ELÉCTRICO - Rayos y destellos */
 .type-electric {
   background: linear-gradient(135deg, #FAE078 0%, #F8D030 50%, #F0C808 100%);
   position: relative;
@@ -520,24 +519,24 @@
 }
 
 @keyframes fairy-animate {
-  0% { 
-    background-position: 0 0, 10px 10px, 5px 5px; 
+  0% {
+    background-position: 0 0, 10px 10px, 5px 5px;
     filter: hue-rotate(0deg) brightness(1);
   }
-  25% { 
-    background-position: 15px 7px, 20px 15px, 10px 10px; 
+  25% {
+    background-position: 15px 7px, 20px 15px, 10px 10px;
     filter: hue-rotate(30deg) brightness(1.1);
   }
-  50% { 
-    background-position: 30px 15px, 30px 20px, 15px 5px; 
+  50% {
+    background-position: 30px 15px, 30px 20px, 15px 5px;
     filter: hue-rotate(0deg) brightness(1.2);
   }
-  75% { 
-    background-position: 15px 22px, 20px 25px, 20px 10px; 
+  75% {
+    background-position: 15px 22px, 20px 25px, 20px 10px;
     filter: hue-rotate(-30deg) brightness(1.1);
   }
-  100% { 
-    background-position: 0 30px, 10px 30px, 5px 15px; 
+  100% {
+    background-position: 0 30px, 10px 30px, 5px 15px;
     filter: hue-rotate(0deg) brightness(1);
   }
 }

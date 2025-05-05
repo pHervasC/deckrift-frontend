@@ -48,7 +48,7 @@ export class UsuarioEditRoutedComponent implements OnInit {
     this.oUsuarioForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
-      password: [''], // Campo de contraseña no obligatorio
+      password: [''],
       emailVerified: [{ value: '', disabled: true }],
       monedas: [{ value: 0, disabled: true }]
     });
@@ -71,8 +71,8 @@ export class UsuarioEditRoutedComponent implements OnInit {
         this.loaded = true; // <-- Aquí
       },
       error: (err) => {
-        // Maneja el error si quieres mostrar mensaje
-        this.loaded = true; // <-- También aquí, para ocultar el loader aunque haya error
+
+        this.loaded = true;
       }
     });
   }
