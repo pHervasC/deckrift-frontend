@@ -12,7 +12,7 @@
   <!-- Grid de tarjetas -->
   <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
     <!-- Paquete Básico -->
-    <div class="relative bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl p-8 flex flex-col items-center transform transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(234,179,8,0.3)] border border-yellow-500/20 hover:border-yellow-500 backdrop-blur-sm">
+    <div class="relative bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl p-8 flex flex-col items-center transform transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(234,179,8,0.3)] border border-yellow-500/20 hover:border-yellow-500 backdrop-blur-sm h-[400px]">
       <div class="absolute -top-5 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-6 py-2 rounded-full font-bold shadow-lg">
         Básico
       </div>
@@ -23,20 +23,22 @@
           class="w-28 h-28 object-contain relative z-10 transform hover:rotate-12 transition-transform duration-300"
         />
       </div>
-      <div class="text-center space-y-2">
+      <!-- Contenedor de contenido con flex-grow -->
+      <div class="text-center flex-grow flex flex-col justify-center">
         <p class="text-6xl font-bold mb-2 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">100</p>
         <p class="text-gray-400 text-lg mb-4">Monedas</p>
-        <div class="text-4xl font-bold text-yellow-500 mb-8">7€</div>
+        <div class="text-4xl font-bold text-yellow-500">7€</div>
       </div>
+      <!-- Botón con margen top fijo -->
       <button
         (click)="cantidadSeleccionada = 100; comprarMonedas()"
-        class="w-full py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold rounded-xl shadow-lg hover:shadow-yellow-500/50 transform hover:-translate-y-1 transition-all duration-300">
+        class="w-full py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold rounded-xl shadow-lg hover:shadow-yellow-500/50 transform hover:-translate-y-1 transition-all duration-300 mt-8">
         Comprar Ahora
       </button>
     </div>
 
     <!-- Paquete Popular -->
-    <div class="relative bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl p-8 flex flex-col items-center transform transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(234,179,8,0.4)] border-2 border-yellow-500 backdrop-blur-sm scale-105">
+    <div class="relative bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl p-8 flex flex-col items-center transform transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(234,179,8,0.4)] border-2 border-yellow-500 backdrop-blur-sm scale-105 h-[400px]">
       <div class="absolute -top-5 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-6 py-2 rounded-full font-bold shadow-lg">
         Popular
       </div>
@@ -50,20 +52,22 @@
           class="w-32 h-32 object-contain relative z-10 transform hover:rotate-12 transition-transform duration-300"
         />
       </div>
-      <div class="text-center space-y-2">
+      <!-- Contenedor de contenido con flex-grow -->
+      <div class="text-center flex-grow flex flex-col justify-center">
         <p class="text-6xl font-bold mb-2 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">500</p>
         <p class="text-gray-400 text-lg mb-4">Monedas</p>
-        <div class="text-4xl font-bold text-yellow-500 mb-8">20€</div>
+        <div class="text-4xl font-bold text-yellow-500">20€</div>
       </div>
+      <!-- Botón con margen top fijo -->
       <button
         (click)="cantidadSeleccionada = 500; comprarMonedas()"
-        class="w-full py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold rounded-xl shadow-lg hover:shadow-yellow-500/50 transform hover:-translate-y-1 transition-all duration-300">
+        class="w-full py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold rounded-xl shadow-lg hover:shadow-yellow-500/50 transform hover:-translate-y-1 transition-all duration-300 mt-8">
         Comprar Ahora
       </button>
     </div>
 
     <!-- Paquete Premium -->
-    <div class="relative bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl p-8 flex flex-col items-center transform transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(234,179,8,0.3)] border border-yellow-500/20 hover:border-yellow-500 backdrop-blur-sm">
+    <div class="relative bg-gradient-to-b from-gray-800 to-gray-900 rounded-2xl p-8 flex flex-col items-center transform transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(234,179,8,0.3)] border border-yellow-500/20 hover:border-yellow-500 backdrop-blur-sm h-[400px]">
       <div class="absolute -top-5 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-6 py-2 rounded-full font-bold shadow-lg">
         Premium
       </div>
@@ -73,14 +77,16 @@
           class="w-28 h-28 object-contain relative z-10 transform hover:rotate-12 transition-transform duration-300"
         />
       </div>
-      <div class="text-center space-y-2">
+      <!-- Contenedor de contenido con flex-grow -->
+      <div class="text-center flex-grow flex flex-col justify-center">
         <p class="text-6xl font-bold mb-2 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">1010</p>
         <p class="text-gray-400 text-lg mb-4">Monedas</p>
-        <div class="text-4xl font-bold text-yellow-500 mb-8">38€</div>
+        <div class="text-4xl font-bold text-yellow-500">38€</div>
       </div>
+      <!-- Botón con margen top fijo -->
       <button
         (click)="cantidadSeleccionada = 1010; comprarMonedas()"
-        class="w-full py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold rounded-xl shadow-lg hover:shadow-yellow-500/50 transform hover:-translate-y-1 transition-all duration-300">
+        class="w-full py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-bold rounded-xl shadow-lg hover:shadow-yellow-500/50 transform hover:-translate-y-1 transition-all duration-300 mt-8">
         Comprar Ahora
       </button>
     </div>
