@@ -1,227 +1,14 @@
 /* Estilos para el home de Pokémon */
 
-/* Contenedor principal - altura fija para evitar scroll */
+/* Contenedor principal */
 .pokemon-home {
   position: relative;
-  height: 92.2vh !important;
-  min-height: auto;
+  min-height: 100vh;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
-}
-
-/* Card container con ajustes de posicionamiento */
-.card-container {
-  margin-top: -80px;
-  transition: all 0.3s ease;
-  max-height: calc(92.2vh - 40px);
-  overflow-y: auto;
-}
-
-/* Media queries para responsividad */
-
-/* Pantallas extra grandes (1200px y más) */
-@media (min-width: 1200px) {
-  .pokemon-home {
-    height: 92.2vh !important;
-    padding: 30px;
-  }
-
-  .card-container {
-    margin-top: -100px;
-    max-width: 28rem;
-  }
-}
-
-/* Pantallas grandes (992px - 1199px) */
-@media (min-width: 992px) and (max-width: 1199px) {
-  .pokemon-home {
-    height: 92.2vh !important;
-    padding: 25px;
-  }
-
-  .card-container {
-    margin-top: -80px;
-  }
-}
-
-/* Pantallas medianas - tablets (768px - 991px) */
-@media (min-width: 768px) and (max-width: 991px) {
-  .pokemon-home {
-    height: 92.2vh !important;
-    padding: 20px;
-  }
-
-  .card-container {
-    margin-top: -60px;
-    width: 85%;
-    max-width: 24rem;
-  }
-}
-
-/* Pantallas pequeñas - tablets pequeñas (576px - 767px) */
-@media (min-width: 576px) and (max-width: 767px) {
-  .pokemon-home {
-    height: 92.2vh !important;
-    padding: 15px;
-  }
-
-  .card-container {
-    margin-top: -40px;
-    width: 90%;
-    max-width: 20rem;
-  }
-
-  .card-content {
-    padding: 16px !important;
-  }
-
-  .sprite-area {
-    height: 100px;
-  }
-}
-
-/* Pantallas extra pequeñas - móviles (hasta 575px) */
-@media (max-width: 575px) {
-  .pokemon-home {
-    height: 92.2vh !important;
-    padding: 10px;
-  }
-
-  .card-container {
-    margin-top: -20px;
-    width: 95%;
-    max-width: 18rem;
-    transform: scale(0.95);
-  }
-
-  .card-content {
-    padding: 12px !important;
-  }
-
-  .sprite-area {
-    height: 80px;
-  }
-
-  .welcome-box {
-    padding: 12px !important;
-    margin-bottom: 16px !important;
-  }
-
-  .grid {
-    gap: 8px !important;
-  }
-
-  .info-box {
-    padding: 8px !important;
-  }
-}
-
-/* Ajustes específicos para altura de pantalla */
-
-/* Pantallas muy altas */
-@media (min-height: 900px) {
-  .card-container {
-    margin-top: -120px;
-  }
-}
-
-/* Pantallas de altura media */
-@media (min-height: 700px) and (max-height: 899px) {
-  .card-container {
-    margin-top: -80px;
-  }
-}
-
-/* Pantallas de altura pequeña */
-@media (max-height: 699px) {
-  .pokemon-home {
-    height: 92.2vh !important;
-    padding: 10px;
-  }
-
-  .card-container {
-    margin-top: -40px;
-    transform: scale(0.9);
-    max-height: calc(92.2vh - 20px);
-  }
-
-  .card-content {
-    padding: 12px !important;
-  }
-
-  .sprite-area {
-    height: 80px;
-  }
-
-  .welcome-box {
-    padding: 10px !important;
-    margin-bottom: 12px !important;
-  }
-
-  .grid {
-    gap: 6px !important;
-    margin-bottom: 12px !important;
-  }
-
-  .info-box {
-    padding: 6px !important;
-  }
-
-  .logout-button {
-    padding: 8px 12px !important;
-  }
-}
-
-/* Pantallas muy pequeñas en altura (landscape móviles) */
-@media (max-height: 500px) {
-  .pokemon-home {
-    height: 92.2vh !important;
-    padding: 5px;
-  }
-
-  .card-container {
-    margin-top: -10px;
-    transform: scale(0.8);
-    max-height: calc(92.2vh - 10px);
-  }
-
-  .card-content {
-    padding: 8px !important;
-  }
-
-  .sprite-area {
-    height: 60px;
-  }
-
-  .welcome-box {
-    padding: 8px !important;
-    margin-bottom: 8px !important;
-  }
-
-  .grid {
-    gap: 4px !important;
-    margin-bottom: 8px !important;
-  }
-
-  .info-box {
-    padding: 4px !important;
-  }
-
-  .logout-button {
-    padding: 6px 8px !important;
-  }
-
-  /* Ocultar algunos elementos en pantallas muy pequeñas */
-  .welcome-box p {
-    display: none;
-  }
-
-  .info-box p {
-    font-size: 0.6rem !important;
-  }
 }
 
 /* SVG Landscape Background */
@@ -301,6 +88,7 @@
   animation-delay: 6s;
 }
 
+/* Remove old row animations and replace with these */
 @keyframes moveVerticalSequence1 {
   0% {
     opacity: 0;
@@ -354,7 +142,7 @@
 .pos-4 { top: 55%; }
 .pos-5 { top: 70%; }
 
-/* Sprite area inside the card */
+/* Sprite area inside the card - adjust to match image exactly */
 .sprite-area {
   height: 120px;
   display: flex;
@@ -362,9 +150,10 @@
   align-items: center;
   position: relative;
   overflow: hidden;
+
 }
 
-/* Sprite wrapper */
+/* Sprite wrapper - center the sprite in the blue area */
 .sprite-wrapper {
   position: absolute;
   width: 80px;
@@ -390,7 +179,7 @@
   filter: blur(2px);
 }
 
-/* Featured sprite styling */
+/* Featured sprite styling - adjust size to match image */
 .featured-sprite {
   width: 70px;
   height: 70px;
@@ -429,7 +218,7 @@
 /* Add Pokemon font */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-/* Pokemon title styling */
+/* Pokemon title styling - updated to match the image */
 .pokemon-title {
   font-family: 'Arial Rounded MT Bold', 'Arial Rounded', 'Arial', sans-serif;
   font-weight: bold;
@@ -465,6 +254,7 @@
   -webkit-text-stroke: 8px #2a6db5; /* Thick blue border */
 }
 
+/* Remove the animation for now to match the static logo */
 @keyframes bounce {
   0%, 100% {transform: translateY(0);}
   50% {transform: translateY(-5px);}
@@ -720,5 +510,40 @@
   }
   100% {
     transform: translateY(0) translateX(0) rotate(0deg);
+  }
+}
+
+/* Media queries responsivas para contenedor principal y contenido */
+
+/* Móvil - hasta 639px */
+@media (max-width: 639px) {
+  .pokemon-home {
+    height: 85vh;
+  }
+
+  .card-container {
+    margin-top: -30px;
+  }
+}
+
+/* Tablet - 640px a 1023px */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .pokemon-home {
+    height: 90vh;
+  }
+
+  .card-container {
+    margin-top: -60px;
+  }
+}
+
+/* Desktop - 1024px en adelante */
+@media (min-width: 1024px) {
+  .pokemon-home {
+    height: 92.2vh;
+  }
+
+  .card-container {
+    margin-top: -100px;
   }
 }
