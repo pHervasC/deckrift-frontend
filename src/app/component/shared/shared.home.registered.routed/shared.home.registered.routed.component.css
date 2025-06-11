@@ -5,7 +5,6 @@
   position: relative;
   overflow: hidden;
   display: flex;
-  margin-top: 0px;
   justify-content: center;
   align-items: center;
   padding: 20px;
@@ -543,7 +542,4 @@
     height: 92.2vh;
   }
 
-  .card-container {
-    margin-top: -100px;
-  }
 }
