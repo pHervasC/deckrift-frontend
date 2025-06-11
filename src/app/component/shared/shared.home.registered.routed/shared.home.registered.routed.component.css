@@ -210,7 +210,6 @@
 
 /* Card content area */
 .card-content {
-  background-color: white;
   padding: 20px;
 }
 
@@ -516,26 +515,14 @@
 
 /* Móvil - hasta 639px */
 @media (max-width: 639px) {
-    .card-container {
-    margin-top: -60px;
+
+  .card-container {
+        height: 700px;
   }
-  /* Ocultar el botón "Abrir Sobre" en móvil */
-  .info-box.bg-yellow-100 {
+
+  .welcome-box{
     display: none;
   }
-
-  /* Ajustar el grid para que solo muestre 3 elementos en lugar de 4 */
-  .grid.grid-cols-2:last-of-type {
-    grid-template-columns: 1fr;
-  }
-
-  /* Centrar el botón "Cartas" cuando "Abrir Sobre" está oculto */
-  .info-box.bg-purple-100 {
-    grid-column: 1 / -1;
-    max-width: 200px;
-    margin: 0 auto;
-  }
-
 
 /* Tablet - 640px a 1023px */
 @media (min-width: 640px) and (max-width: 1023px) {
