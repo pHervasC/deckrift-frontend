@@ -5,6 +5,7 @@
   position: relative;
   overflow: hidden;
   display: flex;
+  margin-top: 0px;
   justify-content: center;
   align-items: center;
   padding: 20px;
