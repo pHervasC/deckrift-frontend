@@ -43,59 +43,47 @@
   }
 }
 
-/* Filter animation for all devices */
-.search-container {
+/* Loader de Pokéball */
+.loader {
+  width: 50px;
+  height: 50px;
+  background: #fff;
+  border-radius: 50%;
   position: relative;
+  animation: roll 1s infinite;
+  border: 3px solid #000;
+}
+
+.loader:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto 1.5rem;
+  height: 50%;
+  background: #ff0000;
+  border-radius: 25px 25px 0 0;
+  transform: translateX(-50%);
+  z-index: 1;
 }
 
-.search-input {
-  width: 100%;
-  padding: 0.75rem 1.5rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 2rem;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+.loader:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 50%;
+  z-index: 2;
 }
 
-.search-input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-}
-
-/* Desktop specific styles */
-@media (min-width: 768px) {
-  .search-input {
-    padding: 0.875rem 2rem;
-    font-size: 1.125rem;
-  }
-  
-  .search-input:focus {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .search-input:hover:not(:focus) {
-    transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-  }
-}
-
-/* Mobile specific styles */
-@media (max-width: 767px) {
-  .search-input {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-  }
-  
-  .search-input:focus {
-    transform: scale(1.02);
-  }
+@keyframes roll {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Estilos para la vista móvil */
