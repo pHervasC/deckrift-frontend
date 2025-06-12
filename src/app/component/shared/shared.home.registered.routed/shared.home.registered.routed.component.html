@@ -115,50 +115,52 @@
       <!-- Info sections -->
       <div class="grid grid-cols-2 gap-3 mb-6">
         <!-- Colección info box as a button -->
-        <div (click)="goToCollection()" class="info-box bg-blue-100 p-3 rounded-lg cursor-pointer hover:bg-blue-200 transition-colors">
+        <a routerLink="/usuario/coleccion/{{ id }}" class="info-box bg-blue-100 p-3 rounded-lg cursor-pointer hover:bg-blue-200 transition-colors block">
           <div class="flex items-center justify-center mb-1">
             <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/ball/poke.png" alt="Pokeball" class="w-8 h-8 mr-2">
             <span class="font-bold text-blue-800 ml-1">Colección</span>
           </div>
           <p class="text-xs text-center text-blue-700">Explora tus cartas y ve tu progreso</p>
-        </div>
+        </a>
+
 
         <!-- Pokédex info box as a button with updated text -->
-        <div (click)="goToPokedex()" class="info-box bg-red-100 p-3 rounded-lg cursor-pointer hover:bg-red-200 transition-colors">
+        <a routerLink="/pokedex" class="info-box bg-red-100 p-3 rounded-lg cursor-pointer hover:bg-red-200 transition-colors block">
           <div class="flex items-center justify-center mb-1">
             <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/adventure-guide.png" alt="Pokédex" class="w-8 h-8 mr-2">
             <span class="font-bold text-red-800 ml-1">Pokédex</span>
           </div>
           <p class="text-xs text-center text-red-700">Descubre información adicional de los Pokémon</p>
-        </div>
-      </div>
+        </a>
 
       <!-- New info-box style buttons -->
       <div class="grid grid-cols-2 gap-3 mb-6">
         <!-- Cartas info box as a button -->
-        <div (click)="goToCards()" class="info-box bg-purple-100 p-3 rounded-lg cursor-pointer hover:bg-purple-200 transition-colors">
+        <a routerLink="/cartas/plist" class="info-box bg-purple-100 p-3 rounded-lg cursor-pointer hover:bg-purple-200 transition-colors block">
           <div class="flex items-center justify-center mb-1">
             <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/elevator-key.png" alt="Cartas" class="w-8 h-8 mr-2">
             <span class="font-bold text-purple-800 ml-1">Cartas</span>
           </div>
           <p class="text-xs text-center text-purple-700">Explora las cartas disponibles</p>
-        </div>
+        </a>
+
 
         <!-- Abrir Sobre info box as a button -->
-        <div (click)="goToOpenPacks()" class="info-box bg-yellow-100 p-3 rounded-lg cursor-pointer hover:bg-yellow-200 transition-colors">
+        <a [routerLink]="['/sobre/abrir/{{ id }}']" class="info-box bg-yellow-100 p-3 rounded-lg cursor-pointer hover:bg-yellow-200 transition-colors block">
           <div class="flex items-center justify-center mb-1">
             <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/endorsement.png" alt="Abrir Sobre" class="w-8 h-8 mr-2">
             <span class="font-bold text-yellow-800 ml-1">Abrir Sobre</span>
           </div>
           <p class="text-xs text-center text-yellow-700">Consigue nuevas cartas</p>
-        </div>
-      </div>
+        </a>
+
+
 
       <!-- Logout button -->
-      <button (click)="logout()" class="logout-button text-white w-full p-3 rounded-lg flex items-center justify-center">
+      <a routerLink="/logout" class="logout-button text-white w-full p-3 rounded-lg flex items-center justify-center">
         <span class="mr-2">🚪</span>
         Cerrar Sesión
-      </button>
+      </a>
     </div>
   </div>
 </div>
