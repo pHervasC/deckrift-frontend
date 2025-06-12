@@ -517,7 +517,11 @@
 @media (max-width: 380px) {
 
   .card-container {
-        height: 700px;
+        height: 580px;
+  }
+
+  .logout-button{
+    display: none;
   }
 
   .welcome-box{
