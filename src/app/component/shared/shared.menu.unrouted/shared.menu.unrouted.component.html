@@ -3,11 +3,11 @@
   <div class="container mx-auto flex items-center h-[6vh] mt-0 justify-between" >
     <!-- Brand with Pokemon-style logo - always visible -->
     @if (activeSession){
-    <a class="text-x font-bold flex items-center flex-grow-0 flex-shrink-0" href="/home/registered">
+    <a class="text-x font-bold flex items-center flex-grow-0 flex-shrink-0" routerLink="/home/registered">
       <img src="https://fontmeme.com/permalink/250414/46dad81855a813afde689cac446b7447.png" alt="DECKRIFT" style="height: 30px;">
     </a>
     } @else{
-    <a class="text-x font-bold flex items-center flex-grow-0 flex-shrink-0" href="#">
+    <a class="text-x font-bold flex items-center flex-grow-0 flex-shrink-0" routerLink="/">
       <img src="https://fontmeme.com/permalink/250414/46dad81855a813afde689cac446b7447.png" alt="DECKRIFT" style="height: 30px;">
     </a>
     }
@@ -17,21 +17,21 @@
     @if (permisos === "Administrador"){
     <!-- Menú de navegación (versión desktop) - more aggressive hiding at smaller screens -->
     <div class="hidden lg:flex items-center space-x-2 overflow-x-auto flex-grow-0 flex-shrink mx-2">
-      <a href="/admin/usuario/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
+      <a routerLink="/admin/usuario/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == '/admin/usuario/plist' }">
         A.Usuarios
       </a>
-      <a href="/admin/carta/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
+      <a routerLink="/admin/carta/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == '/admin/carta/plist' }">
         A.Cartas
       </a>
 
-      <a href="/compra/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
+      <a routerLink="/compra/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == '/compra/plist' }">
         A.Compra
       </a>
 
-      <a href="cartas/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
+      <a routerLink="/cartas/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == '/cartas/plist' }">
         Cartas
       </a>
@@ -39,14 +39,14 @@
         [ngClass]="{ 'bg-blue-600': strRuta == '/usuario/coleccion/:id' }">
         Coleccion
     </button>
-    <a href="pokedex" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
-        [ngClass]="{ 'bg-blue-600': strRuta == 'pokedex' }">
+    <a routerLink="/pokedex" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
+        [ngClass]="{ 'bg-blue-600': strRuta == '/pokedex' }">
         Pokedex
       </a>
     </div>
     } @else {
     <div class="hidden lg:flex items-center space-x-2 overflow-x-auto flex-grow-0 flex-shrink mx-2">
-      <a href="cartas/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
+      <a routerLink="/cartas/plist" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
         [ngClass]="{ 'bg-blue-600': strRuta == '/cartas/plist' }">
         Cartas
       </a>
@@ -55,8 +55,8 @@
         Coleccion
     </button>
 
-    <a href="pokedex" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
-        [ngClass]="{ 'bg-blue-600': strRuta == 'pokedex' }">
+    <a routerLink="/pokedex" class="px-3 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 whitespace-nowrap"
+        [ngClass]="{ 'bg-blue-600': strRuta == '/pokedex' }">
         Pokedex
       </a>
     </div>
@@ -66,24 +66,24 @@
     <div class="hidden lg:flex items-center space-x-2 flex-grow-0 flex-shrink-0">
       <!-- Si no hay sesión activa: muestra Iniciar Sesión y Registrarse -->
       <ng-container *ngIf="!activeSession; else loggedInDesktop">
-        <a href="/login"
-          class="px-3 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200"
-          [ngClass]="{ 'bg-blue-600': strRuta == '/login' }">
+        <a routerLink="/login"
+          class="header-button bg-blue-600 hover:bg-blue-700 text-black text-right font-medium py-2 px-4 rounded-lg transition duration-200"
+          [ngClass]="{ 'bg-blue-700': strRuta == '/login' }">
           Iniciar Sesión
         </a>
-        <a href="/usuario/create"
-          class="px-3 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200"
-          [ngClass]="{ 'bg-blue-600': strRuta == '/usuario/create' }">
+        <a routerLink="/usuario/create"
+          class="header-button bg-green-600 hover:bg-green-700 text-black font-medium py-2 px-4 rounded-lg transition duration-200"
+          [ngClass]="{ 'bg-green-700': strRuta == '/usuario/create' }">
           Registrarse
         </a>
       </ng-container>
       <!-- Si hay sesión activa: muestra el email y monedas -->
       <ng-template #loggedInDesktop>
-        <a href="/byemail/{{userEmail}}"
+        <a [routerLink]="['/byemail', userEmail]"
           class="px-3 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200">
           {{ nombre }}
         </a>
-        <a href="/shop"
+        <a routerLink="/shop"
           class="px-3 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200 flex items-center gap-2">
           <img src="assets/img/Pokecoin.webp" alt="moneda" class="w-5 h-5">
           <span>{{monedas}}</span>
@@ -127,11 +127,11 @@
       <div class="flex flex-col space-y-4 mt-5">
         @if (activeSession) {
           <!-- 1. User info first -->
-          <a href="/byemail/{{userEmail}}"
+          <a [routerLink]="['/byemail', userEmail]"
             class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200 block">
             {{ nombre }}
           </a>
-          <a href="/shop"
+          <a routerLink="/shop"
             class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200 flex items-center gap-2">
             <img src="assets/img/Pokecoin.webp" alt="moneda" class="w-5 h-5">
             <span>{{monedas}}</span>
@@ -142,19 +142,19 @@
 
           <!-- 3. Navigation options based on permissions -->
           @if (permisos === "Administrador"){
-            <a href="/admin/usuario/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+            <a routerLink="/admin/usuario/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
               [ngClass]="{ 'bg-blue-600': strRuta == '/admin/usuario/plist' }">
               A.Usuarios
             </a>
-            <a href="/admin/carta/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+            <a routerLink="/admin/carta/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
               [ngClass]="{ 'bg-blue-600': strRuta == '/admin/carta/plist' }">
               A.Cartas
             </a>
-            <a href="/compra/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+            <a routerLink="/compra/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
               [ngClass]="{ 'bg-blue-600': strRuta == '/compra/plist' }">
               A.Compra
             </a>
-            <a href="cartas/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+            <a routerLink="/cartas/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
               [ngClass]="{ 'bg-blue-600': strRuta == '/cartas/plist' }">
               Cartas
             </a>
@@ -162,12 +162,12 @@
               [ngClass]="{ 'bg-blue-600': strRuta == '/usuario/coleccion/:id' }">
               Coleccion
             </button>
-            <a href="pokedex" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
-              [ngClass]="{ 'bg-blue-600': strRuta == 'pokedex' }">
+            <a routerLink="/pokedex" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+              [ngClass]="{ 'bg-blue-600': strRuta == '/pokedex' }">
               Pokedex
             </a>
           } @else {
-            <a href="cartas/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+            <a routerLink="/cartas/plist" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
               [ngClass]="{ 'bg-blue-600': strRuta == '/cartas/plist' }">
               Cartas
             </a>
@@ -175,8 +175,8 @@
               [ngClass]="{ 'bg-blue-600': strRuta == '/usuario/coleccion/:id' }">
               Coleccion
             </button>
-            <a href="pokedex" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
-              [ngClass]="{ 'bg-blue-600': strRuta == 'pokedex' }">
+            <a routerLink="/pokedex" class="px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
+              [ngClass]="{ 'bg-blue-600': strRuta == '/pokedex' }">
               Pokedex
             </a>
           }
@@ -185,18 +185,18 @@
           <div class="border-t border-gray-700 my-2"></div>
 
           <!-- 5. Logout button -->
-          <a href="/logout"
+          <a routerLink="/logout"
             class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors duration-200 block text-center"
             (click)="toggleMobileMenu()">
             Cerrar Sesión
           </a>
         } @else {
-          <a href="/login"
+          <a routerLink="/login"
             class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200"
             [ngClass]="{ 'bg-blue-600': strRuta == '/login' }">
             Iniciar Sesión
           </a>
-          <a href="/usuario/create"
+          <a routerLink="/usuario/create"
             class="px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200"
             [ngClass]="{ 'bg-blue-600': strRuta == '/usuario/create' }">
             Registrarse

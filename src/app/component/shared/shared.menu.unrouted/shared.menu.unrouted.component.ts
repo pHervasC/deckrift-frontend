@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SessionService } from '../../../service/session.service';
 import { IUsuario } from '../../../model/usuario.interface';
@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './shared.menu.unrouted.component.html',
   styleUrls: ['./shared.menu.unrouted.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
 })
 export class SharedMenuUnroutedComponent implements OnInit {
 
