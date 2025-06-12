@@ -5,13 +5,16 @@
   </h2>
 
   <!-- Input de búsqueda -->
-  <div class="mb-6 w-full flex justify-center">
+  <div class="search-container">
     <input
-      type="text"
-      placeholder="Buscar cartas"
+      type="search"
+      placeholder="Buscar cartas..."
       [(ngModel)]="strFiltro"
-      (keyup)="filter($event)"
-      class="w-3/4 md:w-1/2 px-4 py-2 border rounded-lg shadow focus:outline-none focus:ring focus:ring-blue-300"
+      (input)="onSearchInput($event)"
+      (keyup.enter)="applyFilter()"
+      class="search-input"
+      [attr.aria-label]="'Buscar cartas'"
+      autocomplete="off"
     />
   </div>
 

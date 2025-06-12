@@ -53,7 +53,8 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
     private route: ActivatedRoute,
     private oCartaService: CartaService,
   ) {
-    this.debounceSubject.pipe(debounceTime(1000)).subscribe(() => {
+    // Initialize debounce for search input (300ms delay)
+    this.debounceSubject.pipe(debounceTime(300)).subscribe(() => {
       this.goToPage(0);
     });
     this.checkScreenSize();
@@ -253,9 +254,24 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
     }
   }
 
-  filter(event: KeyboardEvent) {
-    this.isLoading = true;
+  // Handle search input with debounce
+  onSearchInput(event: Event) {
     this.debounceSubject.next(this.strFiltro);
+  }
+
+  // Apply filter immediately when pressing Enter
+  applyFilter() {
+    this.debounceSubject.next(this.strFiltro);
+    this.debounceSubject.complete();
+    this.debounceSubject = new Subject<string>();
+    this.debounceSubject.pipe(debounceTime(300)).subscribe(() => {
+      this.goToPage(0);
+    });
+  }
+
+  // Keep for backward compatibility
+  filter(event: KeyboardEvent) {
+    this.applyFilter();
   }
 
   mostrarPopUp(carta: any): void {
