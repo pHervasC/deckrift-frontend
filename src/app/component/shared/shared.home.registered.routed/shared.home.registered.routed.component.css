@@ -514,7 +514,7 @@
 /* Media queries responsivas para contenedor principal y contenido */
 
 /* Móvil - hasta 380px */
-@media (max-width: 400px) {
+@media (max-width: 420px) {
 
   .card-container {
         height: 580px;
