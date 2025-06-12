@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { GoogleLoginService } from '../../../../service/google-login.service';
 import { LoginService } from '../../../../service/login.service';
 import { SessionService } from '../../../../service/session.service';
@@ -17,7 +17,8 @@ import { environment } from '../../../../environment/environment';
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    RouterLink
   ]
 })
 export class SharedLoginRoutedComponent implements OnInit {
