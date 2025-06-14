@@ -81,16 +81,16 @@
   </div>
 
   <!-- Main card container with adjusted positioning -->
-  <div class="card-container bg-white rounded-lg shadow-2xl border-4 border-yellow-400 w-11/12 max-w-md relative z-10">
+  <div class="card-container bg-white rounded-lg shadow-2xl border-4 border-yellow-400 w-11/12 max-w-md md:max-w-2xl lg:max-w-4xl relative z-10">
     <!-- Sprite area with blue background -->
-    <div class="sprite-area">
+    <div class="sprite-area bg-blue-100 md:rounded-t-lg">
       <!-- Featured sprite with shadow -->
       <div class="sprite-wrapper" *ngFor="let sprite of sprites; let i = index">
         <div class="sprite-shadow"></div>
         <img [src]="sprite"
              [class.active]="i === currentSpriteIndex && showSprite"
              [class.hidden]="i !== currentSpriteIndex || !showSprite"
-             class="featured-sprite"
+             class="featured-sprite w-24 h-24 md:w-32 md:h-32"
              alt="Pokemon sprite">
       </div>
     </div>
@@ -104,63 +104,62 @@
       <p class="text-center text-gray-600 mb-6">Tu aventura Pokémon comienza aquí</p>
 
       <!-- Welcome message -->
-      <div class="welcome-box bg-pink-100 rounded-lg p-4 mb-6">
-        <h2 class="text-lg font-bold text-gray-800 mb-1">¡Bienvenido, Entrenador!</h2>
-        <p class="text-gray-700 text-sm">
+      <div class="welcome-box bg-pink-100 rounded-lg p-4 mb-6 md:mx-4 md:mt-4">
+        <h2 class="text-lg md:text-xl font-bold text-gray-800 mb-1">¡Bienvenido, Entrenador!</h2>
+        <p class="text-gray-700 text-sm md:text-base">
           Explora tu colección, abre nuevos sobres y conviértete en el mejor entrenador Pokémon. En
           Deckrift, puedes descubrir cartas raras y completar tu pokédex.
         </p>
       </div>
 
-      <!-- Info sections -->
-      <div class="grid grid-cols-2 gap-3 mb-6">
+      <!-- Info sections - Grid de botones -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <!-- Colección info box as a button -->
-        <a [routerLink]="['/usuario/coleccion', id]" class="info-box bg-blue-100 p-3 rounded-lg hover:bg-blue-200 transition-colors block">
-          <div class="flex items-center justify-center mb-1">
-            <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/ball/poke.png" alt="Pokeball" class="w-8 h-8 mr-2">
-            <span class="font-bold text-blue-800 ml-1">Colección</span>
+        <a [routerLink]="['/usuario/coleccion', id]" class="info-box bg-blue-100 p-2 sm:p-3 rounded-lg hover:bg-blue-200 transition-colors flex flex-col h-full">
+          <div class="flex items-center justify-center mb-1 flex-grow">
+            <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/ball/poke.png" alt="Pokeball" class="w-6 h-6 sm:w-8 sm:h-8 mr-1 sm:mr-2">
+            <span class="font-bold text-blue-800 text-sm sm:text-base">Colección</span>
           </div>
-          <p class="text-xs text-center text-blue-700">Explora tus cartas y ve tu progreso</p>
+          <p class="text-xs text-center text-blue-700 mt-auto">Explora tus cartas</p>
         </a>
 
         <!-- Pokédex info box as a button with updated text -->
-        <a routerLink="/pokedex" class="info-box bg-red-100 p-3 rounded-lg hover:bg-red-200 transition-colors block">
-          <div class="flex items-center justify-center mb-1">
-            <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/adventure-guide.png" alt="Pokédex" class="w-8 h-8 mr-2">
-            <span class="font-bold text-red-800 ml-1">Pokédex</span>
+        <a routerLink="/pokedex" class="info-box bg-red-100 p-2 sm:p-3 rounded-lg hover:bg-red-200 transition-colors flex flex-col h-full">
+          <div class="flex items-center justify-center mb-1 flex-grow">
+            <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/adventure-guide.png" alt="Pokédex" class="w-6 h-6 sm:w-8 sm:h-8 mr-1 sm:mr-2">
+            <span class="font-bold text-red-800 text-sm sm:text-base">Pokédex</span>
           </div>
-          <p class="text-xs text-center text-red-700">Descubre información adicional de los Pokémon</p>
+          <p class="text-xs text-center text-red-700 mt-auto">Descubre Pokémon</p>
         </a>
-      </div>
-
-      <!-- New info-box style buttons -->
-      <div class="grid grid-cols-2 gap-3 mb-6">
+        
         <!-- Cartas info box as a button -->
-        <a [routerLink]="['/cartas/plist']" class="info-box bg-purple-100 p-3 rounded-lg hover:bg-purple-200 transition-colors block">
-          <div class="flex items-center justify-center mb-1">
-            <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/elevator-key.png" alt="Cartas" class="w-8 h-8 mr-2">
-            <span class="font-bold text-purple-800 ml-1">Cartas</span>
+        <a [routerLink]="['/cartas/plist']" class="info-box bg-purple-100 p-2 sm:p-3 rounded-lg hover:bg-purple-200 transition-colors flex flex-col h-full">
+          <div class="flex items-center justify-center mb-1 flex-grow">
+            <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/elevator-key.png" alt="Cartas" class="w-6 h-6 sm:w-8 sm:h-8 mr-1 sm:mr-2">
+            <span class="font-bold text-purple-800 text-sm sm:text-base">Cartas</span>
           </div>
-          <p class="text-xs text-center text-purple-700">Explora las cartas disponibles</p>
+          <p class="text-xs text-center text-purple-700 mt-auto">Explora cartas</p>
         </a>
 
         <!-- Abrir Sobre info box as a button -->
-        <a [routerLink]="['/sobre/abrir', id]" class="info-box bg-yellow-100 p-3 rounded-lg hover:bg-yellow-200 transition-colors block">
-          <div class="flex items-center justify-center mb-1">
-            <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/endorsement.png" alt="Abrir Sobre" class="w-8 h-8 mr-2">
-            <span class="font-bold text-yellow-800 ml-1">Abrir Sobre</span>
+        <a [routerLink]="['/sobre/abrir', id]" class="info-box bg-yellow-100 p-2 sm:p-3 rounded-lg hover:bg-yellow-200 transition-colors flex flex-col h-full">
+          <div class="flex items-center justify-center mb-1 flex-grow">
+            <img src="https://raw.githubusercontent.com/msikma/pokesprite/master/items/key-item/endorsement.png" alt="Abrir Sobre" class="w-6 h-6 sm:w-8 sm:h-8 mr-1 sm:mr-2">
+            <span class="font-bold text-yellow-800 text-sm sm:text-base">Abrir Sobre</span>
           </div>
-          <p class="text-xs text-center text-yellow-700">Consigue nuevas cartas</p>
+          <p class="text-xs text-center text-yellow-700 mt-auto">Nuevas cartas</p>
         </a>
       </div>
 
 
 
       <!-- Logout button -->
-      <a routerLink="/logout" class="logout-button text-white w-full p-3 rounded-lg flex items-center justify-center">
-        <span class="mr-2">🚪</span>
-        Cerrar Sesión
-      </a>
+      <div class="px-2 md:px-6 pb-4 md:pb-6">
+        <a routerLink="/logout" class="logout-button text-white w-full p-3 rounded-lg flex items-center justify-center bg-red-500 hover:bg-red-600 transition-colors shadow-md">
+          <span class="mr-2">🚪</span>
+          Cerrar Sesión
+        </a>
+      </div>
     </div>
   </div>
 </div>
