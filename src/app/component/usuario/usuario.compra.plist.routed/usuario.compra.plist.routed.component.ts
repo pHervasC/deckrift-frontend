@@ -20,6 +20,7 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
   parseInt = parseInt;
   
   oPage: IPage<any> | null = null;
+  errorMessage: string | null = null;
   nPage: number = 0;
   nRpp: number = 10;
   strField: string = '';
@@ -79,12 +80,22 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
   }
 
   getPage() {
+    console.log('Iniciando getPage()');
     if (!this.userId) {
       console.error('No se pudo obtener el ID del usuario');
       return;
     }
     
+    console.log('ID de usuario:', this.userId);
     const estado = this.estadoSeleccionado !== 'todos' ? this.estadoSeleccionado : undefined;
+    console.log('Parámetros de búsqueda:', { 
+      page: this.nPage, 
+      size: this.nRpp, 
+      field: this.strField, 
+      dir: this.strDir, 
+      filtro: this.strFiltro,
+      estado: estado 
+    });
     
     this.isLoading = true;
     
@@ -92,8 +103,10 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
       .getPageByUsuario(this.userId, this.nPage, this.nRpp, this.strField, this.strDir, this.strFiltro, estado)
       .subscribe({
         next: (oPageFromServer: IPage<any>) => {
+          console.log('Respuesta del servidor:', oPageFromServer);
           this.oPage = oPageFromServer;
-          this.compras = oPageFromServer.content;
+          this.compras = oPageFromServer.content || [];
+          console.log('Compras cargadas:', this.compras);
           this.arrBotonera = this.oBotoneraService.getBotonera(
             this.nPage,
             oPageFromServer.totalPages
@@ -102,6 +115,12 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
         },
         error: (err: any) => {
           console.error('Error al cargar las compras:', err);
+          this.errorMessage = 'Error al cargar las compras. Por favor, inténtalo de nuevo más tarde.';
+          if (err.status === 401) {
+            this.errorMessage = 'No estás autorizado para ver estas compras. Por favor, inicia sesión nuevamente.';
+          } else if (err.status === 404) {
+            this.errorMessage = 'No se encontraron compras para este usuario.';
+          }
           this.isLoading = false;
         },
       });

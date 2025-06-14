@@ -70,15 +70,32 @@
       </table>
     </div>
 
-    <!-- Mensaje cuando no hay compras -->
-    <div *ngIf="!isLoading && compras.length === 0" class="text-center py-12">
-      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-800 text-yellow-500 mb-4">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-        </svg>
+    <!-- Sin resultados -->
+    <div *ngIf="!isLoading && compras.length === 0 && !errorMessage" class="text-center py-12">
+      <div class="max-w-md mx-auto bg-gray-800 rounded-xl shadow-md overflow-hidden p-6">
+        <div class="text-yellow-500 text-5xl mb-4">
+          <i class="bi bi-cart-x"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-white mb-2">No hay compras registradas</h3>
+        <p class="text-gray-400">Parece que aún no has realizado ninguna compra.</p>
+        <a 
+          routerLink="/shop/plist" 
+          class="mt-4 inline-block bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-6 rounded-full transition duration-300 transform hover:scale-105"
+        >
+          Ir a la tienda
+        </a>
       </div>
-      <h3 class="text-lg font-medium text-white mb-1">No hay compras registradas</h3>
-      <p class="text-gray-400">Tus compras aparecerán aquí cuando realices alguna.</p>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="errorMessage" class="text-center py-12">
+      <div class="max-w-md mx-auto bg-gray-800 rounded-xl shadow-md overflow-hidden p-6">
+        <div class="text-red-500 text-5xl mb-4">
+          <i class="bi bi-exclamation-triangle"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-white mb-2">Error al cargar compras</h3>
+        <p class="text-gray-400">{{ errorMessage }}</p>
+      </div>
     </div>
 
     <!-- Paginación -->
