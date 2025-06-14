@@ -6,8 +6,12 @@
   overflow: hidden;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   padding: 20px;
+  min-height: auto;
+  box-sizing: border-box;
+  height: auto;
+  width: 100%;
 }
 
 /* SVG Landscape Background */
