@@ -4,6 +4,7 @@ import { IPage } from '../../../model/model.interface';
 import { BotoneraService } from '../../../service/botonera.service';
 import { CompraService } from '../../../service/compra.service';
 import { SessionService } from '../../../service/session.service';
+import { UsuarioService } from '../../../service/usuario.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -42,7 +43,8 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
   constructor(
     @Inject(CompraService) private oCompraService: CompraService,
     @Inject(BotoneraService) private oBotoneraService: BotoneraService,
-    @Inject(SessionService) private oSessionService: SessionService
+    @Inject(SessionService) private oSessionService: SessionService,
+    @Inject(UsuarioService) private oUsuarioService: UsuarioService
   ) {
     // Verificar sesión activa
     if (!this.oSessionService.isSessionActive()) {
@@ -121,13 +123,65 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getPage();
+    this.loadUserData();
+  }
+
+  loadUserData() {
+    // Verificar sesión activa
+    if (!this.oSessionService.isSessionActive()) {
+      console.error('No hay una sesión activa');
+      this.errorMessage = 'Debes iniciar sesión para ver tus compras';
+      return;
+    }
+    
+    // Obtener el token y el correo del usuario
+    const token = this.oSessionService.getToken();
+    if (!token) {
+      console.error('No se encontró el token de autenticación');
+      this.errorMessage = 'No se encontró la sesión del usuario';
+      return;
+    }
+
+    try {
+      const tokenData = this.parseJwt(token);
+      console.log('Token decodificado:', tokenData);
+      
+      // Obtener el ID del usuario usando el correo del token
+      if (tokenData.correo) {
+        this.oUsuarioService.getUsuarioByEmail(tokenData.correo).subscribe({
+          next: (usuario: any) => {
+            if (usuario && usuario.id) {
+              this.userId = usuario.id;
+              console.log('ID de usuario obtenido:', this.userId);
+              this.getPage();
+            } else {
+              console.error('No se pudo obtener el ID del usuario');
+              this.errorMessage = 'Error al obtener la información del usuario';
+            }
+          },
+          error: (err: any) => {
+            console.error('Error al obtener el usuario por correo:', err);
+            this.errorMessage = 'Error al cargar la información del usuario';
+          }
+        });
+      } else {
+        console.error('El token no contiene el correo del usuario');
+        this.errorMessage = 'Error al procesar la sesión del usuario';
+      }
+    } catch (error) {
+      console.error('Error al procesar el token:', error);
+      this.errorMessage = 'Error al procesar la sesión';
+    }
   }
 
   getPage() {
     console.log('Iniciando getPage()');
+    this.errorMessage = null;
+    
     if (!this.userId) {
       console.error('No se pudo obtener el ID del usuario');
+      this.errorMessage = 'No se pudo cargar la información del usuario';
+      this.isLoading = false;
       return;
     }
     
