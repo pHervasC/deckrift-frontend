@@ -24,6 +24,7 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
   cartaSeleccionada: any = null;
+  mostrarModal: boolean = false;
   oPage: IPage<IAlmacen> | null = null;
   usuarioId!: number;
   usuario!: IUsuario;
@@ -45,6 +46,20 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
   private debounceSubject = new Subject<string>();
   readonly dialog = inject(MatDialog);
   oRouter: any;
+
+  // Método para abrir el popup con los detalles de la carta
+  abrirModalCarta(carta: any): void {
+    this.cartaSeleccionada = carta;
+    // Deshabilitar el scroll del body cuando el popup está abierto
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Método para cerrar el popup
+  cerrarPopUp(): void {
+    this.cartaSeleccionada = null;
+    // Restaurar el scroll del body
+    document.body.style.overflow = 'auto';
+  }
 
   constructor(
     private almacenService: AlmacenService,
@@ -264,11 +279,5 @@ export class UsuarioColeccionRoutedComponent implements OnInit {
     this.debounceSubject.next(this.strFiltro);
   }
 
-  mostrarPopUp(carta: any): void {
-    this.cartaSeleccionada = carta;
-  }
 
-  cerrarPopUp(): void {
-    this.cartaSeleccionada = null;
-  }
 }
