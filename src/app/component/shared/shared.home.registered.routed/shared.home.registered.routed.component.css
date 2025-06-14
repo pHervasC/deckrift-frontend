@@ -529,7 +529,7 @@
   }
 
 /* Tablet - 640px a 1023px */
-@media (min-width: 640px) and (max-width: 1023px) {
+@media (min-width: 421px) and (max-width: 1023px) {
 
   .card-container {
     height: 500px;
