@@ -189,22 +189,22 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
       return;
     }
     
-    console.log('ID de usuario:', this.userId);
-    const estado = this.estadoSeleccionado !== 'todos' ? this.estadoSeleccionado : undefined;
-    console.log('Parámetros de búsqueda:', { 
-      page: this.nPage, 
-      size: this.nRpp, 
-      field: this.strField, 
-      dir: this.strDir, 
-      filtro: this.strFiltro,
-      estado: estado 
-    });
-    
     this.isLoading = true;
     
     console.log(`Obteniendo compras para el usuario ID: ${this.userId}`);
     console.log(`Parámetros: página=${this.nPage}, tamaño=${this.nRpp}, orden=${this.strField}, dirección=${this.strDir}, filtro=${this.strFiltro}, estado=${this.estadoSeleccionado}`);
     
+    // Verificar si hay un token válido
+    const token = this.oSessionService.getToken();
+    if (!token) {
+      console.error('No se encontró el token de autenticación');
+      this.errorMessage = 'No se encontró la sesión del usuario. Por favor, inicia sesión nuevamente.';
+      this.isLoading = false;
+      this.hasLoaded = true;
+      return;
+    }
+    
+    // Llamar al servicio para obtener las compras del usuario
     this.oCompraService
       .getPageByUsuario(this.userId, this.nPage, this.nRpp, this.strField, this.strDir, this.strFiltro, this.estadoSeleccionado)
       .subscribe({
