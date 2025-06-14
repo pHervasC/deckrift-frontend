@@ -78,8 +78,8 @@
       </table>
     </div>
 
-    <!-- Sin resultados -->
-    <div *ngIf="!isLoading && compras.length === 0 && !errorMessage" class="text-center py-12">
+    <!-- Sin resultados - Solo mostrar después de cargar y si no hay errores -->
+    <div *ngIf="!isLoading && !errorMessage && compras && compras.length === 0" class="text-center py-12">
       <div class="max-w-md mx-auto bg-gray-800 rounded-xl shadow-md overflow-hidden p-6">
         <div class="text-yellow-500 text-5xl mb-4">
           <i class="bi bi-cart-x"></i>
@@ -95,8 +95,8 @@
       </div>
     </div>
 
-    <!-- Mensaje de error -->
-    <div *ngIf="errorMessage" class="text-center py-12">
+    <!-- Mensaje de error - Mostrar solo después de cargar y si hay error -->
+    <div *ngIf="hasLoaded && errorMessage" class="text-center py-12">
       <div class="max-w-md mx-auto bg-gray-800 rounded-xl shadow-md overflow-hidden p-6">
         <div class="text-red-500 text-5xl mb-4">
           <i class="bi bi-exclamation-triangle"></i>

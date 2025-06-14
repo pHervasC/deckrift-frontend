@@ -32,6 +32,7 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
   arrBotonera: string[] = [];
   private debounceSubject = new Subject<string>();
   isLoading: boolean = false;
+  hasLoaded: boolean = false;
   userId: number | null = null;
 
   estados = [
@@ -241,6 +242,7 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
             );
           }
           this.isLoading = false;
+          this.hasLoaded = true;
         },
         error: (err: any) => {
           console.error('Error al cargar las compras:', err);
