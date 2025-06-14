@@ -513,35 +513,33 @@
 
 /* Media queries responsivas para contenedor principal y contenido */
 
-/* Móvil - hasta 380px */
+/* Móvil - hasta 420px */
 @media (max-width: 420px) {
-
   .card-container {
-        height: 580px;
+    height: 580px;
   }
 
-  .logout-button{
+  .logout-button {
     display: none;
   }
 
-  .welcome-box{
+  .welcome-box {
     display: none;
   }
+}
 
-/* Tablet - 640px a 1023px */
+/* Tablet - 421px a 1200px */
 @media (min-width: 421px) and (max-width: 1200px) {
-
   .card-container {
     height: 500px;
     margin-top: 10px;
   }
 
-  .welcome-box{
+  .welcome-box {
     display: none;
   }
 
-  .logout-button{
+  .logout-button {
     display: none;
   }
-}
 }
