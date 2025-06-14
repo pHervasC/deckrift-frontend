@@ -44,34 +44,79 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
     @Inject(BotoneraService) private oBotoneraService: BotoneraService,
     @Inject(SessionService) private oSessionService: SessionService
   ) {
-    // Obtener el ID del usuario desde el token JWT
-    const token = this.oSessionService.getToken();
-    if (token) {
-      const tokenData = this.parseJwt(token);
-      this.userId = tokenData.id;
+    // Verificar sesión activa
+    if (!this.oSessionService.isSessionActive()) {
+      console.error('No hay una sesión activa');
+      this.errorMessage = 'Debes iniciar sesión para ver tus compras';
+      return;
     }
     
+    // Obtener el token y el ID del usuario
+    const token = this.oSessionService.getToken();
+    if (token) {
+      try {
+        const tokenData = this.parseJwt(token);
+        console.log('Token decodificado:', tokenData);
+        
+        // Verificar si el token tiene el ID del usuario
+        if (tokenData.id) {
+          this.userId = tokenData.id;
+          console.log('ID de usuario obtenido:', this.userId);
+          
+          // Cargar la primera página
+          this.getPage();
+        } else {
+          console.error('El token no contiene el ID del usuario');
+          this.errorMessage = 'Error al obtener la información del usuario';
+        }
+      } catch (error) {
+        console.error('Error al decodificar el token:', error);
+        this.errorMessage = 'Error al procesar la sesión';
+      }
+    } else {
+      console.error('No se encontró el token de autenticación');
+      this.errorMessage = 'No se encontró la sesión del usuario';
+    }
+    
+    // Configurar el debounce para la búsqueda
     this.debounceSubject.pipe(debounceTime(1000)).subscribe(() => {
-      this.getPage();
-      this.goToPage(1);
+      if (this.userId) {
+        this.getPage();
+        this.goToPage(1);
+      }
     });
   }
   
   // Método para parsear el token JWT
   private parseJwt(token: string): any {
     try {
-      const base64Url = token.split('.')[1];
+      // Verificar que el token tenga el formato correcto
+      if (!token || typeof token !== 'string') {
+        throw new Error('Token no válido');
+      }
+      
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        throw new Error('El token no tiene el formato JWT correcto');
+      }
+      
+      const base64Url = parts[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      
+      // Asegurarse de que la cadena base64 sea válida
+      const padded = base64.padEnd(base64.length + (4 - (base64.length % 4)) % 4, '=');
       const jsonPayload = decodeURIComponent(
-        atob(base64)
+        atob(padded)
           .split('')
           .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
           .join('')
       );
+      
+      console.log('Payload del token:', jsonPayload);
       return JSON.parse(jsonPayload);
     } catch (e) {
       console.error('Error al parsear el token JWT:', e);
-      return null;
+      throw new Error('Error al procesar el token de autenticación');
     }
   }
 
