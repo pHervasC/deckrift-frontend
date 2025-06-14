@@ -528,8 +528,8 @@
   }
 }
 
-/* Tablet - 421px a 1200px */
-@media (min-width: 421px) and (max-width: 1300px) {
+/* Tablet - 421px a 1400px */
+@media (min-width: 421px) and (max-width: 1400px) {
   .card-container {
     height: 500px;
     margin-top: 10px;
