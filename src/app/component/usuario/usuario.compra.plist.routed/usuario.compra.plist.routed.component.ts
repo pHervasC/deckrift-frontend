@@ -178,11 +178,14 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
   getPage() {
     console.log('Iniciando getPage()');
     this.errorMessage = null;
+    this.hasLoaded = false;
     
+    // Verificar que tenemos un userId válido
     if (!this.userId) {
       console.error('No se pudo obtener el ID del usuario');
       this.errorMessage = 'No se pudo cargar la información del usuario';
       this.isLoading = false;
+      this.hasLoaded = true;
       return;
     }
     
@@ -199,9 +202,11 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
     
     this.isLoading = true;
     
-    // Llamar al servicio para obtener las compras del usuario
+    console.log(`Obteniendo compras para el usuario ID: ${this.userId}`);
+    console.log(`Parámetros: página=${this.nPage}, tamaño=${this.nRpp}, orden=${this.strField}, dirección=${this.strDir}, filtro=${this.strFiltro}, estado=${this.estadoSeleccionado}`);
+    
     this.oCompraService
-      .getPageByUsuario(this.userId, this.nPage, this.nRpp, this.strField, this.strDir, this.strFiltro, estado)
+      .getPageByUsuario(this.userId, this.nPage, this.nRpp, this.strField, this.strDir, this.strFiltro, this.estadoSeleccionado)
       .subscribe({
         next: (oPageFromServer: IPage<any>) => {
           console.log('Respuesta del servidor (compras del usuario):', oPageFromServer);
