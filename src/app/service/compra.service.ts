@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IPage } from '../model/model.interface';
 import { ICompra } from '../model/compra.interface';
 import { Observable } from 'rxjs';
@@ -55,30 +55,29 @@ export class CompraService {
     const url = `${this.apiUrl}/usuario/${userId}/page`;
     console.log('Solicitando compras del usuario a:', url, 'con parámetros:', params.toString());
     
-    // Obtener el token del localStorage
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error('No se encontró el token de autenticación');
-      return new Observable(observer => {
-        observer.error(new Error('No se encontró el token de autenticación'));
-      });
-    }
+    // Configurar los headers
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
 
-    // Configurar los headers con el token
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+    // Configurar las opciones de la petición
+    const options = {
+      params: params,
+      headers: headers,
+      withCredentials: true,  // Importante para enviar las cookies de sesión
+      observe: 'response' as const
     };
 
     return new Observable<IPage<ICompra>>(observer => {
-      this.http.get<IPage<ICompra>>(url, { 
-        params,
-        headers: headers,
-        withCredentials: true  // Importante para enviar las cookies de sesión
-      }).subscribe({
+      this.http.get<IPage<ICompra>>(url, options).subscribe({
         next: (response) => {
           console.log('Respuesta de la API (compras del usuario):', response);
-          observer.next(response);
+          if (response.body) {
+            observer.next(response.body);
+          } else {
+            observer.error(new Error('La respuesta del servidor está vacía'));
+          }
           observer.complete();
         },
         error: (error) => {
@@ -88,6 +87,8 @@ export class CompraService {
             // Opcional: Limpiar el token y redirigir al login
             // localStorage.removeItem('token');
             // this.router.navigate(['/login']);
+          } else if (error.status === 0) {
+            console.error('Error de conexión. Verifica tu conexión a Internet.');
           }
           observer.error(error);
         }
