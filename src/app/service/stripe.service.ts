@@ -20,6 +20,11 @@ export class StripeService {
     });
   }
 
+  verificarEstadoSesion(sessionId: string) {
+    return this.http.get<{status: string, compraId?: number}>(`${this.apiUrl}/verificar-sesion?session_id=${sessionId}`);
+  }
+
+
   async redirigirCheckout(sessionId: string): Promise<void> {
     const stripe = await loadStripe(environment.StripePublickey);
     if (!stripe) {
