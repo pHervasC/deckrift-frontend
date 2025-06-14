@@ -70,27 +70,13 @@
 /* Background Pokemon sprites - adjusted for vertical sequence */
 .bg-pokemon {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   opacity: 0.8;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
   z-index: 2;
 }
 
-/* Tamaños responsivos para tablets y escritorio */
-@media (min-width: 640px) {
-  .bg-pokemon {
-    width: 45px;
-    height: 45px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .bg-pokemon {
-    width: 50px;
-    height: 50px;
-  }
-}
 
 /* Vertical sequence animations */
 .sequence1 {
@@ -372,106 +358,25 @@
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 2;
   pointer-events: none;
-  z-index: 3;
-  overflow: hidden;
 }
 
 .mini-pokemon {
   position: absolute;
-  width: 30px;
-  height: 30px;
-  opacity: 0.7;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
-  animation: float 15s infinite ease-in-out;
-  z-index: 4;
-}
-
-/* Tamaños responsivos para tablets y escritorio */
-@media (min-width: 640px) {
-  .mini-pokemon {
-    width: 35px;
-    height: 35px;
-  }
-  
-  .flying {
-    width: 40px;
-    height: 40px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .mini-pokemon {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .flying {
-    width: 50px;
-    height: 50px;
-  }
-}
-
-/* Animaciones para los Pokémon flotantes */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-15px) rotate(5deg);
-  }
-}
-
-/* Estilos para las filas de Pokémon */
-.row1 { top: 15%; animation-duration: 20s; }
-.row2 { top: 40%; animation-duration: 25s; animation-delay: -5s; }
-.row3 { top: 65%; animation-duration: 30s; animation-delay: -10s; }
-
-/* Ajustes para tablets */
-@media (min-width: 640px) and (max-width: 1023px) {
-  .row1 { top: 20%; }
-  .row2 { top: 45%; }
-  .row3 { top: 70%; }
-}
-
-/* Estilos para los Pokémon en diagonal */
-.diagonal1, .diagonal2 {
-  animation: diagonalFloat 40s infinite linear;
-  width: 35px;
-  height: 35px;
-}
-
-.diagonal1 { top: 10%; left: -50px; }
-.diagonal2 { top: 20%; right: -50px; }
-
-@keyframes diagonalFloat {
-  0% { transform: translateX(-100px) translateY(0) rotate(0deg); }
-  100% { transform: translateX(calc(100vw + 100px)) translateY(100px) rotate(360deg); }
-}
-
-/* Estilos para Pokémon voladores */
-.flying {
-  animation: flyAround 60s infinite linear;
   width: 40px;
   height: 40px;
+  opacity: 0.7;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  z-index: 2;
+  transition: transform 0.3s ease;
 }
 
-@keyframes flyAround {
-  0% { transform: translateX(-50px) translateY(-50px) rotate(0deg); }
-  25% { transform: translateX(calc(100vw - 100px)) translateY(50px) rotate(90deg); }
-  50% { transform: translateX(calc(50vw - 25px)) translateY(calc(100vh - 100px)) rotate(180deg); }
-  75% { transform: translateX(0) translateY(calc(50vh - 25px)) rotate(270deg); }
-  100% { transform: translateX(-50px) translateY(-50px) rotate(360deg); }
+.mini-pokemon:hover {
+  transform: scale(1.2);
+  opacity: 1;
 }
 
-/* Optimización para rendimiento */
-.mini-pokemon, .flying, .diagonal1, .diagonal2 {
-  will-change: transform;
-  backface-visibility: hidden;
-  transform: translateZ(0);
-}
-
-/* Row animations */
 .row1 {
   top: 10%;
   animation: floatLeftToRight 30s linear infinite;
