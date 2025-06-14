@@ -26,6 +26,7 @@ import { PokedexComponent } from './component/pokedex/pokedex.component.routed/p
 import { ShopRoutedComponent } from './component/shop/shop.routed/shop.routed.component';
 import { SuccessRoutedComponent } from './component/shop/success.routed/success.routed.component';
 import { CompraRoutedComponent } from './component/shop/compra.routed/compra.routed.component';
+import { UsuarioCompraPlistRoutedComponent } from './component/usuario/usuario.compra.plist.routed/usuario.compra.plist.routed.component';
 export const routes: Routes = [
 
   //Shared
@@ -46,6 +47,7 @@ export const routes: Routes = [
   { path: 'usuario/edit/:id', component: UsuarioEditRoutedComponent, canActivate: [AuditorGuard]},
   { path: 'usuario/delete/:id', component: UsuarioDeleteRoutedComponent, canActivate: [AuditorGuard] },
   { path: 'usuario/create', component: UsuarioCreateRoutedComponent },
+  { path: 'usuario/compra/plist', component: UsuarioCompraPlistRoutedComponent, canActivate: [AuditorGuard] },
 
   // CARTA
   { path: 'admin/carta/plist', component: CartaAdminPlistRoutedComponent, canActivate: [AdminGuard] },
