@@ -1,161 +1,207 @@
-<div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 py-4 sm:py-8 px-3 sm:px-4">
+<div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 py-3 sm:py-6 md:py-8 px-2 sm:px-4">
   <div class="max-w-7xl mx-auto">
     <!-- Encabezado -->
-    <div class="text-center mb-6 sm:mb-8">
-      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2">Mis Compras</h2>
-      <div class="w-20 sm:w-24 h-1 bg-yellow-500 mx-auto rounded-full"></div>
+    <div class="text-center mb-4 sm:mb-6 md:mb-8 px-2">
+      <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-2">Mis Compras</h2>
+      <div class="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-yellow-500 mx-auto rounded-full"></div>
     </div>
 
     <!-- Filtros -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4 md:mb-6 px-2 sm:px-0">
       <!-- Buscador -->
       <div class="relative">
-        <input
-          type="text"
-          placeholder="Buscar en mis compras..."
-          [(ngModel)]="strFiltro"
-          (keyup)="onFilter($event)"
-          class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-        />
-        <svg class="absolute right-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-        </svg>
+        <div class="relative">
+          <input
+            type="text"
+            placeholder="Buscar compras..."
+            [(ngModel)]="strFiltro"
+            (keyup)="onFilter($event)"
+            class="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+          />
+          <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
       </div>
 
       <!-- Selector de estado -->
-      <select
-        [(ngModel)]="estadoSeleccionado"
-        (change)="cambiarEstado($event)"
-        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
-      >
-        <option *ngFor="let estado of estados" [value]="estado.valor">
-          {{ estado.etiqueta }}
-        </option>
-      </select>
+      <div class="relative">
+        <select
+          [(ngModel)]="estadoSeleccionado"
+          (change)="cambiarEstado($event)"
+          class="w-full px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 appearance-none"
+        >
+          <option *ngFor="let estado of estados" [value]="estado.valor">
+            {{ estado.etiqueta }}
+          </option>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+      </div>
     </div>
 
     <!-- Contenido de carga -->
-    <div *ngIf="isLoading" class="flex justify-center items-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-500"></div>
+    <div *ngIf="isLoading" class="flex justify-center items-center py-8 sm:py-12">
+      <div class="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-yellow-500"></div>
     </div>
 
-    <!-- Lista de compras -->
-    <div *ngIf="!isLoading && compras.length > 0" class="overflow-hidden rounded-xl shadow-xl border border-gray-700">
-      <table class="min-w-full bg-gray-800">
-        <thead class="bg-gray-900">
-          <tr>
-            <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">ID</th>
-            <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Monedas</th>
-            <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Gasto</th>
-            <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Estado</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-700">
-          <tr *ngFor="let compra of compras" class="hover:bg-gray-700 transition-colors">
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">#{{ compra.id }}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-              <div class="flex items-center">
-                <i class="bi bi-coin text-yellow-500 mr-2"></i>
-                <span>{{ compra.cantidadMonedas }} monedas</span>
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-              <div class="flex items-center">
-                <i class="bi bi-currency-euro text-green-500 mr-2"></i>
-                <span>{{ compra.gasto }} €</span>
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span 
-                class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
-                [ngClass]="getEstadoClass(compra.estado)"
-              >
-                {{ compra.estado | titlecase }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Lista de compras - Versión móvil -->
+    <div *ngIf="!isLoading && compras.length > 0" class="sm:hidden space-y-3 px-2">
+      <div *ngFor="let compra of compras" class="bg-gray-800 rounded-lg p-3 border border-gray-700">
+        <div class="flex justify-between items-start mb-2">
+          <div class="text-sm font-medium text-white">#{{ compra.id }}</div>
+          <span 
+            class="px-2 py-0.5 text-xs leading-4 font-semibold rounded-full"
+            [ngClass]="getEstadoClass(compra.estado)"
+          >
+            {{ compra.estado | titlecase }}
+          </span>
+        </div>
+        <div class="flex justify-between items-center text-sm">
+          <div class="flex items-center text-yellow-400">
+            <i class="bi bi-coin mr-1"></i>
+            <span>{{ compra.cantidadMonedas }} monedas</span>
+          </div>
+          <div class="flex items-center text-green-400">
+            <i class="bi bi-currency-euro mr-1"></i>
+            <span class="font-medium">{{ compra.gasto }} €</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de compras - Versión escritorio -->
+    <div *ngIf="!isLoading && compras.length > 0" class="hidden sm:block overflow-hidden rounded-xl shadow-xl border border-gray-700">
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-gray-800">
+          <thead class="bg-gray-900">
+            <tr>
+              <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">ID</th>
+              <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Monedas</th>
+              <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Gasto</th>
+              <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Estado</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-700">
+            <tr *ngFor="let compra of compras" class="hover:bg-gray-700 transition-colors">
+              <td class="px-4 sm:px-6 py-3 whitespace-nowrap text-sm text-gray-300">#{{ compra.id }}</td>
+              <td class="px-4 sm:px-6 py-3 whitespace-nowrap text-sm text-gray-300">
+                <div class="flex items-center">
+                  <i class="bi bi-coin text-yellow-500 mr-2"></i>
+                  <span>{{ compra.cantidadMonedas }} monedas</span>
+                </div>
+              </td>
+              <td class="px-4 sm:px-6 py-3 whitespace-nowrap text-sm text-gray-300">
+                <div class="flex items-center">
+                  <i class="bi bi-currency-euro text-green-500 mr-2"></i>
+                  <span>{{ compra.gasto }} €</span>
+                </div>
+              </td>
+              <td class="px-4 sm:px-6 py-3 whitespace-nowrap">
+                <span 
+                  class="px-2 sm:px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
+                  [ngClass]="getEstadoClass(compra.estado)"
+                >
+                  {{ compra.estado | titlecase }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Sin resultados - Solo mostrar después de cargar y si no hay errores -->
-    <div *ngIf="!isLoading && !errorMessage && compras && compras.length === 0" class="text-center py-12">
-      <div class="max-w-md mx-auto bg-gray-800 rounded-xl shadow-md overflow-hidden p-6">
-        <div class="text-yellow-500 text-5xl mb-4">
+    <div *ngIf="!isLoading && !errorMessage && compras && compras.length === 0" class="text-center py-8 sm:py-12 px-4">
+      <div class="max-w-md mx-auto bg-gray-800 rounded-xl shadow-md overflow-hidden p-4 sm:p-6">
+        <div class="text-yellow-500 text-4xl sm:text-5xl mb-3 sm:mb-4">
           <i class="bi bi-cart-x"></i>
         </div>
-        <h3 class="text-xl font-semibold text-white mb-2">No hay compras registradas</h3>
-        <p class="text-gray-400">Parece que aún no has realizado ninguna compra.</p>
+        <h3 class="text-lg sm:text-xl font-semibold text-white mb-1 sm:mb-2">No hay compras registradas</h3>
+        <p class="text-sm sm:text-base text-gray-400 mb-3 sm:mb-4">Parece que aún no has realizado ninguna compra.</p>
         <a 
           routerLink="/shop"
-          class="mt-4 inline-block bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-6 rounded-full transition duration-300 transform hover:scale-105"
+          class="inline-block bg-yellow-600 hover:bg-yellow-700 text-white text-sm sm:text-base font-semibold py-1.5 sm:py-2 px-4 sm:px-6 rounded-full transition duration-300 transform hover:scale-105"
         >
           Ir a la tienda
         </a>
-
       </div>
     </div>
 
     <!-- Mensaje de error - Mostrar solo después de cargar y si hay error -->
-    <div *ngIf="hasLoaded && errorMessage" class="text-center py-12">
-      <div class="max-w-md mx-auto bg-gray-800 rounded-xl shadow-md overflow-hidden p-6">
-        <div class="text-red-500 text-5xl mb-4">
+    <div *ngIf="hasLoaded && errorMessage" class="text-center py-8 sm:py-12 px-4">
+      <div class="max-w-md mx-auto bg-gray-800 rounded-xl shadow-md overflow-hidden p-4 sm:p-6">
+        <div class="text-red-500 text-4xl sm:text-5xl mb-3 sm:mb-4">
           <i class="bi bi-exclamation-triangle"></i>
         </div>
-        <h3 class="text-xl font-semibold text-white mb-2">Error al cargar compras</h3>
-        <p class="text-gray-400">{{ errorMessage }}</p>
+        <h3 class="text-lg sm:text-xl font-semibold text-white mb-1 sm:mb-2">Error al cargar compras</h3>
+        <p class="text-sm sm:text-base text-gray-400">{{ errorMessage }}</p>
       </div>
     </div>
 
     <!-- Paginación -->
-    <div *ngIf="!isLoading && oPage && oPage.totalPages > 1" class="mt-6 flex justify-between items-center flex-wrap gap-4">
-      <div class="text-sm text-gray-400">
-        Mostrando <span class="font-medium">{{ (nPage * nRpp) + 1 }}</span> a 
-        <span class="font-medium">{{ Math.min((nPage + 1) * nRpp, oPage.totalElements) }}</span> de 
-        <span class="font-medium">{{ oPage.totalElements }}</span> compras
-      </div>
-      
-      <div class="flex items-center gap-2">
-        <select 
-          [(ngModel)]="nRpp" 
-          (change)="changeRpp(nRpp)"
-          class="px-3 py-1.5 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
-        >
-          <option [value]="5">5 por página</option>
-          <option [value]="10">10 por página</option>
-          <option [value]="20">20 por página</option>
-          <option [value]="50">50 por página</option>
-        </select>
+    <div *ngIf="!isLoading && oPage && oPage.totalPages > 1" class="mt-4 sm:mt-6 px-2 sm:px-0">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div class="text-xs sm:text-sm text-gray-400 text-center sm:text-left">
+          Mostrando <span class="font-medium">{{ (nPage * nRpp) + 1 }}</span> a 
+          <span class="font-medium">{{ Math.min((nPage + 1) * nRpp, oPage.totalElements) }}</span> de 
+          <span class="font-medium">{{ oPage.totalElements }}</span> compras
+        </div>
         
-        <nav class="flex">
-          <button 
-            (click)="goToPage(1)" 
-            [disabled]="nPage === 0"
-            class="px-3 py-1.5 rounded-l-lg bg-gray-800 border border-gray-700 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            &laquo;
-          </button>
-          <button 
-            *ngFor="let page of arrBotonera" 
-            (click)="goToPage(parseInt(page, 10))"
-            [class.bg-yellow-500]="nPage + 1 === parseInt(page, 10)"
-            [class.text-gray-900]="nPage + 1 === parseInt(page, 10)"
-            [class.hover:bg-yellow-400]="nPage + 1 === parseInt(page, 10)"
-            [class.bg-gray-800]="nPage + 1 !== parseInt(page, 10)"
-            [class.text-white]="nPage + 1 !== parseInt(page, 10)"
-            [class.hover:bg-gray-700]="nPage + 1 !== parseInt(page, 10)"
-            class="px-3 py-1.5 border-t border-b border-gray-700"
-          >
-            {{ page }}
-          </button>
-          <button 
-            (click)="goToPage(oPage ? oPage.totalPages : 1)" 
-            [disabled]="!oPage || nPage + 1 === oPage.totalPages"
-            class="px-3 py-1.5 rounded-r-lg bg-gray-800 border border-gray-700 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            &raquo;
-          </button>
-        </nav>
+        <div class="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+          <div class="w-full sm:w-auto">
+            <select 
+              [(ngModel)]="nRpp" 
+              (change)="changeRpp(nRpp)"
+              class="w-full sm:w-auto px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            >
+              <option [value]="5">5 por página</option>
+              <option [value]="10">10 por página</option>
+              <option [value]="20">20 por página</option>
+              <option [value]="50">50 por página</option>
+            </select>
+          </div>
+          
+          <nav class="flex w-full sm:w-auto justify-center">
+            <div class="inline-flex rounded-md shadow-sm">
+              <button 
+                (click)="goToPage(1)" 
+                [disabled]="nPage === 0"
+                class="px-2 sm:px-3 py-1.5 text-xs sm:text-sm rounded-l-lg bg-gray-800 border border-gray-700 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Primera página"
+              >
+                &laquo;
+              </button>
+              <div class="flex -space-x-px">
+                <button 
+                  *ngFor="let page of arrBotonera" 
+                  (click)="goToPage(parseInt(page, 10))"
+                  [class.bg-yellow-500]="nPage + 1 === parseInt(page, 10)"
+                  [class.text-gray-900]="nPage + 1 === parseInt(page, 10)"
+                  [class.hover:bg-yellow-400]="nPage + 1 === parseInt(page, 10)"
+                  [class.bg-gray-800]="nPage + 1 !== parseInt(page, 10)"
+                  [class.text-white]="nPage + 1 !== parseInt(page, 10)"
+                  [class.hover:bg-gray-700]="nPage + 1 !== parseInt(page, 10)"
+                  class="px-2 sm:px-3 py-1.5 text-xs sm:text-sm border border-gray-700"
+                  [attr.aria-label]="'Ir a la página ' + page"
+                >
+                  {{ page }}
+                </button>
+              </div>
+              <button 
+                (click)="goToPage(oPage ? oPage.totalPages : 1)" 
+                [disabled]="!oPage || nPage + 1 === oPage.totalPages"
+                class="px-2 sm:px-3 py-1.5 text-xs sm:text-sm rounded-r-lg bg-gray-800 border border-gray-700 text-white hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Última página"
+              >
+                &raquo;
+              </button>
+            </div>
+          </nav>
+        </div>
       </div>
     </div>
   </div>
