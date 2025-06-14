@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { debounceTime, Subject } from 'rxjs';
 import { IPage } from '../../../model/model.interface';
 import { BotoneraService } from '../../../service/botonera.service';
@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './usuario.compra.plist.routed.component.html',
   styleUrls: ['./usuario.compra.plist.routed.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, RouterModule]
 })
 export class UsuarioCompraPlistRoutedComponent implements OnInit {
   // Hacer disponibles Math y parseInt en la plantilla
