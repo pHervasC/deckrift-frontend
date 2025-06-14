@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { debounceTime, Subject } from 'rxjs';
 import { IPage } from '../../../model/model.interface';
 import { BotoneraService } from '../../../service/botonera.service';
@@ -45,7 +46,8 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
     @Inject(CompraService) private oCompraService: CompraService,
     @Inject(BotoneraService) private oBotoneraService: BotoneraService,
     @Inject(SessionService) private oSessionService: SessionService,
-    @Inject(UsuarioService) private oUsuarioService: UsuarioService
+    @Inject(UsuarioService) private oUsuarioService: UsuarioService,
+    private router: Router
   ) {
     // Verificar sesión activa
     if (!this.oSessionService.isSessionActive()) {
@@ -317,6 +319,23 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
         return 'bg-green-100 text-green-800';
       default:
         return 'bg-gray-100 text-gray-800';
+    }
+  }
+
+  // Navegar a la tienda
+  navigateToShop(): void {
+    // Verificar si el usuario está autenticado
+    if (!this.oSessionService.isSessionActive()) {
+      // Si no está autenticado, redirigir al login
+      this.router.navigate(['/login']);
+    } else {
+      // Si está autenticado, intentar navegar a la tienda
+      // La verificación de permisos se manejará en el guardia de ruta
+      this.router.navigate(['/shop']).catch(error => {
+        console.error('Error al navegar a la tienda:', error);
+        // En caso de error (como falta de permisos), redirigir a la página de inicio
+        this.router.navigate(['/home/registered']);
+      });
     }
   }
 }
