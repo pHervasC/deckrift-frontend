@@ -198,28 +198,85 @@ export class UsuarioCompraPlistRoutedComponent implements OnInit {
     
     this.isLoading = true;
     
+    // Llamar al servicio para obtener las compras del usuario
     this.oCompraService
       .getPageByUsuario(this.userId, this.nPage, this.nRpp, this.strField, this.strDir, this.strFiltro, estado)
       .subscribe({
         next: (oPageFromServer: IPage<any>) => {
-          console.log('Respuesta del servidor:', oPageFromServer);
-          this.oPage = oPageFromServer;
-          this.compras = oPageFromServer.content || [];
-          console.log('Compras cargadas:', this.compras);
-          this.arrBotonera = this.oBotoneraService.getBotonera(
-            this.nPage,
-            oPageFromServer.totalPages
-          );
+          console.log('Respuesta del servidor (compras del usuario):', oPageFromServer);
+          
+          // Verificar que la respuesta tenga contenido
+          if (!oPageFromServer || !oPageFromServer.content) {
+            console.warn('El servidor no devolvió compras');
+            this.compras = [];
+            this.oPage = {
+              content: [],
+              pageable: {
+                pageNumber: this.nPage,
+                pageSize: this.nRpp,
+                sort: { empty: true, sorted: false, unsorted: true },
+                offset: this.nPage * this.nRpp,
+                paged: true,
+                unpaged: false
+              },
+              totalPages: 0,
+              totalElements: 0,
+              last: true,
+              size: this.nRpp,
+              number: this.nPage,
+              sort: { empty: true, sorted: false, unsorted: true },
+              first: true,
+              numberOfElements: 0,
+              empty: true
+            };
+          } else {
+            this.oPage = oPageFromServer;
+            this.compras = oPageFromServer.content;
+            console.log(`Compras cargadas: ${this.compras.length} registros`);
+            
+            // Actualizar la paginación
+            this.arrBotonera = this.oBotoneraService.getBotonera(
+              this.nPage,
+              oPageFromServer.totalPages
+            );
+          }
           this.isLoading = false;
         },
         error: (err: any) => {
           console.error('Error al cargar las compras:', err);
           this.errorMessage = 'Error al cargar las compras. Por favor, inténtalo de nuevo más tarde.';
+          
+          // Manejar diferentes códigos de error
           if (err.status === 401) {
             this.errorMessage = 'No estás autorizado para ver estas compras. Por favor, inicia sesión nuevamente.';
           } else if (err.status === 404) {
             this.errorMessage = 'No se encontraron compras para este usuario.';
+          } else if (err.status === 0) {
+            this.errorMessage = 'No se pudo conectar con el servidor. Verifica tu conexión a Internet.';
           }
+          
+          // Inicializar variables para evitar errores en la vista
+          this.compras = [];
+          this.oPage = {
+            content: [],
+            pageable: {
+              pageNumber: this.nPage,
+              pageSize: this.nRpp,
+              sort: { empty: true, sorted: false, unsorted: true },
+              offset: this.nPage * this.nRpp,
+              paged: true,
+              unpaged: false
+            },
+            totalPages: 0,
+            totalElements: 0,
+            last: true,
+            size: this.nRpp,
+            number: this.nPage,
+            sort: { empty: true, sorted: false, unsorted: true },
+            first: true,
+            numberOfElements: 0,
+            empty: true
+          };
           this.isLoading = false;
         },
       });
