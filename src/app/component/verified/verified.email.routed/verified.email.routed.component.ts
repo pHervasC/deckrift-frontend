@@ -19,7 +19,7 @@ export class VerifiedEmailRoutedComponent implements OnInit {
   ngOnInit(): void {
     const email = this.route.snapshot.queryParamMap.get('email');
 
-   this.http.get(`https://www.deckrift.com/api/auth/verify-email?email=${email}`, { responseType: 'text' }).subscribe({
+   this.http.get(`https://deckrift-backend.onrender.com/api/auth/verify-email?email=${email}`, { responseType: 'text' }).subscribe({
   next: () => {
     this.mensaje = '✅ Tu email ha sido verificado con éxito.';
     setTimeout(() => {
